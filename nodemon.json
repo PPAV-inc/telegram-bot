@@ -1,0 +1,12 @@
+{
+  "verbose": false,
+  "ignore": [
+    ".editorconfig",
+    ".gitignore",
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "test"
+  ],
+  "execMap": {}
+}
