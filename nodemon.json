@@ -1,4 +1,5 @@
 {
+  "restartable": "rs",
   "verbose": false,
   "ignore": [
     ".editorconfig",
@@ -8,5 +9,7 @@
     "README.md",
     "test"
   ],
-  "execMap": {}
+  "env": {
+    "NODE_ENV": "development"
+  },
 }

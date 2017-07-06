@@ -8,14 +8,9 @@
     "node": true
   },
   "rules": {
-    "arrow-parens": "off",
-    "import/prefer-default-export": "off",
-    "indent": ["error", 2],
-    "no-case-declarations": "off",
-    "object-shorthand": "off",
-    "no-await-in-loop": "off",
-    "no-restricted-syntax": "off",
-    "no-else-return": "off"
+    "jsx-a11y/href-no-hash": "off",
+    "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
+    "import/no-dynamic-require": "off"
   },
   "plugins": [
     "babel"
