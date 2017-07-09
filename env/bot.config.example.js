@@ -1,3 +1,4 @@
 module.exports = {
-  apiToken: '__TELEGRAM_API_TOKEN__',
+  botToken: '__TELEGRAM_BOT_TOKEN__',
+  url: '__PUBLIC_URL__',
 };

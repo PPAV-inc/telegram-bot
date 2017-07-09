@@ -5,6 +5,7 @@ import logger from 'koa-logger';
 import compress from 'koa-compress';
 
 import indexRouter from './src/routes/index';
+import botRouter from './src/routes/bot';
 
 const config = require(`./env/${process.env.NODE_ENV || 'development'}`);
 
@@ -27,6 +28,7 @@ if (config.logger) {
 }
 
 useRouter(app, indexRouter);
+useRouter(app, botRouter);
 
 http.createServer(app.callback())
   .listen(port, () => {
