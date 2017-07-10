@@ -1,0 +1,15 @@
+{
+  "restartable": "rs",
+  "verbose": false,
+  "ignore": [
+    ".editorconfig",
+    ".gitignore",
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "test"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
