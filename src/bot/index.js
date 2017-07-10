@@ -3,6 +3,7 @@ import config from '../../env/bot.config';
 import { createUser, getUser } from '../models/users';
 import { saveSearchInfo } from '../models/search_keywords';
 import receivedMessage from './utils/telegram_receivedMessage';
+import { sendLanguageKeyboard } from './utils/sendKeyboard';
 
 const { botToken, url } = config;
 
@@ -14,7 +15,7 @@ bot.onText(/\/start/, async msg => {
   if (!user) {
     await createUser(msg);
   }
-  bot.sendMessage(msg.chat.id, 'I am alive!');
+  await sendLanguageKeyboard(bot, msg.chat.id);
 });
 
 // 番號
@@ -62,7 +63,7 @@ bot.onText(/[@＠]\s*\+*\s*(\S+)/, async (message, match) => {
   /* eslint-enable */
 });
 
-bot.onText(/^PPAV$/i, async (message) => {
+bot.onText(/^PPAV$/i, async message => {
   const chatId = message.chat.id;
 
   const strArr = await receivedMessage(message, 'PPAV');
@@ -74,7 +75,7 @@ bot.onText(/^PPAV$/i, async (message) => {
   /* eslint-enable */
 });
 
-bot.on('message', async (message) => {
+bot.on('message', async message => {
   const chatId = message.chat.id;
 
   const str = `想看片請輸入 "PPAV"

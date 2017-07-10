@@ -7,7 +7,7 @@ const createUser = async msg => {
     firstName: first_name,
     lastName: last_name,
     username,
-    acceptResponsibility: false,
+    acceptDisclaimer: false,
     languageCode: language_code,
     created_at: new Date(),
   };
