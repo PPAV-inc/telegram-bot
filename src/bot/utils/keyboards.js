@@ -1,8 +1,3 @@
-const languageKeyboard = [
-  [
-    { text: '🇹🇼', callback_data: 'setUserLanguageCode🇹🇼' },
-    { text: '🇺🇲', callback_data: 'setUserLanguageCode🇺🇸' },
-  ],
-];
+const languageKeyboard = [[{ text: '🇹🇼' }, { text: '🇺🇲' }]];
 
 export { languageKeyboard };

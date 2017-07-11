@@ -1,5 +1,6 @@
 const traditionalChinese = {
   flag: '🇹🇼',
+  updateUserLanguage: '🎉 讚喔！我們已將您的 PPAV 語言設定為*繁體中文* 🇹🇼',
   disclaimer: {
     title: '‼️未滿18歲禁止進入‼️',
     content:

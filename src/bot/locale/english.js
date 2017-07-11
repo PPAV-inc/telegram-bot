@@ -1,5 +1,7 @@
 const english = {
   flag: '🇺🇲',
+  updateUserLanguage:
+    '🎉 Done! We already set your PPAV language as *English* 🇺🇲',
   disclaimer: {
     title: '‼️Adults Only‼️',
     content:

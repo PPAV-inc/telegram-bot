@@ -1,21 +1,38 @@
 import TelegramBot from 'node-telegram-bot-api';
 import config from '../../env/bot.config';
-import { createUser, getUser } from '../models/users';
+import { createUser, getUser, updateUserLanguage } from '../models/users';
 import { saveSearchInfo } from '../models/search_keywords';
 import receivedMessage from './utils/telegram_receivedMessage';
 import { sendLanguageKeyboard } from './utils/sendKeyboard';
+import locale from './locale';
 
 const { botToken, url } = config;
 
-const bot = new TelegramBot(botToken, { polling: true });
+const bot = new TelegramBot(botToken, { polling: true, onlyFirstMatch: true });
 bot.setWebHook(`${url}/bot${botToken}`);
 
-bot.onText(/\/start/, async msg => {
-  const user = await getUser(msg.from.id);
+bot.onText(/\/start/, async message => {
+  const user = await getUser(message.from.id);
   if (!user) {
-    await createUser(msg);
+    await createUser(message);
   }
-  await sendLanguageKeyboard(bot, msg.chat.id);
+  await sendLanguageKeyboard(bot, message.chat.id);
+});
+
+// 更新使用者語言
+bot.onText(/🇹🇼|🇺🇲/i, async message => {
+  const chatId = message.chat.id;
+  let languageCode = '';
+  if (message.text === '🇹🇼') {
+    languageCode = 'zh-TW';
+    await updateUserLanguage(chatId, languageCode);
+  } else {
+    languageCode = 'en';
+    await updateUserLanguage(chatId, languageCode);
+  }
+  await bot.sendMessage(chatId, locale(languageCode).updateUserLanguage, {
+    parse_mode: 'Markdown',
+  });
 });
 
 // 番號
@@ -75,17 +92,18 @@ bot.onText(/^PPAV$/i, async message => {
   /* eslint-enable */
 });
 
-bot.on('message', async message => {
+// unmatched message
+bot.onText(/.+/, async message => {
   const chatId = message.chat.id;
 
-  const str = `想看片請輸入 "PPAV"
+  const str = `*想看片請輸入 "PPAV"*
 
-    其他搜尋功能🔥
-    1. 搜尋番號："# + 番號"
-    2. 搜尋女優："% + 女優"
-    3. 搜尋片名："@ + 關鍵字"`;
+  其他搜尋功能🔥
+  1. 搜尋番號："# + 番號"
+  2. 搜尋女優："% + 女優"
+  3. 搜尋片名："@ + 關鍵字"`;
 
-  await bot.sendMessage(chatId, str);
+  await bot.sendMessage(chatId, str, { parse_mode: 'Markdown' });
 });
 
 export default bot;

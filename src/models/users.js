@@ -1,7 +1,7 @@
 import getDatabase from './database';
 
-const createUser = async msg => {
-  const { id, first_name, last_name, language_code, username } = msg.from;
+const createUser = async message => {
+  const { id, first_name, last_name, language_code, username } = message.from;
   const user = {
     userId: id,
     firstName: first_name,
@@ -21,4 +21,11 @@ const getUser = async userId => {
   await db.collection('users').findOne({ userId });
 };
 
-export { createUser, getUser };
+const updateUserLanguage = async (userId, languageCode) => {
+  const db = await getDatabase();
+  await db
+    .collection('users')
+    .update({ userId }, { $set: { languageCode } }, { upsert: true });
+};
+
+export { createUser, getUser, updateUserLanguage };
