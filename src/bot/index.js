@@ -1,9 +1,12 @@
 import TelegramBot from 'node-telegram-bot-api';
 import config from '../../env/bot.config';
-import { createUser, getUser, updateUserLanguage } from '../models/users';
+import { createUser, getUser, updateUser } from '../models/users';
 import { saveSearchInfo } from '../models/search_keywords';
 import receivedMessage from './utils/telegram_receivedMessage';
-import { sendLanguageKeyboard } from './utils/sendKeyboard';
+import {
+  getLanguageKeyboarSettings,
+  getDisclaimerKeyboarSettings,
+} from './utils/getKeyboardSettings';
 import locale from './locale';
 
 const { botToken, url } = config;
@@ -11,28 +14,49 @@ const { botToken, url } = config;
 const bot = new TelegramBot(botToken, { polling: true, onlyFirstMatch: true });
 bot.setWebHook(`${url}/bot${botToken}`);
 
+const checkUserAcceptDisclaimer = async message => {
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const { acceptDisclaimer, languageCode } = await getUser(userId);
+
+  if (acceptDisclaimer) {
+    return true;
+  }
+
+  await bot.sendMessage(chatId, locale(languageCode).disclaimer, {
+    parse_mode: 'Markdown',
+  });
+
+  const { text, options } = getDisclaimerKeyboarSettings(languageCode);
+  await bot.sendMessage(chatId, text, options);
+
+  return false;
+};
+
+bot.on('message', async message => {
+  await bot.sendChatAction(message.chat.id, 'typing');
+});
+
 bot.onText(/\/start/, async message => {
   const user = await getUser(message.from.id);
   if (!user) {
     await createUser(message);
   }
-  await sendLanguageKeyboard(bot, message.chat.id);
+  const { text, options } = getLanguageKeyboarSettings();
+  bot.sendMessage(message.chat.id, text, options);
 });
 
 // 更新使用者語言
 bot.onText(/🇹🇼|🇺🇲/i, async message => {
   const chatId = message.chat.id;
-  let languageCode = '';
-  if (message.text === '🇹🇼') {
-    languageCode = 'zh-TW';
-    await updateUserLanguage(chatId, languageCode);
-  } else {
-    languageCode = 'en';
-    await updateUserLanguage(chatId, languageCode);
-  }
+  const languageCode = message.text === '🇹🇼' ? 'zh-TW' : 'en';
+
+  await updateUser(chatId, { languageCode });
+
   await bot.sendMessage(chatId, locale(languageCode).updateUserLanguage, {
     parse_mode: 'Markdown',
   });
+
+  await checkUserAcceptDisclaimer(message);
 });
 
 // 番號

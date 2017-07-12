@@ -18,14 +18,15 @@ const createUser = async message => {
 
 const getUser = async userId => {
   const db = await getDatabase();
-  await db.collection('users').findOne({ userId });
+  const user = await db.collection('users').findOne({ userId });
+  return user;
 };
 
-const updateUserLanguage = async (userId, languageCode) => {
+const updateUser = async (userId, field) => {
   const db = await getDatabase();
   await db
     .collection('users')
-    .update({ userId }, { $set: { languageCode } }, { upsert: true });
+    .update({ userId }, { $set: { ...field } }, { upsert: true });
 };
 
-export { createUser, getUser, updateUserLanguage };
+export { createUser, getUser, updateUser };

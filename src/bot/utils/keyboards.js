@@ -1,3 +1,7 @@
 const languageKeyboard = [[{ text: '🇹🇼' }, { text: '🇺🇲' }]];
 
-export { languageKeyboard };
+const disclaimerKeyboard = (accept, refuse) => [
+  [{ text: `${accept}` }, { text: `${refuse}` }],
+];
+
+export { languageKeyboard, disclaimerKeyboard };
