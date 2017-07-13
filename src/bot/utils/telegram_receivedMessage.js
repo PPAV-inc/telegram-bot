@@ -1,4 +1,4 @@
-import * as videos from '../models/videos';
+import * as videos from '../../models/videos';
 
 const receivedMessage = async (message, messageText, type) => {
   const chatId = message.chat.id;
@@ -35,18 +35,17 @@ const receivedMessage = async (message, messageText, type) => {
   if (videosObj.results.length === 0) {
     str = `搜尋不到此${typeStr}`;
     return [str];
-  } else {
-    str = `幫你搜尋${typeStr}：${videosObj.searchValue}`;
-
-    let urlStr = '';
-    videosObj.results.forEach(video => {
-      urlStr += `${video.url}\n`;
-    });
-    console.log(urlStr);
-    const totalStr = `總共搜尋到：${videosObj.results.length} 個連結喔喔喔`;
-
-    return [str, urlStr, totalStr];
   }
+  str = `幫你搜尋${typeStr}：${videosObj.searchValue}`;
+
+  let urlStr = '';
+  videosObj.results.forEach(video => {
+    urlStr += `${video.url}\n`;
+  });
+  console.log(urlStr);
+  const totalStr = `總共搜尋到：${videosObj.results.length} 個連結喔喔喔`;
+
+  return [str, urlStr, totalStr];
 };
 
 export default receivedMessage;

@@ -1,13 +1,13 @@
 import getDatabase from './database';
 
-const createUser = async msg => {
-  const { id, first_name, last_name, language_code, username } = msg.from;
+const createUser = async message => {
+  const { id, first_name, last_name, language_code, username } = message.from;
   const user = {
     userId: id,
     firstName: first_name,
     lastName: last_name,
     username,
-    acceptResponsibility: false,
+    acceptDisclaimer: false,
     languageCode: language_code,
     created_at: new Date(),
   };
@@ -18,7 +18,15 @@ const createUser = async msg => {
 
 const getUser = async userId => {
   const db = await getDatabase();
-  await db.collection('users').findOne({ userId });
+  const user = await db.collection('users').findOne({ userId });
+  return user;
 };
 
-export { createUser, getUser };
+const updateUser = async (userId, field) => {
+  const db = await getDatabase();
+  await db
+    .collection('users')
+    .update({ userId }, { $set: { ...field } }, { upsert: true });
+};
+
+export { createUser, getUser, updateUser };

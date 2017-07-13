@@ -6,13 +6,10 @@
   "main": "app.js",
   "scripts": {
     "dev": "./node_modules/nodemon/bin/nodemon.js app.js --watch src --exec babel-node",
-    "start": "yarn ;env NODE_ENV=production node app.js"
+    "start": "yarn ;env NODE_ENV=production node app.js",
+    "precommit": "lint-staged"
   },
-  "keywords": [
-    "PPAV",
-    "telegram",
-    "bot"
-  ],
+  "keywords": ["PPAV", "telegram", "bot"],
   "engines": {
     "node": ">=7"
   },
@@ -33,10 +30,18 @@
     "babel-preset-env": "^1.6.0",
     "eslint": "^4.1.1",
     "eslint-config-airbnb": "^15.0.2",
+    "eslint-config-prettier": "^2.3.0",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-import": "^2.6.1",
     "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-prettier": "^2.1.2",
     "eslint-plugin-react": "^7.1.0",
-    "nodemon": "^1.11.0"
+    "husky": "^0.14.3",
+    "lint-staged": "^4.0.1",
+    "nodemon": "^1.11.0",
+    "prettier": "^1.5.2"
+  },
+  "lint-staged": {
+    "*.js": ["prettier --write", "git add"]
   }
 }
