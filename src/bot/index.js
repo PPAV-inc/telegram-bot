@@ -1,4 +1,5 @@
 import TelegramBot from 'node-telegram-bot-api';
+import sleep from 'sleep';
 import config from '../../env/bot.config';
 import { createUser, getUser, updateUser } from '../models/users';
 import { saveSearchInfo } from '../models/search_keywords';
@@ -9,11 +10,12 @@ import {
 } from './utils/getKeyboardSettings';
 import locale from './locale';
 
-const { botToken, url } = config;
+const { botToken, url, delayMiliseconds } = config;
 
 const bot = new TelegramBot(botToken, { polling: true, onlyFirstMatch: true });
 bot.setWebHook(`${url}/bot${botToken}`);
 
+// 檢查是否接受免責聲明
 const checkUserAcceptDisclaimer = async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
   const { acceptDisclaimer, languageCode } = await getUser(userId);
@@ -26,6 +28,8 @@ const checkUserAcceptDisclaimer = async message => {
     parse_mode: 'Markdown',
   });
 
+  sleep.msleep(delayMiliseconds);
+
   const { text, options } = getDisclaimerKeyboarSettings(languageCode);
   await bot.sendMessage(chatId, text, options);
 
@@ -36,6 +40,7 @@ bot.on('message', async message => {
   await bot.sendChatAction(message.chat.id, 'typing');
 });
 
+// 開始對話
 bot.onText(/\/start/, async message => {
   const user = await getUser(message.from.id);
   if (!user) {
@@ -47,20 +52,59 @@ bot.onText(/\/start/, async message => {
 
 // 更新使用者語言
 bot.onText(/🇹🇼|🇺🇲/i, async message => {
-  const chatId = message.chat.id;
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+
   const languageCode = message.text === '🇹🇼' ? 'zh-TW' : 'en';
 
-  await updateUser(chatId, { languageCode });
+  await updateUser(userId, { languageCode });
 
   await bot.sendMessage(chatId, locale(languageCode).updateUserLanguage, {
     parse_mode: 'Markdown',
   });
 
+  sleep.msleep(delayMiliseconds);
+
   await checkUserAcceptDisclaimer(message);
+});
+
+// 接受免責聲明
+bot.onText(/(接受|Accept) ✅$/i, async message => {
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+
+  await updateUser(userId, { acceptDisclaimer: true });
+
+  const { languageCode } = await getUser(userId);
+
+  await bot.sendMessage(
+    chatId,
+    locale(languageCode).acceptDisclaimer.alreadyAccept,
+    {
+      parse_mode: 'Markdown',
+    }
+  );
+});
+
+// 不接受免責聲明
+bot.onText(/(不接受|Refuse) ❌$/i, async message => {
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+
+  await updateUser(chatId, { acceptDisclaimer: false });
+
+  const { languageCode } = await getUser(userId);
+
+  await bot.sendMessage(
+    chatId,
+    locale(languageCode).acceptDisclaimer.alreadyRefuse,
+    {
+      parse_mode: 'Markdown',
+    }
+  );
 });
 
 // 番號
 bot.onText(/[#＃]\s*\+*\s*(\S+)/, async (message, match) => {
+  await checkUserAcceptDisclaimer(message);
+
   const chatId = message.chat.id;
   const messageText = match[1];
 
@@ -76,6 +120,8 @@ bot.onText(/[#＃]\s*\+*\s*(\S+)/, async (message, match) => {
 
 // 女優
 bot.onText(/[%％]\s*\+*\s*(\S+)/, async (message, match) => {
+  await checkUserAcceptDisclaimer(message);
+
   const chatId = message.chat.id;
   const messageText = match[1];
 
@@ -91,6 +137,8 @@ bot.onText(/[%％]\s*\+*\s*(\S+)/, async (message, match) => {
 
 // 片名
 bot.onText(/[@＠]\s*\+*\s*(\S+)/, async (message, match) => {
+  await checkUserAcceptDisclaimer(message);
+
   const chatId = message.chat.id;
   const messageText = match[1];
 
@@ -105,6 +153,8 @@ bot.onText(/[@＠]\s*\+*\s*(\S+)/, async (message, match) => {
 });
 
 bot.onText(/^PPAV$/i, async message => {
+  await checkUserAcceptDisclaimer(message);
+
   const chatId = message.chat.id;
 
   const strArr = await receivedMessage(message, 'PPAV');
@@ -118,6 +168,8 @@ bot.onText(/^PPAV$/i, async message => {
 
 // unmatched message
 bot.onText(/.+/, async message => {
+  await checkUserAcceptDisclaimer(message);
+
   const chatId = message.chat.id;
 
   const str = `*想看片請輸入 "PPAV"*
