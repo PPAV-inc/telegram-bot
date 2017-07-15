@@ -28,4 +28,30 @@ const getDisclaimerKeyboarSettings = languageCode => {
   return { text, options };
 };
 
-export { getLanguageKeyboarSettings, getDisclaimerKeyboarSettings };
+const getMainMenuKeyboarSettings = languageCode => {
+  const {
+    text,
+    about,
+    checkDisclaimer,
+    reportQuestion,
+    contactUs,
+    setting,
+  } = locale(languageCode).mainMenu;
+  const mainMenuKeyboard = keyboards.mainMenuKeyboard(
+    about,
+    checkDisclaimer,
+    reportQuestion,
+    contactUs,
+    setting
+  );
+
+  const options = replyKeyboardOptions(mainMenuKeyboard);
+
+  return { text, options };
+};
+
+export {
+  getLanguageKeyboarSettings,
+  getDisclaimerKeyboarSettings,
+  getMainMenuKeyboarSettings,
+};

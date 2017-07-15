@@ -1,6 +1,6 @@
 import * as videos from '../../models/videos';
 
-const receivedMessage = async (message, messageText, type) => {
+const getQueryResult = async (message, messageText, type) => {
   const chatId = message.chat.id;
   const timeOfMessage = new Date(message.date);
 
@@ -48,4 +48,4 @@ const receivedMessage = async (message, messageText, type) => {
   return [str, urlStr, totalStr];
 };
 
-export default receivedMessage;
+export default getQueryResult;

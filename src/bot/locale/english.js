@@ -12,6 +12,14 @@ const english = {
     alreadyRefuse:
       'We are sorry about you refuse PPAV disclaimer ❌\n\n❗️*Attention, before accepting the disclaimer, you are not be able to use PPAV*❗️',
   },
+  mainMenu: {
+    text: 'Feel free to click buttons in manu 👇',
+    about: 'About 👀',
+    checkDisclaimer: 'Disclaimer 📜',
+    reportQuestion: 'Report 🆘',
+    contactUs: 'Contact PPAV ✉️',
+    setting: 'Setting ⚙️',
+  },
 };
 
 export default english;

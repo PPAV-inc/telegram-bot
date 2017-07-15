@@ -3,10 +3,11 @@ import sleep from 'sleep';
 import config from '../../env/bot.config';
 import { createUser, getUser, updateUser } from '../models/users';
 import { saveSearchInfo } from '../models/search_keywords';
-import receivedMessage from './utils/telegram_receivedMessage';
+import getQueryResult from './utils/getQueryResult';
 import {
   getLanguageKeyboarSettings,
   getDisclaimerKeyboarSettings,
+  getMainMenuKeyboarSettings,
 } from './utils/getKeyboardSettings';
 import locale from './locale';
 
@@ -47,7 +48,7 @@ bot.onText(/\/start/, async message => {
     await createUser(message);
   }
   const { text, options } = getLanguageKeyboarSettings();
-  bot.sendMessage(message.chat.id, text, options);
+  await bot.sendMessage(message.chat.id, text, options);
 });
 
 // 更新使用者語言
@@ -82,6 +83,10 @@ bot.onText(/(接受|Accept) ✅$/i, async message => {
       parse_mode: 'Markdown',
     }
   );
+
+  const { text, options } = getMainMenuKeyboarSettings(languageCode);
+
+  await bot.sendMessage(chatId, text, options);
 });
 
 // 不接受免責聲明
@@ -103,83 +108,93 @@ bot.onText(/(不接受|Refuse) ❌$/i, async message => {
 
 // 番號
 bot.onText(/[#＃]\s*\+*\s*(\S+)/, async (message, match) => {
-  await checkUserAcceptDisclaimer(message);
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
 
-  const chatId = message.chat.id;
-  const messageText = match[1];
+  if (alreadyAccept) {
+    const chatId = message.chat.id;
+    const messageText = match[1];
 
-  await saveSearchInfo(messageText, 'code');
-  const strArr = await receivedMessage(message, messageText, 'code');
+    await saveSearchInfo(messageText, 'code');
+    const strArr = await getQueryResult(message, messageText, 'code');
 
-  /* eslint-disable */
-  for (const str of strArr) {
-    await bot.sendMessage(chatId, str);
+    /* eslint-disable */
+    for (const str of strArr) {
+      await bot.sendMessage(chatId, str);
+    }
+    /* eslint-enable */
   }
-  /* eslint-enable */
 });
 
 // 女優
 bot.onText(/[%％]\s*\+*\s*(\S+)/, async (message, match) => {
-  await checkUserAcceptDisclaimer(message);
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
 
-  const chatId = message.chat.id;
-  const messageText = match[1];
+  if (alreadyAccept) {
+    const chatId = message.chat.id;
+    const messageText = match[1];
 
-  await saveSearchInfo(messageText, 'models');
-  const strArr = await receivedMessage(message, messageText, 'models');
+    await saveSearchInfo(messageText, 'models');
+    const strArr = await getQueryResult(message, messageText, 'models');
 
-  /* eslint-disable */
-  for (const str of strArr) {
-    await bot.sendMessage(chatId, str);
+    /* eslint-disable */
+    for (const str of strArr) {
+      await bot.sendMessage(chatId, str);
+    }
+    /* eslint-enable */
   }
-  /* eslint-enable */
 });
 
 // 片名
 bot.onText(/[@＠]\s*\+*\s*(\S+)/, async (message, match) => {
-  await checkUserAcceptDisclaimer(message);
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
 
-  const chatId = message.chat.id;
-  const messageText = match[1];
+  if (alreadyAccept) {
+    const chatId = message.chat.id;
+    const messageText = match[1];
 
-  await saveSearchInfo(messageText, 'title');
-  const strArr = await receivedMessage(message, messageText, 'title');
+    await saveSearchInfo(messageText, 'title');
+    const strArr = await getQueryResult(message, messageText, 'title');
 
-  /* eslint-disable */
-  for (const str of strArr) {
-    await bot.sendMessage(chatId, str);
+    /* eslint-disable */
+    for (const str of strArr) {
+      await bot.sendMessage(chatId, str);
+    }
+    /* eslint-enable */
   }
-  /* eslint-enable */
 });
 
 bot.onText(/^PPAV$/i, async message => {
-  await checkUserAcceptDisclaimer(message);
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
 
-  const chatId = message.chat.id;
+  if (alreadyAccept) {
+    const chatId = message.chat.id;
 
-  const strArr = await receivedMessage(message, 'PPAV');
+    const strArr = await getQueryResult(message, 'PPAV');
 
-  /* eslint-disable */
-  for (const str of strArr) {
-    await bot.sendMessage(chatId, str);
+    /* eslint-disable */
+    for (const str of strArr) {
+      await bot.sendMessage(chatId, str);
+    }
+    /* eslint-enable */
   }
-  /* eslint-enable */
 });
 
 // unmatched message
 bot.onText(/.+/, async message => {
-  await checkUserAcceptDisclaimer(message);
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
 
-  const chatId = message.chat.id;
+  if (alreadyAccept) {
+    const chatId = message.chat.id;
 
-  const str = `*想看片請輸入 "PPAV"*
+    const str = `*想看片請輸入 "PPAV"*
 
-  其他搜尋功能🔥
-  1. 搜尋番號："# + 番號"
-  2. 搜尋女優："% + 女優"
-  3. 搜尋片名："@ + 關鍵字"`;
+  其他搜尋功能 🔥
+  1. 搜尋番號："*# + 番號*"
+  2. 搜尋女優："*% + 女優*"
+  3. 搜尋片名："*@ + 關鍵字*"`;
 
-  await bot.sendMessage(chatId, str, { parse_mode: 'Markdown' });
+    await bot.sendMessage(chatId, str, { parse_mode: 'Markdown' });
+  }
 });
 
 export default bot;
