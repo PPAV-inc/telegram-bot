@@ -14,11 +14,25 @@ const english = {
   },
   mainMenu: {
     text: 'Feel free to click buttons in manu 👇',
-    about: 'About 👀',
+    about: 'About PPAV 👀',
     checkDisclaimer: 'Disclaimer 📜',
-    reportQuestion: 'Report 🆘',
-    contactUs: 'Contact PPAV ✉️',
+    report: 'Report 🙏',
+    contactUs: 'Contact PPAV 📩',
     setting: 'Setting ⚙️',
+  },
+  reportUrl: 'https://goo.gl/forms/vK6OicATLdBu5qxP2',
+  contactUs: {
+    text: 'Feel free to contact us!',
+    mailText: 'Email ✉️',
+    mailUrl:
+      'https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&source=mailto&to=PPAV2017@gmail.com',
+  },
+  about: 'Hello, I am a chatbot which is able to search AV for you.',
+  setting: {
+    text: 'Setting ⚙️',
+    buttons: {
+      changLanguage: 'Change language 🌐',
+    },
   },
 };
 

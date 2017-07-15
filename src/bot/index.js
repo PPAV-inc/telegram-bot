@@ -8,7 +8,10 @@ import {
   getLanguageKeyboarSettings,
   getDisclaimerKeyboarSettings,
   getMainMenuKeyboarSettings,
+  getContactUsKeyboarSettings,
+  getSettingKeyboarSettings,
 } from './utils/getKeyboardSettings';
+import parseAction from './utils/parseAction';
 import locale from './locale';
 
 const { botToken, url, delayMiliseconds } = config;
@@ -43,12 +46,20 @@ bot.on('message', async message => {
 
 // 開始對話
 bot.onText(/\/start/, async message => {
-  const user = await getUser(message.from.id);
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
   if (!user) {
     await createUser(message);
   }
+
+  await bot.sendMessage(
+    chatId,
+    '*♥️♥️ 歡迎使用 PPAV ♥️♥️*\n*♥️♥️ Welcome to PPAV ♥️♥️*',
+    { parse_mode: 'Markdown' }
+  );
+
   const { text, options } = getLanguageKeyboarSettings();
-  await bot.sendMessage(message.chat.id, text, options);
+  await bot.sendMessage(chatId, text, options);
 });
 
 // 更新使用者語言
@@ -65,7 +76,13 @@ bot.onText(/🇹🇼|🇺🇲/i, async message => {
 
   sleep.msleep(delayMiliseconds);
 
-  await checkUserAcceptDisclaimer(message);
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+
+  if (alreadyAccept) {
+    const { text, options } = getMainMenuKeyboarSettings(languageCode);
+
+    await bot.sendMessage(chatId, text, options);
+  }
 });
 
 // 接受免責聲明
@@ -163,6 +180,7 @@ bot.onText(/[@＠]\s*\+*\s*(\S+)/, async (message, match) => {
   }
 });
 
+// PPAV
 bot.onText(/^PPAV$/i, async message => {
   const alreadyAccept = await checkUserAcceptDisclaimer(message);
 
@@ -176,6 +194,79 @@ bot.onText(/^PPAV$/i, async message => {
       await bot.sendMessage(chatId, str);
     }
     /* eslint-enable */
+  }
+});
+
+// 設定
+bot.onText(/(設置|Setting) ⚙️$/i, async message => {
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+
+  if (alreadyAccept) {
+    const { from: { id: userId }, chat: { id: chatId } } = message;
+
+    const { languageCode } = await getUser(userId);
+
+    const { text, options } = getSettingKeyboarSettings(languageCode);
+
+    await bot.sendMessage(chatId, text, options);
+  }
+});
+
+// 關於 PPAV
+bot.onText(/(關於 PPAV|About PPAV) 👀$/i, async message => {
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+
+  if (alreadyAccept) {
+    const { from: { id: userId }, chat: { id: chatId } } = message;
+
+    const { languageCode } = await getUser(userId);
+
+    await bot.sendMessage(chatId, locale(languageCode).about, {
+      parse_mode: 'Markdown',
+    });
+  }
+});
+
+// 免責聲明
+bot.onText(/(免責聲明|Disclaimer) 📜$/i, async message => {
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+
+  if (alreadyAccept) {
+    const { from: { id: userId }, chat: { id: chatId } } = message;
+
+    const { languageCode } = await getUser(userId);
+
+    await bot.sendMessage(chatId, locale(languageCode).disclaimer, {
+      parse_mode: 'Markdown',
+    });
+  }
+});
+
+// 意見回饋
+bot.onText(/(意見回饋|Report) 🙏$/i, async message => {
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+
+  if (alreadyAccept) {
+    const { chat: { id: chatId } } = message;
+
+    await bot.sendMessage(chatId, locale().reportUrl, {
+      parse_mode: 'Markdown',
+    });
+  }
+});
+
+// 聯絡我們
+bot.onText(/(聯絡我們|Contact PPAV) 📩$/i, async message => {
+  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+
+  if (alreadyAccept) {
+    const { from: { id: userId }, chat: { id: chatId } } = message;
+
+    const { languageCode } = await getUser(userId);
+
+    const { text, options } = getContactUsKeyboarSettings(languageCode);
+
+    await bot.sendMessage(chatId, text, options);
   }
 });
 
@@ -195,6 +286,13 @@ bot.onText(/.+/, async message => {
 
     await bot.sendMessage(chatId, str, { parse_mode: 'Markdown' });
   }
+});
+
+bot.on('callback_query', async callbackQuery => {
+  const { message: { chat: { id: chatId } }, data: action } = callbackQuery;
+
+  const { text, options } = parseAction(action);
+  await bot.sendMessage(chatId, text, options);
 });
 
 export default bot;

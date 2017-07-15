@@ -7,13 +7,46 @@ const disclaimerKeyboard = (accept, refuse) => [
 const mainMenuKeyboard = (
   about,
   checkDisclaimer,
-  reportQuestion,
+  report,
   contactUs,
   setting
 ) => [
-  [{ text: `${about}` }, { text: `${reportQuestion}` }],
+  [{ text: `${about}` }, { text: `${report}` }],
   [{ text: `${checkDisclaimer}` }, { text: `${contactUs}` }],
   [{ text: `${setting}` }],
 ];
 
-export { languageKeyboard, disclaimerKeyboard, mainMenuKeyboard };
+const contactUsKeyboard = (text, url) => [[{ text, url }]];
+
+const settingKeyboard = buttons => {
+  const keyboard = [];
+  let keyboardRow = [];
+  let keyboardCount = 0;
+
+  /* eslint-disable */
+  for (const prop in buttons) {
+    console.log(prop);
+    const button = { text: buttons[prop], callback_data: prop };
+    const position = keyboardCount % 2;
+
+    if (position === 0) {
+      keyboardRow = [];
+    }
+
+    keyboardRow[position] = button;
+
+    keyboard[Math.floor(keyboardCount / 2)] = keyboardRow;
+    keyboardCount += 1;
+  }
+  /* eslint-enable */
+
+  return keyboard;
+};
+
+export {
+  languageKeyboard,
+  disclaimerKeyboard,
+  mainMenuKeyboard,
+  contactUsKeyboard,
+  settingKeyboard,
+};
