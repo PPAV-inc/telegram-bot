@@ -10,6 +10,7 @@
   },
   "rules": {
     "arrow-parens": "off",
+    "consistent-return": "off",
     "jsx-a11y/href-no-hash": "off",
     "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
     "import/no-dynamic-require": "off",

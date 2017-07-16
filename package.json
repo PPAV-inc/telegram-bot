@@ -9,7 +9,11 @@
     "start": "yarn ;env NODE_ENV=production node app.js",
     "precommit": "lint-staged"
   },
-  "keywords": ["PPAV", "telegram", "bot"],
+  "keywords": [
+    "PPAV",
+    "telegram",
+    "bot"
+  ],
   "engines": {
     "node": ">=7"
   },
@@ -20,7 +24,7 @@
     "koa-logger": "^3.0.1",
     "koa-router": "^7.2.1",
     "mongodb": "^2.2.30",
-    "node-telegram-bot-api": "^0.27.1"
+    "node-telegram-bot-api": "yagop/node-telegram-bot-api#experimental"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -42,6 +46,8 @@
     "prettier": "^1.5.2"
   },
   "lint-staged": {
-    "*.js": ["prettier --write", "git add"]
+    "*.js": [
+      "eslint --fix"
+    ]
   }
 }

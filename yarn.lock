@@ -2462,9 +2462,9 @@ node-pre-gyp@^0.6.36:
     tar "^2.2.1"
     tar-pack "^3.4.0"
 
-node-telegram-bot-api@^0.27.1:
+node-telegram-bot-api@yagop/node-telegram-bot-api#experimental:
   version "0.27.1"
-  resolved "https://registry.yarnpkg.com/node-telegram-bot-api/-/node-telegram-bot-api-0.27.1.tgz#b39cf0289a9bae2bf8408634873673afa671c93a"
+  resolved "https://codeload.github.com/yagop/node-telegram-bot-api/tar.gz/959d7bfd2e7b98fe12c3c952b68314fc77c423d3"
   dependencies:
     array.prototype.findindex "^2.0.0"
     bl "^1.1.2"
