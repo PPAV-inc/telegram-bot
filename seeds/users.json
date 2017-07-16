@@ -1,0 +1,11 @@
+[
+  {
+    "userId": 123456789,
+    "firstName": "first_name",
+    "lastName": "last_name",
+    "userName": "user_name",
+    "languageCode": "en",
+    "acceptDisclaimer": false,
+    "created_at": { "$date": "2017-07-10T15:20:41.990Z" }
+  }
+]
