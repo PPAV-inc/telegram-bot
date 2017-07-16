@@ -1,6 +1,6 @@
-import { getDatabase } from './database';
+import getDatabase from './database';
 
-const escapeRegex = (text) => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
 const getVideo = async (type, messageText) => {
   const text = escapeRegex(messageText);
@@ -11,7 +11,8 @@ const getVideo = async (type, messageText) => {
   };
 
   const db = await getDatabase();
-  const results = await db.collection('videos')
+  const results = await db
+    .collection('videos')
     .find(query)
     .sort({ count: -1 })
     .toArray();
@@ -23,7 +24,8 @@ const getVideo = async (type, messageText) => {
 
 const getRandomThreeVideos = async () => {
   const db = await getDatabase();
-  const results = await db.collection('videos')
+  const results = await db
+    .collection('videos')
     .aggregate([
       { $sort: { count: -1 } },
       { $limit: 50 },

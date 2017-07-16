@@ -2430,7 +2430,7 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-nan@>=2.5.1, nan@^2.3.0:
+nan@^2.3.0:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
 
@@ -2462,9 +2462,9 @@ node-pre-gyp@^0.6.36:
     tar "^2.2.1"
     tar-pack "^3.4.0"
 
-node-telegram-bot-api@^0.27.1:
+node-telegram-bot-api@yagop/node-telegram-bot-api#experimental:
   version "0.27.1"
-  resolved "https://registry.yarnpkg.com/node-telegram-bot-api/-/node-telegram-bot-api-0.27.1.tgz#b39cf0289a9bae2bf8408634873673afa671c93a"
+  resolved "https://codeload.github.com/yagop/node-telegram-bot-api/tar.gz/959d7bfd2e7b98fe12c3c952b68314fc77c423d3"
   dependencies:
     array.prototype.findindex "^2.0.0"
     bl "^1.1.2"
@@ -3142,12 +3142,6 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
-
-sleep@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/sleep/-/sleep-5.1.1.tgz#878fa1d44d08eeb0f26fb2018ef8629eb1a3ab94"
-  dependencies:
-    nan ">=2.5.1"
 
 slice-ansi@0.0.4:
   version "0.0.4"

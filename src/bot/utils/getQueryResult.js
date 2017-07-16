@@ -1,11 +1,6 @@
 import * as videos from '../../models/videos';
 
 const getQueryResult = async (message, messageText, type) => {
-  const chatId = message.chat.id;
-  const timeOfMessage = new Date(message.date);
-
-  console.log(`收到訊息：'${messageText}'，從 id '${chatId}' at ${timeOfMessage}`);
-
   let videosObj;
   let typeStr;
 
@@ -25,8 +20,6 @@ const getQueryResult = async (message, messageText, type) => {
     videosObj.results.forEach(video => {
       urlStr += `${video.url}\n`;
     });
-
-    console.log(urlStr);
 
     return [urlStr];
   }

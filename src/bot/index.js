@@ -1,5 +1,4 @@
 import TelegramBot from 'node-telegram-bot-api';
-import sleep from 'sleep';
 import config from '../../env/bot.config';
 import { createUser, getUser, updateUser } from '../models/users';
 import { saveSearchInfo } from '../models/search_keywords';
@@ -16,6 +15,9 @@ import locale from './locale';
 
 const { botToken, url, delayMiliseconds } = config;
 
+const sleep = () =>
+  new Promise(resolve => setTimeout(resolve, delayMiliseconds));
+
 const bot = new TelegramBot(botToken, { polling: true, onlyFirstMatch: true });
 bot.setWebHook(`${url}/bot${botToken}`);
 
@@ -31,8 +33,6 @@ const checkUserAcceptDisclaimer = async message => {
   await bot.sendMessage(chatId, locale(languageCode).disclaimer, {
     parse_mode: 'Markdown',
   });
-
-  sleep.msleep(delayMiliseconds);
 
   const { text, options } = getDisclaimerKeyboarSettings(languageCode);
   await bot.sendMessage(chatId, text, options);
@@ -73,8 +73,6 @@ bot.onText(/🇹🇼|🇺🇲/i, async message => {
   await bot.sendMessage(chatId, locale(languageCode).updateUserLanguage, {
     parse_mode: 'Markdown',
   });
-
-  sleep.msleep(delayMiliseconds);
 
   const alreadyAccept = await checkUserAcceptDisclaimer(message);
 
@@ -186,14 +184,19 @@ bot.onText(/^PPAV$/i, async message => {
 
   if (alreadyAccept) {
     const chatId = message.chat.id;
-
     const strArr = await getQueryResult(message, 'PPAV');
+    let messageId = 0;
 
     /* eslint-disable */
     for (const str of strArr) {
-      await bot.sendMessage(chatId, str);
+      const { message_id } = await bot.sendMessage(chatId, str);
+      messageId = message_id;
     }
     /* eslint-enable */
+
+    await sleep();
+
+    bot.deleteMessage(chatId, messageId);
   }
 });
 
