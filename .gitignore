@@ -14,7 +14,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # config
-/env/bot.config.js
+/env/*.js
+!/env/*.sample.js
 
 # seed
 seed.json
