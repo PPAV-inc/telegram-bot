@@ -8,9 +8,8 @@ const saveSearchInfo = async (keyword, type) => {
     .update(
       { type, keyword },
       { $inc: { count: 1 }, $set: { updated_at: new Date() } },
-      { upsert: true });
-
-  console.log(`update ${keyword} finished`);
+      { upsert: true }
+    );
 };
 
-export { saveSearchInfo };
+export default saveSearchInfo;

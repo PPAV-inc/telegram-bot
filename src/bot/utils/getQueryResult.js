@@ -35,7 +35,6 @@ const getQueryResult = async (message, messageText, type) => {
   videosObj.results.forEach(video => {
     urlStr += `${video.url}\n`;
   });
-  console.log(urlStr);
   const totalStr = `總共搜尋到：${videosObj.results.length} 個連結喔喔喔`;
 
   return [str, urlStr, totalStr];

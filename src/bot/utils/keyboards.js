@@ -25,7 +25,6 @@ const settingKeyboard = buttons => {
 
   /* eslint-disable */
   for (const prop in buttons) {
-    console.log(prop);
     const button = { text: buttons[prop], callback_data: prop };
     const position = keyboardCount % 2;
 
