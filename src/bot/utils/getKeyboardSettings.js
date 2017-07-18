@@ -26,6 +26,18 @@ const getLanguageKeyboarSettings = () => {
   return { text, options };
 };
 
+const getAutoDeleteMessagesKeyboarSettings = languageCode => {
+  const { text, active, inactive } = locale(languageCode).autoDeleteMessages;
+  const autoDeleteMessagesKeyboard = keyboards.autoDeleteMessagesKeyboard(
+    active,
+    inactive
+  );
+
+  const options = replyKeyboardOptions(autoDeleteMessagesKeyboard, true);
+
+  return { text, options };
+};
+
 const getDisclaimerKeyboarSettings = languageCode => {
   const { text, accept, refuse } = locale(languageCode).acceptDisclaimer;
   const disclaimerKeyboard = keyboards.disclaimerKeyboard(accept, refuse);
@@ -76,4 +88,5 @@ export {
   getMainMenuKeyboarSettings,
   getContactUsKeyboarSettings,
   getSettingKeyboarSettings,
+  getAutoDeleteMessagesKeyboarSettings,
 };

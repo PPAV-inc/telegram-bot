@@ -18,24 +18,17 @@ const mainMenuKeyboard = (
 
 const contactUsKeyboard = (text, url) => [[{ text, url }]];
 
+const autoDeleteMessagesKeyboard = (active, inactive) => [
+  [{ text: `${active}` }, { text: `${inactive}` }],
+];
+
 const settingKeyboard = buttons => {
   const keyboard = [];
-  let keyboardRow = [];
-  let keyboardCount = 0;
 
   /* eslint-disable */
   for (const prop in buttons) {
-    const button = { text: buttons[prop], callback_data: prop };
-    const position = keyboardCount % 2;
-
-    if (position === 0) {
-      keyboardRow = [];
-    }
-
-    keyboardRow[position] = button;
-
-    keyboard[Math.floor(keyboardCount / 2)] = keyboardRow;
-    keyboardCount += 1;
+    const button = [{ text: buttons[prop], callback_data: prop }];
+    keyboard.push(button);
   }
   /* eslint-enable */
 
@@ -48,4 +41,5 @@ export {
   mainMenuKeyboard,
   contactUsKeyboard,
   settingKeyboard,
+  autoDeleteMessagesKeyboard,
 };

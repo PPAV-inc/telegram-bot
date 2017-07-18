@@ -1,7 +1,7 @@
 import { getDisclaimerKeyboarSettings } from './getKeyboardSettings';
 import locale from '../locale';
 
-const checkUserAcceptDisclaimer = async (user, userId, chatId, bot) => {
+const checkUserAcceptDisclaimer = async (user, chatId, bot) => {
   const { acceptDisclaimer, languageCode } = user;
 
   if (acceptDisclaimer) {
