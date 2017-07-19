@@ -12,11 +12,7 @@
     "precommit": "lint-staged",
     "lint": "eslint src"
   },
-  "keywords": [
-    "PPAV",
-    "telegram",
-    "bot"
-  ],
+  "keywords": ["PPAV", "telegram", "bot"],
   "engines": {
     "node": ">=7"
   },
@@ -50,8 +46,6 @@
     "prettier": "^1.5.2"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix"
-    ]
+    "*.js": ["eslint --fix"]
   }
 }

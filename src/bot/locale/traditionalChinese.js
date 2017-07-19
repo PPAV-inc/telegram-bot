@@ -18,7 +18,7 @@ const traditionalChinese = {
     contactUs: '聯絡我們 📩',
     setting: '設置 ⚙️',
   },
-  reportUrl: 'https://goo.gl/forms/vK6OicATLdBu5qxP2',
+  reportUrl: 'https://goo.gl/forms/RaLMY6LbFQaqqk7e2',
   contactUs: {
     text: '有任何問題、洽談合作歡迎寄信給我們～',
     mailText: '電子郵件 ✉️',
@@ -30,7 +30,15 @@ const traditionalChinese = {
     text: '設置 ⚙️',
     buttons: {
       changLanguage: '變更語言 🌐',
+      autoDeleteMessages: '閱後即焚 🔥',
     },
+  },
+  autoDeleteMessages: {
+    text: '請選擇 *啟動* 或 *關閉* 閱後即焚功能 🔥',
+    active: '啟動 🔥',
+    inactive: '關閉 ❄️',
+    alreadyActive: '已為您*啟動*閱後即焚功能 🔥',
+    alreadyInactive: '已為您*關閉*閱後即焚功能 ❄️',
   },
 };
 

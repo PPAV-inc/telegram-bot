@@ -6,6 +6,7 @@
     "userName": "user_name",
     "languageCode": "en",
     "acceptDisclaimer": false,
+    "autoDeleteMessages": true,
     "created_at": { "$date": "2017-07-10T15:20:41.990Z" }
   }
 ]

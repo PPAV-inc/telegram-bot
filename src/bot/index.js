@@ -1,44 +1,21 @@
 import TelegramBot from 'node-telegram-bot-api';
-import config from '../../env/bot.config';
+import { botToken, url } from '../../env/bot.config';
 import { createUser, getUser, updateUser } from '../models/users';
 import { saveSearchInfo } from '../models/search_keywords';
 import getQueryResult from './utils/getQueryResult';
 import {
   getLanguageKeyboarSettings,
-  getDisclaimerKeyboarSettings,
   getMainMenuKeyboarSettings,
   getContactUsKeyboarSettings,
   getSettingKeyboarSettings,
 } from './utils/getKeyboardSettings';
 import parseAction from './utils/parseAction';
+import checkUserAcceptDisclaimer from './utils/checkUserAcceptDisclaimer';
+import deleteMessage from './utils/deleteMessage';
 import locale from './locale';
-
-const { botToken, url, delayMiliseconds } = config;
-
-const sleep = () =>
-  new Promise(resolve => setTimeout(resolve, delayMiliseconds));
 
 const bot = new TelegramBot(botToken, { polling: true, onlyFirstMatch: true });
 bot.setWebHook(`${url}/bot${botToken}`);
-
-// 檢查是否接受免責聲明
-const checkUserAcceptDisclaimer = async message => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const { acceptDisclaimer, languageCode } = await getUser(userId);
-
-  if (acceptDisclaimer) {
-    return true;
-  }
-
-  await bot.sendMessage(chatId, locale(languageCode).disclaimer, {
-    parse_mode: 'Markdown',
-  });
-
-  const { text, options } = getDisclaimerKeyboarSettings(languageCode);
-  await bot.sendMessage(chatId, text, options);
-
-  return false;
-};
 
 bot.on('message', async message => {
   await bot.sendChatAction(message.chat.id, 'typing');
@@ -65,7 +42,7 @@ bot.onText(/\/start/, async message => {
 // 更新使用者語言
 bot.onText(/🇹🇼|🇺🇲/i, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-
+  const user = await getUser(userId);
   const languageCode = message.text === '🇹🇼' ? 'zh-TW' : 'en';
 
   await updateUser(userId, { languageCode });
@@ -74,7 +51,7 @@ bot.onText(/🇹🇼|🇺🇲/i, async message => {
     parse_mode: 'Markdown',
   });
 
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
     const { text, options } = getMainMenuKeyboarSettings(languageCode);
@@ -123,10 +100,10 @@ bot.onText(/(不接受|Refuse) ❌$/i, async message => {
 
 // 番號
 bot.onText(/[#＃]\s*\+*\s*(\S+)/, async (message, match) => {
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
-
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
   if (alreadyAccept) {
-    const chatId = message.chat.id;
     const messageText = match[1];
 
     await saveSearchInfo(messageText, 'code');
@@ -142,10 +119,11 @@ bot.onText(/[#＃]\s*\+*\s*(\S+)/, async (message, match) => {
 
 // 女優
 bot.onText(/[%％]\s*\+*\s*(\S+)/, async (message, match) => {
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const chatId = message.chat.id;
     const messageText = match[1];
 
     await saveSearchInfo(messageText, 'models');
@@ -161,10 +139,12 @@ bot.onText(/[%％]\s*\+*\s*(\S+)/, async (message, match) => {
 
 // 片名
 bot.onText(/[@＠]\s*\+*\s*(\S+)/, async (message, match) => {
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
+
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const chatId = message.chat.id;
     const messageText = match[1];
 
     await saveSearchInfo(messageText, 'title');
@@ -180,36 +160,41 @@ bot.onText(/[@＠]\s*\+*\s*(\S+)/, async (message, match) => {
 
 // PPAV
 bot.onText(/^PPAV$/i, async message => {
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+  const {
+    message_id: receivedMessageId,
+    from: { id: userId },
+    chat: { id: chatId },
+  } = message;
+  const user = await getUser(userId);
+
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const chatId = message.chat.id;
     const strArr = await getQueryResult(message, 'PPAV');
-    let messageId = 0;
+    let sentMessageId = 0;
 
     /* eslint-disable */
     for (const str of strArr) {
       const { message_id } = await bot.sendMessage(chatId, str);
-      messageId = message_id;
+      sentMessageId = message_id;
     }
     /* eslint-enable */
 
-    await sleep();
-
-    bot.deleteMessage(chatId, messageId);
+    if (user.autoDeleteMessages) {
+      await deleteMessage(chatId, receivedMessageId, sentMessageId, bot);
+    }
   }
 });
 
 // 設定
 bot.onText(/(設置|Setting) ⚙️$/i, async message => {
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
+
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const { from: { id: userId }, chat: { id: chatId } } = message;
-
-    const { languageCode } = await getUser(userId);
-
-    const { text, options } = getSettingKeyboarSettings(languageCode);
+    const { text, options } = getSettingKeyboarSettings(user.languageCode);
 
     await bot.sendMessage(chatId, text, options);
   }
@@ -217,14 +202,13 @@ bot.onText(/(設置|Setting) ⚙️$/i, async message => {
 
 // 關於 PPAV
 bot.onText(/(關於 PPAV|About PPAV) 👀$/i, async message => {
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
+
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const { from: { id: userId }, chat: { id: chatId } } = message;
-
-    const { languageCode } = await getUser(userId);
-
-    await bot.sendMessage(chatId, locale(languageCode).about, {
+    await bot.sendMessage(chatId, locale(user.languageCode).about, {
       parse_mode: 'Markdown',
     });
   }
@@ -232,14 +216,13 @@ bot.onText(/(關於 PPAV|About PPAV) 👀$/i, async message => {
 
 // 免責聲明
 bot.onText(/(免責聲明|Disclaimer) 📜$/i, async message => {
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
+
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const { from: { id: userId }, chat: { id: chatId } } = message;
-
-    const { languageCode } = await getUser(userId);
-
-    await bot.sendMessage(chatId, locale(languageCode).disclaimer, {
+    await bot.sendMessage(chatId, locale(userId.languageCode).disclaimer, {
       parse_mode: 'Markdown',
     });
   }
@@ -247,11 +230,12 @@ bot.onText(/(免責聲明|Disclaimer) 📜$/i, async message => {
 
 // 意見回饋
 bot.onText(/(意見回饋|Report) 🙏$/i, async message => {
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
+
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const { chat: { id: chatId } } = message;
-
     await bot.sendMessage(chatId, locale().reportUrl, {
       parse_mode: 'Markdown',
     });
@@ -260,14 +244,42 @@ bot.onText(/(意見回饋|Report) 🙏$/i, async message => {
 
 // 聯絡我們
 bot.onText(/(聯絡我們|Contact PPAV) 📩$/i, async message => {
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
+
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const { from: { id: userId }, chat: { id: chatId } } = message;
+    const { text, options } = getContactUsKeyboarSettings(user.languageCode);
 
-    const { languageCode } = await getUser(userId);
+    await bot.sendMessage(chatId, text, options);
+  }
+});
 
-    const { text, options } = getContactUsKeyboarSettings(languageCode);
+// 啟動/關閉 閱後即焚
+bot.onText(/(啟動|active) 🔥$|(關閉|Inactive) ❄️$/i, async (message, match) => {
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
+  const { languageCode, autoDeleteMessages } = user;
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
+  const active = match[0].indexOf('🔥') > 0;
+
+  if (alreadyAccept) {
+    if (!autoDeleteMessages && active) {
+      await updateUser(chatId, { autoDeleteMessages: true });
+    } else if (autoDeleteMessages && !active) {
+      await updateUser(chatId, { autoDeleteMessages: false });
+    }
+
+    const confirmText = active
+      ? locale(languageCode).autoDeleteMessages.alreadyActive
+      : locale(languageCode).autoDeleteMessages.alreadyInactive;
+
+    await bot.sendMessage(chatId, confirmText, {
+      parse_mode: 'Markdown',
+    });
+
+    const { text, options } = getMainMenuKeyboarSettings(languageCode);
 
     await bot.sendMessage(chatId, text, options);
   }
@@ -275,11 +287,11 @@ bot.onText(/(聯絡我們|Contact PPAV) 📩$/i, async message => {
 
 // unmatched message
 bot.onText(/.+/, async message => {
-  const alreadyAccept = await checkUserAcceptDisclaimer(message);
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await getUser(userId);
+  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const chatId = message.chat.id;
-
     const str = `*想看片請輸入 "PPAV"*
 
   其他搜尋功能 🔥
@@ -292,9 +304,15 @@ bot.onText(/.+/, async message => {
 });
 
 bot.on('callback_query', async callbackQuery => {
-  const { message: { chat: { id: chatId } }, data: action } = callbackQuery;
+  const {
+    from: { id: userId },
+    message: { chat: { id: chatId } },
+    data: action,
+  } = callbackQuery;
+  const { languageCode } = await getUser(userId);
 
-  const { text, options } = parseAction(action);
+  const { text, options } = parseAction(action, languageCode);
+
   await bot.sendMessage(chatId, text, options);
 });
 
