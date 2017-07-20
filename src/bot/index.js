@@ -1,13 +1,13 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { botToken, url } from '../../env/bot.config';
 import { createUser, getUser, updateUser } from '../models/users';
-import saveSearchInfo from '../models/search_keywords';
 import getQueryResult from './utils/getQueryResult';
 import {
   getLanguageKeyboardSettings,
   getMainMenuKeyboardSettings,
   getContactUsKeyboardSettings,
   getSettingKeyboardSettings,
+  getVideoSourcesKeyboardSettings,
 } from './utils/getKeyboardSettings';
 import parseAction from './utils/parseAction';
 import checkUserAcceptDisclaimer from './utils/checkUserAcceptDisclaimer';
@@ -87,73 +87,60 @@ bot.onText(/(接受|Accept) ✅$|(不接受|Refuse) ❌$/i, async (message, matc
   }
 });
 
-// 番號
-bot.onText(/[#＃]\s*\+*\s*(\S+)/, async (message, match) => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-  if (alreadyAccept) {
-    const messageText = match[1];
-
-    await saveSearchInfo(messageText, 'code');
-    const strArr = await getQueryResult(message, messageText, 'code');
-
-    /* eslint-disable */
-    for (const str of strArr) {
-      await bot.sendMessage(chatId, str);
-    }
-    /* eslint-enable */
-  }
-});
-
-// 女優
-bot.onText(/[%％]\s*\+*\s*(\S+)/, async (message, match) => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
+// 搜尋 番號、標題、女優
+bot.onText(/([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/, async (message, match) => {
+  const { message_id, from: { id: userId }, chat: { id: chatId } } = message;
   const user = await getUser(userId);
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const messageText = match[1];
+    let type = match[1];
 
-    await saveSearchInfo(messageText, 'models');
-    const strArr = await getQueryResult(message, messageText, 'models');
-
-    /* eslint-disable */
-    for (const str of strArr) {
-      await bot.sendMessage(chatId, str);
+    if (match[1] === '#' || match[1] === '＃') {
+      type = 'code';
+    } else if (match[1] === '%' || match[1] === '％') {
+      type = 'model';
+    } else {
+      type = 'title';
     }
-    /* eslint-enable */
-  }
-});
 
-// 片名
-bot.onText(/[@＠]\s*\+*\s*(\S+)/, async (message, match) => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+    const query = match[2];
+    const result = await getQueryResult(type, query);
 
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-
-  if (alreadyAccept) {
-    const messageText = match[1];
-
-    await saveSearchInfo(messageText, 'title');
-    const strArr = await getQueryResult(message, messageText, 'title');
-
-    /* eslint-disable */
-    for (const str of strArr) {
+    if (!result) {
+      const str = await bot.sendMessage(
+        chatId,
+        locale(user.languageCode).videos.notFound,
+        {
+          parse_mode: 'Markdown',
+        }
+      );
       await bot.sendMessage(chatId, str);
+    } else {
+      const options = getVideoSourcesKeyboardSettings(
+        user.languageCode,
+        message_id,
+        query,
+        result,
+        1
+      );
+
+      const { message_id: sentMessageId } = await bot.sendPhoto(
+        chatId,
+        result.video.img_url,
+        options
+      );
+
+      if (user.autoDeleteMessages) {
+        await deleteMessage(chatId, sentMessageId, bot);
+      }
     }
-    /* eslint-enable */
   }
 });
 
 // PPAV
 bot.onText(/^PPAV$/i, async message => {
-  const {
-    message_id: receivedMessageId,
-    from: { id: userId },
-    chat: { id: chatId },
-  } = message;
+  const { from: { id: userId }, chat: { id: chatId } } = message;
   const user = await getUser(userId);
 
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
@@ -170,7 +157,7 @@ bot.onText(/^PPAV$/i, async message => {
     /* eslint-enable */
 
     if (user.autoDeleteMessages) {
-      await deleteMessage(chatId, receivedMessageId, sentMessageId, bot);
+      await deleteMessage(chatId, sentMessageId, bot);
     }
   }
 });

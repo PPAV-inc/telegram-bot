@@ -43,6 +43,14 @@ const english = {
     alreadyActive: 'We already *Active* messages self-destruct 🔥',
     alreadyInactive: 'We already *Inactive* messages self-destruct ❄️',
   },
+  videos: {
+    code: 'Code',
+    title: 'Title',
+    model: 'Models',
+    tag: 'Tags',
+    duration: 'Duration',
+    notFound: 'Sorry, I cannot find any result 😿',
+  },
 };
 
 export default english;

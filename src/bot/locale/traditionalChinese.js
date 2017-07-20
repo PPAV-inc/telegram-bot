@@ -40,6 +40,14 @@ const traditionalChinese = {
     alreadyActive: '已為您*啟動*閱後即焚功能 🔥',
     alreadyInactive: '已為您*關閉*閱後即焚功能 ❄️',
   },
+  videos: {
+    code: '番號',
+    title: '片名',
+    model: '女優',
+    tag: '標籤',
+    duration: '片長',
+    notFound: '很抱歉，我們無法搜尋到任何結果 😿',
+  },
 };
 
 export default traditionalChinese;

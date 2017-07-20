@@ -32,7 +32,6 @@ const getAutoDeleteMessagesKeyboardSettings = languageCode => {
     active,
     inactive
   );
-
   const options = replyKeyboardOptions(autoDeleteMessagesKeyboard, true);
 
   return { text, options };
@@ -41,7 +40,6 @@ const getAutoDeleteMessagesKeyboardSettings = languageCode => {
 const getDisclaimerKeyboardSettings = languageCode => {
   const { text, accept, refuse } = locale(languageCode).acceptDisclaimer;
   const disclaimerKeyboard = keyboards.disclaimerKeyboard(accept, refuse);
-
   const options = replyKeyboardOptions(disclaimerKeyboard, true);
 
   return { text, options };
@@ -58,7 +56,6 @@ const getMainMenuKeyboardSettings = languageCode => {
     contactUs,
     setting
   );
-
   const options = replyKeyboardOptions(mainMenuKeyboard, false);
 
   return { text, options };
@@ -76,17 +73,63 @@ const getContactUsKeyboardSettings = languageCode => {
 const getSettingKeyboardSettings = languageCode => {
   const { text, buttons } = locale(languageCode).setting;
   const settingKeyboard = keyboards.settingKeyboard(buttons);
-
   const options = inlineKeyboardOptions(settingKeyboard);
 
   return { text, options };
 };
 
+const getRadomVideoKeyboardSettings
+
+const getVideoSourcesKeyboardSettings = async (
+  languageCode,
+  query,
+  video,
+  type,
+  nowPage
+) => {
+  const videoWord = locale(languageCode).videos;
+
+  let models = '';
+  video.models.forEach(modelName => {
+    models += `${modelName} `;
+  });
+
+  let tags = '';
+  video.tags.forEach(tagName => {
+    tags += `${tagName} `;
+  });
+
+  const text = `
+    ${videoWord.code}: *${video.code}*\n${videoWord.title}: *${video.title}*\n${videoWord.model}: *${models}*\n${videoWord.tag}: *${tags}*\n${videoWord.view}: *${video.total_view_count}*\n${videoWord.duration}: *${video.duration}* mins\n${videoWord.view}: *${video.total_view_count}*\n${videoWord.image}: ${video.img_url}
+  `;
+
+  const videoSourcesKeyboard = await keyboards.videoSourcesKeyboard(
+    query,
+    video.videos,
+    type,
+    nowPage,
+    video.total_count
+  );
+  const options = inlineKeyboardOptions(videoSourcesKeyboard);
+
+  return { text, options };
+};
+
 export {
+<<<<<<< HEAD
   getLanguageKeyboardSettings,
   getDisclaimerKeyboardSettings,
   getMainMenuKeyboardSettings,
   getContactUsKeyboardSettings,
   getSettingKeyboardSettings,
   getAutoDeleteMessagesKeyboardSettings,
+=======
+  getLanguageKeyboardSettings,
+  getDisclaimerKeyboardSettings,
+  getMainMenuKeyboardSettings,
+  getContactUsKeyboardSettings,
+  getSettingKeyboardSettings,
+  getAutoDeleteMessagesKeyboardSettings,
+  getVideoSourcesKeyboardSettings,
+>>>>>>> complete videos ux
 };
