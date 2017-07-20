@@ -60,42 +60,31 @@ bot.onText(/🇹🇼|🇺🇲/i, async message => {
   }
 });
 
-// 接受免責聲明
-bot.onText(/(接受|Accept) ✅$/i, async message => {
+// 接受/不接受 免責聲明
+bot.onText(/(接受|Accept) ✅$|(不接受|Refuse) ❌$/i, async (message, match) => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-
-  await updateUser(userId, { acceptDisclaimer: true });
-
+  const accept = match[0].indexOf('✅') > 0;
   const { languageCode } = await getUser(userId);
 
-  await bot.sendMessage(
-    chatId,
-    locale(languageCode).acceptDisclaimer.alreadyAccept,
-    {
-      parse_mode: 'Markdown',
-    }
-  );
+  if (accept) {
+    await updateUser(userId, { acceptDisclaimer: true });
+  } else {
+    await updateUser(userId, { acceptDisclaimer: false });
+  }
 
-  const { text, options } = getMainMenuKeyboardSettings(languageCode);
+  const confirmText = accept
+    ? locale(languageCode).acceptDisclaimer.alreadyAccept
+    : locale(languageCode).acceptDisclaimer.alreadyRefuse;
 
-  await bot.sendMessage(chatId, text, options);
-});
+  await bot.sendMessage(chatId, confirmText, {
+    parse_mode: 'Markdown',
+  });
 
-// 不接受免責聲明
-bot.onText(/(不接受|Refuse) ❌$/i, async message => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
+  if (accept) {
+    const { text, options } = getMainMenuKeyboardSettings(languageCode);
 
-  await updateUser(userId, { acceptDisclaimer: false });
-
-  const { languageCode } = await getUser(userId);
-
-  await bot.sendMessage(
-    chatId,
-    locale(languageCode).acceptDisclaimer.alreadyRefuse,
-    {
-      parse_mode: 'Markdown',
-    }
-  );
+    await bot.sendMessage(chatId, text, options);
+  }
 });
 
 // 番號
