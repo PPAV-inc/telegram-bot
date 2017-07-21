@@ -49,6 +49,8 @@ const english = {
     model: 'Models',
     tag: 'Tags',
     duration: 'Duration',
+    view: 'View',
+    image: 'Image',
     notFound: 'Sorry, I cannot find any result 😿',
   },
 };

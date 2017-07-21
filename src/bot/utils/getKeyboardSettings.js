@@ -78,8 +78,11 @@ const getSettingKeyboardSettings = languageCode => {
   return { text, options };
 };
 
+<<<<<<< HEAD
 const getRadomVideoKeyboardSettings
 
+=======
+>>>>>>> complete callback_query handler for changing pages
 const getVideoSourcesKeyboardSettings = async (
   languageCode,
   query,

@@ -46,20 +46,20 @@ const getVideo = async (type, messageText, page) => {
   };
 };
 
-const getRandomThreeVideos = async () => {
+const getOneRandomVideo = async () => {
   const db = await getDatabase();
   const results = await db
     .collection('videos')
     .aggregate([
       { $sort: { count: -1 } },
       { $limit: 50 },
-      { $sample: { size: 3 } },
+      { $sample: { size: 1 } },
     ])
     .toArray();
   return {
-    searchValue: 'PPAV',
+    keyword: 'PPAV',
     results,
   };
 };
 
-export { getVideo, getRandomThreeVideos };
+export { getVideo, getOneRandomVideo };

@@ -46,6 +46,8 @@ const traditionalChinese = {
     model: '女優',
     tag: '標籤',
     duration: '片長',
+    view: '點擊數',
+    image: '圖片',
     notFound: '很抱歉，我們無法搜尋到任何結果 😿',
   },
 };
