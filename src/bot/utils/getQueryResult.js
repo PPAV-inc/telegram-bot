@@ -5,7 +5,7 @@ const getQueryResult = async (message, messageText, type, page) => {
   let typeStr;
 
   if (type === 'code') {
-    videosObj = await videos.getVideo(type, messageText.toUpperCase(), page);
+    videosObj = await videos.getVideo(type, messageText, page);
     typeStr = '番號';
   } else if (type === 'models') {
     videosObj = await videos.getVideo(type, messageText, page);
@@ -25,19 +25,15 @@ const getQueryResult = async (message, messageText, type, page) => {
   }
 
   let str = '';
-  if (videosObj.results.length === 0) {
+  if (!videosObj.results) {
     str = `搜尋不到此${typeStr}`;
     return [str];
   }
   str = `幫你搜尋${typeStr}：${videosObj.searchValue}`;
 
-  let urlStr = '';
-  videosObj.results.forEach(video => {
-    urlStr += `${video.url}\n`;
-  });
-  const totalStr = `總共搜尋到：${videosObj.results.length} 個連結喔喔喔`;
+  const totalStr = `總共搜尋到：${videosObj.results.total_count} 個連結喔喔喔`;
 
-  return [str, urlStr, totalStr];
+  return [str, videosObj.results, totalStr];
 };
 
 export default getQueryResult;
