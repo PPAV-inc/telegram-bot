@@ -37,12 +37,14 @@ const getVideo = async (type, messageText, page) => {
       },
       { $sort: { total_view_count: -1 } },
       { $skip: page },
+      { $limit: 1 },
     ])
     .toArray();
 
   return {
     searchValue: text,
-    results,
+    type,
+    results: results[0],
   };
 };
 
