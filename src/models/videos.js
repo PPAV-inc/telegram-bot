@@ -24,7 +24,6 @@ const getVideo = async (type, messageText, page) => {
           code: { $first: '$code' },
           tags: { $first: '$tags' },
           duration: { $first: '$duration' },
-          total_count: { $sum: 1 },
           total_view_count: { $sum: 'view_count' },
           videos: {
             $push: {
@@ -36,15 +35,14 @@ const getVideo = async (type, messageText, page) => {
         },
       },
       { $sort: { total_view_count: -1 } },
-      { $skip: page },
-      { $limit: 1 },
     ])
     .toArray();
 
   return {
     searchValue: text,
     type,
-    results: results[0],
+    results: results[page],
+    total_count: results.length,
   };
 };
 
