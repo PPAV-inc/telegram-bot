@@ -85,7 +85,7 @@ bot.onText(/(接受|Accept) ✅$/i, async message => {
 bot.onText(/(不接受|Refuse) ❌$/i, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
 
-  await updateUser(chatId, { acceptDisclaimer: false });
+  await updateUser(userId, { acceptDisclaimer: false });
 
   const { languageCode } = await getUser(userId);
 
