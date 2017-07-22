@@ -4,10 +4,10 @@ import { createUser, getUser, updateUser } from '../models/users';
 import saveSearchInfo from '../models/search_keywords';
 import getQueryResult from './utils/getQueryResult';
 import {
-  getLanguageKeyboarSettings,
-  getMainMenuKeyboarSettings,
-  getContactUsKeyboarSettings,
-  getSettingKeyboarSettings,
+  getLanguageKeyboardSettings,
+  getMainMenuKeyboardSettings,
+  getContactUsKeyboardSettings,
+  getSettingKeyboardSettings,
 } from './utils/getKeyboardSettings';
 import parseAction from './utils/parseAction';
 import checkUserAcceptDisclaimer from './utils/checkUserAcceptDisclaimer';
@@ -35,7 +35,7 @@ bot.onText(/\/start/, async message => {
     { parse_mode: 'Markdown' }
   );
 
-  const { text, options } = getLanguageKeyboarSettings();
+  const { text, options } = getLanguageKeyboardSettings();
   await bot.sendMessage(chatId, text, options);
 });
 
@@ -54,7 +54,7 @@ bot.onText(/🇹🇼|🇺🇲/i, async message => {
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const { text, options } = getMainMenuKeyboarSettings(languageCode);
+    const { text, options } = getMainMenuKeyboardSettings(languageCode);
 
     await bot.sendMessage(chatId, text, options);
   }
@@ -76,7 +76,7 @@ bot.onText(/(接受|Accept) ✅$/i, async message => {
     }
   );
 
-  const { text, options } = getMainMenuKeyboarSettings(languageCode);
+  const { text, options } = getMainMenuKeyboardSettings(languageCode);
 
   await bot.sendMessage(chatId, text, options);
 });
@@ -194,7 +194,7 @@ bot.onText(/(設置|Setting) ⚙️$/i, async message => {
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const { text, options } = getSettingKeyboarSettings(user.languageCode);
+    const { text, options } = getSettingKeyboardSettings(user.languageCode);
 
     await bot.sendMessage(chatId, text, options);
   }
@@ -250,7 +250,7 @@ bot.onText(/(聯絡我們|Contact PPAV) 📩$/i, async message => {
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const { text, options } = getContactUsKeyboarSettings(user.languageCode);
+    const { text, options } = getContactUsKeyboardSettings(user.languageCode);
 
     await bot.sendMessage(chatId, text, options);
   }
@@ -279,7 +279,7 @@ bot.onText(/(啟動|active) 🔥$|(關閉|Inactive) ❄️$/i, async (message, m
       parse_mode: 'Markdown',
     });
 
-    const { text, options } = getMainMenuKeyboarSettings(languageCode);
+    const { text, options } = getMainMenuKeyboardSettings(languageCode);
 
     await bot.sendMessage(chatId, text, options);
   }

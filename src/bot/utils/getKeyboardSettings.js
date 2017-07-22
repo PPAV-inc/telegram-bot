@@ -19,14 +19,14 @@ const inlineKeyboardOptions = keyboard => ({
   disable_web_page_preview: false,
 });
 
-const getLanguageKeyboarSettings = () => {
+const getLanguageKeyboardSettings = () => {
   const text = '請選擇 PPAV 使用語言 🌐\nPlease choose PPAV usage language 🌐';
   const options = replyKeyboardOptions(keyboards.languageKeyboard, true);
 
   return { text, options };
 };
 
-const getAutoDeleteMessagesKeyboarSettings = languageCode => {
+const getAutoDeleteMessagesKeyboardSettings = languageCode => {
   const { text, active, inactive } = locale(languageCode).autoDeleteMessages;
   const autoDeleteMessagesKeyboard = keyboards.autoDeleteMessagesKeyboard(
     active,
@@ -38,7 +38,7 @@ const getAutoDeleteMessagesKeyboarSettings = languageCode => {
   return { text, options };
 };
 
-const getDisclaimerKeyboarSettings = languageCode => {
+const getDisclaimerKeyboardSettings = languageCode => {
   const { text, accept, refuse } = locale(languageCode).acceptDisclaimer;
   const disclaimerKeyboard = keyboards.disclaimerKeyboard(accept, refuse);
 
@@ -47,7 +47,7 @@ const getDisclaimerKeyboarSettings = languageCode => {
   return { text, options };
 };
 
-const getMainMenuKeyboarSettings = languageCode => {
+const getMainMenuKeyboardSettings = languageCode => {
   const { text, about, checkDisclaimer, report, contactUs, setting } = locale(
     languageCode
   ).mainMenu;
@@ -64,7 +64,7 @@ const getMainMenuKeyboarSettings = languageCode => {
   return { text, options };
 };
 
-const getContactUsKeyboarSettings = languageCode => {
+const getContactUsKeyboardSettings = languageCode => {
   const { text, mailText, mailUrl } = locale(languageCode).contactUs;
   const contactUsKeyboard = keyboards.contactUsKeyboard(mailText, mailUrl);
 
@@ -73,7 +73,7 @@ const getContactUsKeyboarSettings = languageCode => {
   return { text, options };
 };
 
-const getSettingKeyboarSettings = languageCode => {
+const getSettingKeyboardSettings = languageCode => {
   const { text, buttons } = locale(languageCode).setting;
   const settingKeyboard = keyboards.settingKeyboard(buttons);
 
@@ -83,10 +83,10 @@ const getSettingKeyboarSettings = languageCode => {
 };
 
 export {
-  getLanguageKeyboarSettings,
-  getDisclaimerKeyboarSettings,
-  getMainMenuKeyboarSettings,
-  getContactUsKeyboarSettings,
-  getSettingKeyboarSettings,
-  getAutoDeleteMessagesKeyboarSettings,
+  getLanguageKeyboardSettings,
+  getDisclaimerKeyboardSettings,
+  getMainMenuKeyboardSettings,
+  getContactUsKeyboardSettings,
+  getSettingKeyboardSettings,
+  getAutoDeleteMessagesKeyboardSettings,
 };

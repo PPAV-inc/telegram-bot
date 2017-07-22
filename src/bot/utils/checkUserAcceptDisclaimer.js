@@ -1,4 +1,4 @@
-import { getDisclaimerKeyboarSettings } from './getKeyboardSettings';
+import { getDisclaimerKeyboardSettings } from './getKeyboardSettings';
 import locale from '../locale';
 
 const checkUserAcceptDisclaimer = async (user, chatId, bot) => {
@@ -12,7 +12,7 @@ const checkUserAcceptDisclaimer = async (user, chatId, bot) => {
     parse_mode: 'Markdown',
   });
 
-  const { text, options } = getDisclaimerKeyboarSettings(languageCode);
+  const { text, options } = getDisclaimerKeyboardSettings(languageCode);
   await bot.sendMessage(chatId, text, options);
 
   return false;
