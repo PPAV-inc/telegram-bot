@@ -1,17 +1,17 @@
 import * as videos from '../../models/videos';
 
-const getQueryResult = async (message, messageText, type) => {
+const getQueryResult = async (message, messageText, type, page) => {
   let videosObj;
   let typeStr;
 
   if (type === 'code') {
-    videosObj = await videos.getVideo(type, messageText.toUpperCase());
+    videosObj = await videos.getVideo(type, messageText.toUpperCase(), page);
     typeStr = '番號';
   } else if (type === 'models') {
-    videosObj = await videos.getVideo(type, messageText);
+    videosObj = await videos.getVideo(type, messageText, page);
     typeStr = '女優';
   } else if (type === 'title') {
-    videosObj = await videos.getVideo(type, messageText);
+    videosObj = await videos.getVideo(type, messageText, page);
     typeStr = '片名';
   } else {
     videosObj = await videos.getRandomThreeVideos();

@@ -1,7 +1,7 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { botToken, url } from '../../env/bot.config';
 import { createUser, getUser, updateUser } from '../models/users';
-import { saveSearchInfo } from '../models/search_keywords';
+import saveSearchInfo from '../models/search_keywords';
 import getQueryResult from './utils/getQueryResult';
 import {
   getLanguageKeyboarSettings,

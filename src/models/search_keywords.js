@@ -1,4 +1,4 @@
-import { getDatabase } from './database';
+import getDatabase from './database';
 
 const saveSearchInfo = async (keyword, type) => {
   const db = await getDatabase();
