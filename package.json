@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "./node_modules/nodemon/bin/nodemon.js app.js --watch src --exec babel-node",
-    "start": "yarn ;env NODE_ENV=production node app.js",
+    "start": "yarn ;env NODE_ENV=production babel-node app.js",
     "seed-setup": "./node_modules/.bin/seed-setup",
     "seed": "NODE_ENV=dev ./node_modules/.bin/seed",
     "precommit": "lint-staged",
