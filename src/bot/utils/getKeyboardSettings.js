@@ -32,7 +32,6 @@ const getAutoDeleteMessagesKeyboardSettings = languageCode => {
     active,
     inactive
   );
-
   const options = replyKeyboardOptions(autoDeleteMessagesKeyboard, true);
 
   return { text, options };
@@ -41,7 +40,6 @@ const getAutoDeleteMessagesKeyboardSettings = languageCode => {
 const getDisclaimerKeyboardSettings = languageCode => {
   const { text, accept, refuse } = locale(languageCode).acceptDisclaimer;
   const disclaimerKeyboard = keyboards.disclaimerKeyboard(accept, refuse);
-
   const options = replyKeyboardOptions(disclaimerKeyboard, true);
 
   return { text, options };
@@ -58,7 +56,6 @@ const getMainMenuKeyboardSettings = languageCode => {
     contactUs,
     setting
   );
-
   const options = replyKeyboardOptions(mainMenuKeyboard, false);
 
   return { text, options };
@@ -76,8 +73,58 @@ const getContactUsKeyboardSettings = languageCode => {
 const getSettingKeyboardSettings = languageCode => {
   const { text, buttons } = locale(languageCode).setting;
   const settingKeyboard = keyboards.settingKeyboard(buttons);
-
   const options = inlineKeyboardOptions(settingKeyboard);
+
+  return { text, options };
+};
+
+const generateVideoMessageText = (languageCode, result) => {
+  const videoWord = locale(languageCode).videos;
+
+  let models = '';
+  result.models.forEach(modelName => {
+    models += `${modelName} `;
+  });
+
+  let tags = '';
+  result.tags.forEach(tagName => {
+    tags += `${tagName} `;
+  });
+
+  return `
+    ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${videoWord.tag}: *${tags}*\n${videoWord.view}: *${result.total_view_count}*\n${videoWord.duration}: *${result.duration}* ${videoWord.minute}\n${videoWord.image}: ${result.img_url}
+  `;
+};
+
+const getVideoSourcesKeyboardSettings = async (
+  languageCode,
+  keyword,
+  result,
+  type,
+  nowPage,
+  totalCount
+) => {
+  const text = generateVideoMessageText(languageCode, result);
+
+  const videoSourcesKeyboard = await keyboards.videoSourcesKeyboard(
+    keyword,
+    result.videos,
+    type,
+    nowPage,
+    totalCount
+  );
+  const options = inlineKeyboardOptions(videoSourcesKeyboard);
+
+  return { text, options };
+};
+
+const getRadomVideoKeyboardSettings = async (languageCode, result) => {
+  const text = generateVideoMessageText(languageCode, result);
+  const radomVideoKeyboard = await keyboards.radomVideoKeyboard(
+    locale(languageCode).videos.watchMore,
+    result
+  );
+  const options = inlineKeyboardOptions(radomVideoKeyboard);
 
   return { text, options };
 };
@@ -89,4 +136,6 @@ export {
   getContactUsKeyboardSettings,
   getSettingKeyboardSettings,
   getAutoDeleteMessagesKeyboardSettings,
+  getVideoSourcesKeyboardSettings,
+  getRadomVideoKeyboardSettings,
 };

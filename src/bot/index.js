@@ -1,6 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { botToken, url } from '../../env/bot.config';
-import { createUser, getUser, updateUser } from '../models/users';
+import * as users from '../models/users';
 import saveSearchInfo from '../models/search_keywords';
 import getQueryResult from './utils/getQueryResult';
 import {
@@ -8,6 +8,8 @@ import {
   getMainMenuKeyboardSettings,
   getContactUsKeyboardSettings,
   getSettingKeyboardSettings,
+  getVideoSourcesKeyboardSettings,
+  getRadomVideoKeyboardSettings,
 } from './utils/getKeyboardSettings';
 import parseAction from './utils/parseAction';
 import checkUserAcceptDisclaimer from './utils/checkUserAcceptDisclaimer';
@@ -24,9 +26,9 @@ bot.on('message', async message => {
 // 開始對話
 bot.onText(/\/start/, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+  const user = await users.getUser(userId);
   if (!user) {
-    await createUser(message);
+    await users.createUser(message);
   }
 
   await bot.sendMessage(
@@ -40,12 +42,12 @@ bot.onText(/\/start/, async message => {
 });
 
 // 更新使用者語言
-bot.onText(/🇹🇼|🇺🇲/i, async message => {
+bot.onText(/繁體中文|English/i, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
-  const languageCode = message.text === '🇹🇼' ? 'zh-TW' : 'en';
+  const user = await users.getUser(userId);
+  const languageCode = message.text === '繁體中文' ? 'zh-TW' : 'en';
 
-  await updateUser(userId, { languageCode });
+  await users.updateUser(userId, { languageCode });
 
   await bot.sendMessage(chatId, locale(languageCode).updateUserLanguage, {
     parse_mode: 'Markdown',
@@ -60,128 +62,106 @@ bot.onText(/🇹🇼|🇺🇲/i, async message => {
   }
 });
 
-// 接受免責聲明
-bot.onText(/(接受|Accept) ✅$/i, async message => {
+// 接受/不接受 免責聲明
+bot.onText(/(接受|Accept) ✅$|(不接受|Refuse) ❌$/i, async (message, match) => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
+  const accept = match[0].indexOf('✅') > 0;
+  const { languageCode } = await users.getUser(userId);
 
-  await updateUser(userId, { acceptDisclaimer: true });
+  await users.updateUser(userId, { acceptDisclaimer: accept });
 
-  const { languageCode } = await getUser(userId);
+  const confirmText = accept
+    ? locale(languageCode).acceptDisclaimer.alreadyAccept
+    : locale(languageCode).acceptDisclaimer.alreadyRefuse;
 
-  await bot.sendMessage(
-    chatId,
-    locale(languageCode).acceptDisclaimer.alreadyAccept,
-    {
-      parse_mode: 'Markdown',
-    }
-  );
+  await bot.sendMessage(chatId, confirmText, {
+    parse_mode: 'Markdown',
+  });
 
-  const { text, options } = getMainMenuKeyboardSettings(languageCode);
+  if (accept) {
+    const { text, options } = getMainMenuKeyboardSettings(languageCode);
 
-  await bot.sendMessage(chatId, text, options);
-});
-
-// 不接受免責聲明
-bot.onText(/(不接受|Refuse) ❌$/i, async message => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-
-  await updateUser(userId, { acceptDisclaimer: false });
-
-  const { languageCode } = await getUser(userId);
-
-  await bot.sendMessage(
-    chatId,
-    locale(languageCode).acceptDisclaimer.alreadyRefuse,
-    {
-      parse_mode: 'Markdown',
-    }
-  );
-});
-
-// 番號
-bot.onText(/[#＃]\s*\+*\s*(\S+)/, async (message, match) => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-  if (alreadyAccept) {
-    const messageText = match[1];
-
-    await saveSearchInfo(messageText, 'code');
-    const strArr = await getQueryResult(message, messageText, 'code');
-
-    /* eslint-disable */
-    for (const str of strArr) {
-      await bot.sendMessage(chatId, str);
-    }
-    /* eslint-enable */
+    await bot.sendMessage(chatId, text, options);
   }
 });
 
-// 女優
-bot.onText(/[%％]\s*\+*\s*(\S+)/, async (message, match) => {
+// 搜尋 番號、標題、女優
+bot.onText(/([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/, async (message, match) => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+  const user = await users.getUser(userId);
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const messageText = match[1];
+    let type = match[1];
+    const keyword = match[2];
+    const firstPage = 1;
 
-    await saveSearchInfo(messageText, 'models');
-    const strArr = await getQueryResult(message, messageText, 'models');
-
-    /* eslint-disable */
-    for (const str of strArr) {
-      await bot.sendMessage(chatId, str);
+    if (match[1] === '#' || match[1] === '＃') {
+      type = 'code';
+    } else if (match[1] === '%' || match[1] === '％') {
+      type = 'models';
+    } else {
+      type = 'title';
     }
-    /* eslint-enable */
-  }
-});
 
-// 片名
-bot.onText(/[@＠]\s*\+*\s*(\S+)/, async (message, match) => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+    const { totalCount, result } = await getQueryResult(
+      type,
+      keyword,
+      firstPage
+    );
 
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
+    if (totalCount === 0) {
+      await bot.sendMessage(chatId, locale(user.languageCode).videos.notFound, {
+        parse_mode: 'Markdown',
+      });
+    } else {
+      const { text, options } = await getVideoSourcesKeyboardSettings(
+        user.languageCode,
+        keyword,
+        result,
+        type,
+        firstPage,
+        totalCount
+      );
 
-  if (alreadyAccept) {
-    const messageText = match[1];
+      const { message_id: sentMessageId } = await bot.sendMessage(
+        chatId,
+        text,
+        options
+      );
 
-    await saveSearchInfo(messageText, 'title');
-    const strArr = await getQueryResult(message, messageText, 'title');
+      await saveSearchInfo(keyword, type);
 
-    /* eslint-disable */
-    for (const str of strArr) {
-      await bot.sendMessage(chatId, str);
+      if (user.autoDeleteMessages) {
+        await deleteMessage(chatId, sentMessageId, bot);
+      }
     }
-    /* eslint-enable */
   }
 });
 
 // PPAV
 bot.onText(/^PPAV$/i, async message => {
-  const {
-    message_id: receivedMessageId,
-    from: { id: userId },
-    chat: { id: chatId },
-  } = message;
-  const user = await getUser(userId);
+  const { from: { id: userId }, chat: { id: chatId } } = message;
+  const user = await users.getUser(userId);
 
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const strArr = await getQueryResult(message, 'PPAV');
-    let sentMessageId = 0;
+    const result = await getQueryResult('PPAV');
 
-    /* eslint-disable */
-    for (const str of strArr) {
-      const { message_id } = await bot.sendMessage(chatId, str);
-      sentMessageId = message_id;
-    }
-    /* eslint-enable */
+    const { text, options } = await getRadomVideoKeyboardSettings(
+      user.languageCode,
+      result
+    );
+
+    const { message_id: sentMessageId } = await bot.sendMessage(
+      chatId,
+      text,
+      options
+    );
 
     if (user.autoDeleteMessages) {
-      await deleteMessage(chatId, receivedMessageId, sentMessageId, bot);
+      await deleteMessage(chatId, sentMessageId, bot);
     }
   }
 });
@@ -189,7 +169,7 @@ bot.onText(/^PPAV$/i, async message => {
 // 設定
 bot.onText(/(設置|Setting) ⚙️$/i, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+  const user = await users.getUser(userId);
 
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
@@ -203,7 +183,7 @@ bot.onText(/(設置|Setting) ⚙️$/i, async message => {
 // 關於 PPAV
 bot.onText(/(關於 PPAV|About PPAV) 👀$/i, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+  const user = await users.getUser(userId);
 
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
@@ -217,12 +197,12 @@ bot.onText(/(關於 PPAV|About PPAV) 👀$/i, async message => {
 // 免責聲明
 bot.onText(/(免責聲明|Disclaimer) 📜$/i, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+  const user = await users.getUser(userId);
 
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    await bot.sendMessage(chatId, locale(userId.languageCode).disclaimer, {
+    await bot.sendMessage(chatId, locale(user.languageCode).disclaimer, {
       parse_mode: 'Markdown',
     });
   }
@@ -231,7 +211,7 @@ bot.onText(/(免責聲明|Disclaimer) 📜$/i, async message => {
 // 意見回饋
 bot.onText(/(意見回饋|Report) 🙏$/i, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+  const user = await users.getUser(userId);
 
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
@@ -245,7 +225,7 @@ bot.onText(/(意見回饋|Report) 🙏$/i, async message => {
 // 聯絡我們
 bot.onText(/(聯絡我們|Contact PPAV) 📩$/i, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+  const user = await users.getUser(userId);
 
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
@@ -259,16 +239,16 @@ bot.onText(/(聯絡我們|Contact PPAV) 📩$/i, async message => {
 // 啟動/關閉 閱後即焚
 bot.onText(/(啟動|active) 🔥$|(關閉|Inactive) ❄️$/i, async (message, match) => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+  const user = await users.getUser(userId);
   const { languageCode, autoDeleteMessages } = user;
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
   const active = match[0].indexOf('🔥') > 0;
 
   if (alreadyAccept) {
     if (!autoDeleteMessages && active) {
-      await updateUser(chatId, { autoDeleteMessages: true });
+      await users.updateUser(chatId, { autoDeleteMessages: true });
     } else if (autoDeleteMessages && !active) {
-      await updateUser(chatId, { autoDeleteMessages: false });
+      await users.updateUser(chatId, { autoDeleteMessages: false });
     }
 
     const confirmText = active
@@ -288,7 +268,7 @@ bot.onText(/(啟動|active) 🔥$|(關閉|Inactive) ❄️$/i, async (message, m
 // unmatched message
 bot.onText(/.+/, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await getUser(userId);
+  const user = await users.getUser(userId);
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
@@ -306,14 +286,22 @@ bot.onText(/.+/, async message => {
 bot.on('callback_query', async callbackQuery => {
   const {
     from: { id: userId },
-    message: { chat: { id: chatId } },
+    message: { message_id, chat: { id: chatId } },
     data: action,
   } = callbackQuery;
-  const { languageCode } = await getUser(userId);
 
-  const { text, options } = parseAction(action, languageCode);
+  const { languageCode } = await users.getUser(userId);
+  const { text, options } = await parseAction(action, languageCode);
 
-  await bot.sendMessage(chatId, text, options);
+  if (text.indexOf(':') > -1) {
+    await bot.editMessageText(text, {
+      chat_id: chatId,
+      message_id,
+      ...options,
+    });
+  } else {
+    await bot.sendMessage(chatId, text, options);
+  }
 });
 
 export default bot;
