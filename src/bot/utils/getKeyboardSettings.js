@@ -78,55 +78,58 @@ const getSettingKeyboardSettings = languageCode => {
   return { text, options };
 };
 
-<<<<<<< HEAD
-const getRadomVideoKeyboardSettings
-
-=======
->>>>>>> complete callback_query handler for changing pages
-const getVideoSourcesKeyboardSettings = async (
-  languageCode,
-  query,
-  video,
-  type,
-  nowPage
-) => {
+const generateVideoMessageText = (languageCode, result) => {
   const videoWord = locale(languageCode).videos;
 
   let models = '';
-  video.models.forEach(modelName => {
+  result.models.forEach(modelName => {
     models += `${modelName} `;
   });
 
   let tags = '';
-  video.tags.forEach(tagName => {
+  result.tags.forEach(tagName => {
     tags += `${tagName} `;
   });
 
-  const text = `
-    ${videoWord.code}: *${video.code}*\n${videoWord.title}: *${video.title}*\n${videoWord.model}: *${models}*\n${videoWord.tag}: *${tags}*\n${videoWord.view}: *${video.total_view_count}*\n${videoWord.duration}: *${video.duration}* mins\n${videoWord.view}: *${video.total_view_count}*\n${videoWord.image}: ${video.img_url}
+  return `
+    ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${videoWord.tag}: *${tags}*\n${videoWord.view}: *${result.total_view_count}*\n${videoWord.duration}: *${result.duration}* ${videoWord.minute}\n${videoWord.image}: ${result.img_url}
   `;
+};
+
+const getVideoSourcesKeyboardSettings = async (
+  languageCode,
+  keyword,
+  result,
+  type,
+  nowPage,
+  totalCount
+) => {
+  const text = generateVideoMessageText(languageCode, result);
 
   const videoSourcesKeyboard = await keyboards.videoSourcesKeyboard(
-    query,
-    video.videos,
+    keyword,
+    result.videos,
     type,
     nowPage,
-    video.total_count
+    totalCount
   );
   const options = inlineKeyboardOptions(videoSourcesKeyboard);
 
   return { text, options };
 };
 
+const getRadomVideoKeyboardSettings = async (languageCode, result) => {
+  const text = generateVideoMessageText(languageCode, result);
+  const radomVideoKeyboard = await keyboards.radomVideoKeyboard(
+    locale(languageCode).videos.watchMore,
+    result
+  );
+  const options = inlineKeyboardOptions(radomVideoKeyboard);
+
+  return { text, options };
+};
+
 export {
-<<<<<<< HEAD
-  getLanguageKeyboardSettings,
-  getDisclaimerKeyboardSettings,
-  getMainMenuKeyboardSettings,
-  getContactUsKeyboardSettings,
-  getSettingKeyboardSettings,
-  getAutoDeleteMessagesKeyboardSettings,
-=======
   getLanguageKeyboardSettings,
   getDisclaimerKeyboardSettings,
   getMainMenuKeyboardSettings,
@@ -134,5 +137,5 @@ export {
   getSettingKeyboardSettings,
   getAutoDeleteMessagesKeyboardSettings,
   getVideoSourcesKeyboardSettings,
->>>>>>> complete videos ux
+  getRadomVideoKeyboardSettings,
 };

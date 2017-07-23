@@ -9,6 +9,7 @@ import {
   getContactUsKeyboardSettings,
   getSettingKeyboardSettings,
   getVideoSourcesKeyboardSettings,
+  getRadomVideoKeyboardSettings,
 } from './utils/getKeyboardSettings';
 import parseAction from './utils/parseAction';
 import checkUserAcceptDisclaimer from './utils/checkUserAcceptDisclaimer';
@@ -25,7 +26,7 @@ bot.on('message', async message => {
 // 開始對話
 bot.onText(/\/start/, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.users.getUser(userId);
+  const user = await users.getUser(userId);
   if (!user) {
     await users.createUser(message);
   }
@@ -41,14 +42,14 @@ bot.onText(/\/start/, async message => {
 });
 
 // 更新使用者語言
-bot.onText(/🇹🇼|🇺🇲/i, async message => {
+bot.onText(/繁體中文|English/i, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.users.getUser(userId);
-  const languageCode = message.text === '🇹🇼' ? 'zh-TW' : 'en';
+  const user = await users.getUser(userId);
+  const languageCode = message.text === '繁體中文' ? 'zh-TW' : 'en';
 
   await users.updateUser(userId, { languageCode });
 
-  await bot.sendMessage(chatId, locale(languageCode).users.updateUserLanguage, {
+  await bot.sendMessage(chatId, locale(languageCode).updateUserLanguage, {
     parse_mode: 'Markdown',
   });
 
@@ -67,11 +68,7 @@ bot.onText(/(接受|Accept) ✅$|(不接受|Refuse) ❌$/i, async (message, matc
   const accept = match[0].indexOf('✅') > 0;
   const { languageCode } = await users.getUser(userId);
 
-  if (accept) {
-    await users.updateUser(userId, { acceptDisclaimer: true });
-  } else {
-    await users.updateUser(userId, { acceptDisclaimer: false });
-  }
+  await users.updateUser(userId, { acceptDisclaimer: accept });
 
   const confirmText = accept
     ? locale(languageCode).acceptDisclaimer.alreadyAccept
@@ -96,35 +93,35 @@ bot.onText(/([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/, async (message, match) => {
 
   if (alreadyAccept) {
     let type = match[1];
-    const query = match[2];
-    const firstPage = 0;
+    const keyword = match[2];
+    const firstPage = 1;
 
     if (match[1] === '#' || match[1] === '＃') {
       type = 'code';
     } else if (match[1] === '%' || match[1] === '％') {
-      type = 'model';
+      type = 'models';
     } else {
       type = 'title';
     }
 
-    const { keyword, result } = await getQueryResult(type, query, firstPage);
+    const { totalCount, result } = await getQueryResult(
+      type,
+      keyword,
+      firstPage
+    );
 
-    if (!result) {
-      const str = await bot.sendMessage(
-        chatId,
-        locale(user.languageCode).videos.notFound,
-        {
-          parse_mode: 'Markdown',
-        }
-      );
-      await bot.sendMessage(chatId, str);
+    if (totalCount === 0) {
+      await bot.sendMessage(chatId, locale(user.languageCode).videos.notFound, {
+        parse_mode: 'Markdown',
+      });
     } else {
       const { text, options } = await getVideoSourcesKeyboardSettings(
         user.languageCode,
-        query,
+        keyword,
         result,
         type,
-        firstPage
+        firstPage,
+        totalCount
       );
 
       const { message_id: sentMessageId } = await bot.sendMessage(
@@ -150,15 +147,18 @@ bot.onText(/^PPAV$/i, async message => {
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    const strArr = await getQueryResult('PPAV');
-    let sentMessageId = 0;
+    const result = await getQueryResult('PPAV');
 
-    /* eslint-disable */
-    for (const str of strArr) {
-      const { message_id } = await bot.sendMessage(chatId, str);
-      sentMessageId = message_id;
-    }
-    /* eslint-enable */
+    const { text, options } = await getRadomVideoKeyboardSettings(
+      user.languageCode,
+      result
+    );
+
+    const { message_id: sentMessageId } = await bot.sendMessage(
+      chatId,
+      text,
+      options
+    );
 
     if (user.autoDeleteMessages) {
       await deleteMessage(chatId, sentMessageId, bot);
@@ -202,7 +202,7 @@ bot.onText(/(免責聲明|Disclaimer) 📜$/i, async message => {
   const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
 
   if (alreadyAccept) {
-    await bot.sendMessage(chatId, locale(userId.languageCode).disclaimer, {
+    await bot.sendMessage(chatId, locale(user.languageCode).disclaimer, {
       parse_mode: 'Markdown',
     });
   }

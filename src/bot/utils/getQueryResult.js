@@ -1,18 +1,18 @@
 import * as videos from '../../models/videos';
 
-const getQueryResult = async (type, query = null, page = null) => {
+const getQueryResult = async (type, keyword = null, page = null) => {
   if (type !== 'PPAV') {
-    const { keyword, result } = await videos.getVideo(type, query, page);
-    console.log({ result });
+    const { total_count: totalCount, result } = await videos.getVideo(
+      type,
+      keyword,
+      page
+    );
 
-    if (result.count === 0) {
-      return false;
-    }
-    return { keyword, result };
+    return { totalCount, result };
   }
 
-  const { keyword, result } = await videos.getOneRandomVideo();
-  return { keyword, result };
+  const { result } = await videos.getOneRandomVideo();
+  return result;
 };
 
 export default getQueryResult;
