@@ -1,23 +1,12 @@
-import TelegramBot from 'node-telegram-bot-api';
-import { botToken, url } from '../../env/bot.config';
+import bot from './telegramBot';
 import * as users from '../models/users';
 import saveSearchInfo from '../models/search_keywords';
 import getQueryResult from './utils/getQueryResult';
-import {
-  getLanguageKeyboardSettings,
-  getMainMenuKeyboardSettings,
-  getContactUsKeyboardSettings,
-  getSettingKeyboardSettings,
-  getVideoSourcesKeyboardSettings,
-  getRadomVideoKeyboardSettings,
-} from './utils/getKeyboardSettings';
+import * as keyboards from './utils/getKeyboardSettings';
 import parseAction from './utils/parseAction';
-import checkUserAcceptDisclaimer from './utils/checkUserAcceptDisclaimer';
 import deleteMessage from './utils/deleteMessage';
+import checkUserAcceptDisclaimer from './middleware/checkUserAcceptDisclaimer';
 import locale from './locale';
-
-const bot = new TelegramBot(botToken, { polling: true, onlyFirstMatch: true });
-bot.setWebHook(`${url}/bot${botToken}`);
 
 bot.on('message', async message => {
   await bot.sendChatAction(message.chat.id, 'typing');
@@ -37,14 +26,13 @@ bot.onText(/\/start/, async message => {
     { parse_mode: 'Markdown' }
   );
 
-  const { text, options } = getLanguageKeyboardSettings();
+  const { text, options } = keyboards.getLanguageKeyboardSettings();
   await bot.sendMessage(chatId, text, options);
 });
 
 // 更新使用者語言
-bot.onText(/繁體中文|English/i, async message => {
+bot.onText(/(繁體中文|English)$/i, async message => {
   const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.getUser(userId);
   const languageCode = message.text === '繁體中文' ? 'zh-TW' : 'en';
 
   await users.updateUser(userId, { languageCode });
@@ -53,13 +41,12 @@ bot.onText(/繁體中文|English/i, async message => {
     parse_mode: 'Markdown',
   });
 
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-
-  if (alreadyAccept) {
-    const { text, options } = getMainMenuKeyboardSettings(languageCode);
-
+  await checkUserAcceptDisclaimer(async () => {
+    const { text, options } = keyboards.getMainMenuKeyboardSettings(
+      languageCode
+    );
     await bot.sendMessage(chatId, text, options);
-  }
+  })(message);
 });
 
 // 接受/不接受 免責聲明
@@ -79,19 +66,18 @@ bot.onText(/(接受|Accept) ✅$|(不接受|Refuse) ❌$/i, async (message, matc
   });
 
   if (accept) {
-    const { text, options } = getMainMenuKeyboardSettings(languageCode);
-
+    const { text, options } = keyboards.getMainMenuKeyboardSettings(
+      languageCode
+    );
     await bot.sendMessage(chatId, text, options);
   }
 });
 
 // 搜尋 番號、標題、女優
-bot.onText(/([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/, async (message, match) => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.getUser(userId);
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-
-  if (alreadyAccept) {
+bot.onText(
+  /([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/,
+  checkUserAcceptDisclaimer(async response => {
+    const { match, chatId, user } = response;
     let type = match[1];
     const keyword = match[2];
     const firstPage = 1;
@@ -115,7 +101,7 @@ bot.onText(/([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/, async (message, match) => {
         parse_mode: 'Markdown',
       });
     } else {
-      const { text, options } = await getVideoSourcesKeyboardSettings(
+      const { text, options } = await keyboards.getVideoSourcesKeyboardSettings(
         user.languageCode,
         keyword,
         result,
@@ -136,20 +122,17 @@ bot.onText(/([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/, async (message, match) => {
         await deleteMessage(chatId, sentMessageId, bot);
       }
     }
-  }
-});
+  })
+);
 
 // PPAV
-bot.onText(/^PPAV$/i, async message => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.getUser(userId);
-
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-
-  if (alreadyAccept) {
+bot.onText(
+  /^PPAV$/i,
+  checkUserAcceptDisclaimer(async response => {
+    const { user, chatId } = response;
     const result = await getQueryResult('PPAV');
 
-    const { text, options } = await getRadomVideoKeyboardSettings(
+    const { text, options } = await keyboards.getRadomVideoKeyboardSettings(
       user.languageCode,
       result
     );
@@ -163,88 +146,74 @@ bot.onText(/^PPAV$/i, async message => {
     if (user.autoDeleteMessages) {
       await deleteMessage(chatId, sentMessageId, bot);
     }
-  }
-});
+  })
+);
 
 // 設定
-bot.onText(/(設置|Setting) ⚙️$/i, async message => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.getUser(userId);
-
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-
-  if (alreadyAccept) {
-    const { text, options } = getSettingKeyboardSettings(user.languageCode);
+bot.onText(
+  /(設置|Setting) ⚙️$/i,
+  checkUserAcceptDisclaimer(async response => {
+    const { user, chatId } = response;
+    const { text, options } = keyboards.getSettingKeyboardSettings(
+      user.languageCode
+    );
 
     await bot.sendMessage(chatId, text, options);
-  }
-});
+  })
+);
 
 // 關於 PPAV
-bot.onText(/(關於 PPAV|About PPAV) 👀$/i, async message => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.getUser(userId);
-
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-
-  if (alreadyAccept) {
+bot.onText(
+  /(關於 PPAV|About PPAV) 👀$/i,
+  checkUserAcceptDisclaimer(async response => {
+    const { user, chatId } = response;
     await bot.sendMessage(chatId, locale(user.languageCode).about, {
       parse_mode: 'Markdown',
     });
-  }
-});
+  })
+);
 
 // 免責聲明
-bot.onText(/(免責聲明|Disclaimer) 📜$/i, async message => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.getUser(userId);
-
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-
-  if (alreadyAccept) {
+bot.onText(
+  /(免責聲明|Disclaimer) 📜$/i,
+  checkUserAcceptDisclaimer(async response => {
+    const { user, chatId } = response;
     await bot.sendMessage(chatId, locale(user.languageCode).disclaimer, {
       parse_mode: 'Markdown',
     });
-  }
-});
+  })
+);
 
 // 意見回饋
-bot.onText(/(意見回饋|Report) 🙏$/i, async message => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.getUser(userId);
-
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-
-  if (alreadyAccept) {
-    await bot.sendMessage(chatId, locale().reportUrl, {
+bot.onText(
+  /(意見回饋|Report) 🙏$/i,
+  checkUserAcceptDisclaimer(async response => {
+    await bot.sendMessage(response.chatId, locale().reportUrl, {
       parse_mode: 'Markdown',
     });
-  }
-});
+  })
+);
 
 // 聯絡我們
-bot.onText(/(聯絡我們|Contact PPAV) 📩$/i, async message => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.getUser(userId);
-
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-
-  if (alreadyAccept) {
-    const { text, options } = getContactUsKeyboardSettings(user.languageCode);
+bot.onText(
+  /(聯絡我們|Contact PPAV) 📩$/i,
+  checkUserAcceptDisclaimer(async response => {
+    const { user, chatId } = response;
+    const { text, options } = keyboards.getContactUsKeyboardSettings(
+      user.languageCode
+    );
 
     await bot.sendMessage(chatId, text, options);
-  }
-});
+  })
+);
 
 // 啟動/關閉 閱後即焚
-bot.onText(/(啟動|active) 🔥$|(關閉|Inactive) ❄️$/i, async (message, match) => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.getUser(userId);
-  const { languageCode, autoDeleteMessages } = user;
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-  const active = match[0].indexOf('🔥') > 0;
-
-  if (alreadyAccept) {
+bot.onText(
+  /(啟動|active) 🔥$|(關閉|Inactive) ❄️$/i,
+  checkUserAcceptDisclaimer(async response => {
+    const { user, match, chatId } = response;
+    const { languageCode, autoDeleteMessages } = user;
+    const active = match[0].indexOf('🔥') > 0;
     if (!autoDeleteMessages && active) {
       await users.updateUser(chatId, { autoDeleteMessages: true });
     } else if (autoDeleteMessages && !active) {
@@ -259,19 +228,17 @@ bot.onText(/(啟動|active) 🔥$|(關閉|Inactive) ❄️$/i, async (message, m
       parse_mode: 'Markdown',
     });
 
-    const { text, options } = getMainMenuKeyboardSettings(languageCode);
-
+    const { text, options } = keyboards.getMainMenuKeyboardSettings(
+      languageCode
+    );
     await bot.sendMessage(chatId, text, options);
-  }
-});
+  })
+);
 
 // unmatched message
-bot.onText(/.+/, async message => {
-  const { from: { id: userId }, chat: { id: chatId } } = message;
-  const user = await users.getUser(userId);
-  const alreadyAccept = await checkUserAcceptDisclaimer(user, chatId, bot);
-
-  if (alreadyAccept) {
+bot.onText(
+  /.+/,
+  checkUserAcceptDisclaimer(async response => {
     const str = `*想看片請輸入 "PPAV"*
 
   其他搜尋功能 🔥
@@ -279,9 +246,9 @@ bot.onText(/.+/, async message => {
   2. 搜尋女優："*% + 女優*"
   3. 搜尋片名："*@ + 關鍵字*"`;
 
-    await bot.sendMessage(chatId, str, { parse_mode: 'Markdown' });
-  }
-});
+    await bot.sendMessage(response.chatId, str, { parse_mode: 'Markdown' });
+  })
+);
 
 bot.on('callback_query', async callbackQuery => {
   const {
