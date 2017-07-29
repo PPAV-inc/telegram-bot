@@ -1,12 +1,19 @@
 import bot from './telegramBot';
+import locale from './locale';
+
+import Middleware from './middleware/Middleware';
+import checkUserAcceptDisclaimer from './middleware/checkUserAcceptDisclaimer';
+
 import * as users from '../models/users';
 import saveSearchInfo from '../models/search_keywords';
+
 import getQueryResult from './utils/getQueryResult';
 import * as keyboards from './utils/getKeyboardSettings';
 import parseAction from './utils/parseAction';
 import deleteMessage from './utils/deleteMessage';
-import checkUserAcceptDisclaimer from './middleware/checkUserAcceptDisclaimer';
-import locale from './locale';
+
+const responseMiddleware = new Middleware();
+responseMiddleware.use(checkUserAcceptDisclaimer);
 
 bot.on('message', async message => {
   await bot.sendChatAction(message.chat.id, 'typing');
@@ -76,7 +83,7 @@ bot.onText(/(接受|Accept) ✅$|(不接受|Refuse) ❌$/i, async (message, matc
 // 搜尋 番號、標題、女優
 bot.onText(
   /([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/,
-  checkUserAcceptDisclaimer(async response => {
+  responseMiddleware.go(async response => {
     const { match, chatId, user } = response;
     let type = match[1];
     const keyword = match[2];
@@ -128,7 +135,7 @@ bot.onText(
 // PPAV
 bot.onText(
   /^PPAV$/i,
-  checkUserAcceptDisclaimer(async response => {
+  responseMiddleware.go(async response => {
     const { user, chatId } = response;
     const result = await getQueryResult('PPAV');
 
@@ -152,7 +159,7 @@ bot.onText(
 // 設定
 bot.onText(
   /(設置|Setting) ⚙️$/i,
-  checkUserAcceptDisclaimer(async response => {
+  responseMiddleware.go(async response => {
     const { user, chatId } = response;
     const { text, options } = keyboards.getSettingKeyboardSettings(
       user.languageCode
@@ -165,7 +172,7 @@ bot.onText(
 // 關於 PPAV
 bot.onText(
   /(關於 PPAV|About PPAV) 👀$/i,
-  checkUserAcceptDisclaimer(async response => {
+  responseMiddleware.go(async response => {
     const { user, chatId } = response;
     await bot.sendMessage(chatId, locale(user.languageCode).about, {
       parse_mode: 'Markdown',
@@ -176,7 +183,7 @@ bot.onText(
 // 免責聲明
 bot.onText(
   /(免責聲明|Disclaimer) 📜$/i,
-  checkUserAcceptDisclaimer(async response => {
+  responseMiddleware.go(async response => {
     const { user, chatId } = response;
     await bot.sendMessage(chatId, locale(user.languageCode).disclaimer, {
       parse_mode: 'Markdown',
@@ -187,7 +194,7 @@ bot.onText(
 // 意見回饋
 bot.onText(
   /(意見回饋|Report) 🙏$/i,
-  checkUserAcceptDisclaimer(async response => {
+  responseMiddleware.go(async response => {
     await bot.sendMessage(response.chatId, locale().reportUrl, {
       parse_mode: 'Markdown',
     });
@@ -197,7 +204,7 @@ bot.onText(
 // 聯絡我們
 bot.onText(
   /(聯絡我們|Contact PPAV) 📩$/i,
-  checkUserAcceptDisclaimer(async response => {
+  responseMiddleware.go(async response => {
     const { user, chatId } = response;
     const { text, options } = keyboards.getContactUsKeyboardSettings(
       user.languageCode
@@ -210,7 +217,7 @@ bot.onText(
 // 啟動/關閉 閱後即焚
 bot.onText(
   /(啟動|active) 🔥$|(關閉|Inactive) ❄️$/i,
-  checkUserAcceptDisclaimer(async response => {
+  responseMiddleware.go(async response => {
     const { user, match, chatId } = response;
     const { languageCode, autoDeleteMessages } = user;
     const active = match[0].indexOf('🔥') > 0;
@@ -238,7 +245,7 @@ bot.onText(
 // unmatched message
 bot.onText(
   /.+/,
-  checkUserAcceptDisclaimer(async response => {
+  responseMiddleware.go(async response => {
     const str = `*想看片請輸入 "PPAV"*
 
   其他搜尋功能 🔥
