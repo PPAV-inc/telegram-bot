@@ -7,7 +7,7 @@ const checkUserAcceptDisclaimer = next => async (message, match = []) => {
   const response = {};
   const { from: { id: userId }, chat: { id: chatId } } = message;
 
-  response.msg = message;
+  response.mssage = message;
   response.chatId = chatId;
   response.userId = userId;
   response.match = match;

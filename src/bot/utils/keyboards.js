@@ -139,7 +139,8 @@ const radomVideoKeyboard = (text, result) => {
   // FIXME
   keyboard.push([
     {
-      text: `🔞 ${result.source}   👁 ${result.view_count}`,
+      // text: `🔞 ${result.source}   👁 ${result.view_count}`,
+      text: `🔞 ${result.source}`,
       url: result.url,
     },
   ]);
@@ -148,6 +149,22 @@ const radomVideoKeyboard = (text, result) => {
 
   return keyboard;
 };
+
+const imageAnalyticKeyboard = result => {
+  const keyboard = [];
+
+  // FIXME
+  keyboard.push([
+    {
+      // text: `🔞 ${result.source}   👁 ${result.view_count}`,
+      text: `🔞 ${result.source}`,
+      url: result.url,
+    },
+  ]);
+
+  return keyboard;
+};
+
 export {
   languageKeyboard,
   disclaimerKeyboard,
@@ -157,4 +174,5 @@ export {
   autoDeleteMessagesKeyboard,
   videoSourcesKeyboard,
   radomVideoKeyboard,
+  imageAnalyticKeyboard,
 };
