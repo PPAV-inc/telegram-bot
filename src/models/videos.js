@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import getDatabase from './database';
 
 const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -70,4 +71,10 @@ const getOneRandomVideo = async () => {
   };
 };
 
-export { getVideo, getOneRandomVideo };
+const getAnalyticVideos = async candidates => {
+  const db = await getDatabase();
+  const videosIds = candidates.map(candidate => ObjectId(candidate.video_id));
+  return db.collection('videos').find({ _id: { $in: videosIds } }).toArray();
+};
+
+export { getVideo, getOneRandomVideo, getAnalyticVideos };

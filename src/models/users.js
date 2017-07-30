@@ -8,7 +8,7 @@ const createUser = async message => {
     lastName: last_name,
     username,
     acceptDisclaimer: false,
-    autoDeleteMessages: true,
+    autoDeleteMessages: false,
     languageCode: language_code,
     created_at: new Date(),
   };

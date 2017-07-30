@@ -1,9 +1,13 @@
+import axios from 'axios';
+import sleep from 'sleep-promise';
+
 import bot from './telegramBot';
 import locale from './locale';
 
 import Middleware from './middleware/Middleware';
 import checkUserAcceptDisclaimer from './middleware/checkUserAcceptDisclaimer';
 
+import { getAnalyticVideos } from '../models/videos';
 import * as users from '../models/users';
 import saveSearchInfo from '../models/search_keywords';
 
@@ -12,12 +16,86 @@ import * as keyboards from './utils/getKeyboardSettings';
 import parseAction from './utils/parseAction';
 import deleteMessage from './utils/deleteMessage';
 
+import { imageAnalyticUrl } from '../../env/bot.config';
+
 const responseMiddleware = new Middleware();
 responseMiddleware.use(checkUserAcceptDisclaimer);
 
 bot.on('message', async message => {
   await bot.sendChatAction(message.chat.id, 'typing');
 });
+
+bot.on(
+  'photo',
+  responseMiddleware.go(async response => {
+    const { chatId, user, mssage } = response;
+    const { prePostText, searchingGifUrl } = locale(
+      user.languageCode
+    ).imageAnalytic;
+
+    await bot.sendDocument(chatId, searchingGifUrl, { caption: prePostText });
+
+    const image = await bot.getFileLink(mssage.photo.pop().file_id);
+    try {
+      const { data: analyticResult } = await axios.post(
+        imageAnalyticUrl,
+        {
+          image,
+        },
+        {
+          timeout: 30000,
+        }
+      );
+
+      switch (analyticResult.isFaceExist) {
+        case 1: {
+          const result = await getAnalyticVideos(analyticResult.candidate);
+          const photos = await keyboards.getImageAnalyticKeyboardSettings(
+            user.languageCode,
+            result
+          );
+
+          /* eslint-disable */
+          for (let i = 0; i < photos.length; i += 1) {
+            const { message_id: sentMessageId } = await bot.sendMessage(
+              chatId,
+              photos[i].text,
+              photos[i].options
+            );
+
+            if (user.autoDeleteMessages) {
+              await deleteMessage(chatId, sentMessageId, bot);
+            }
+
+            await sleep(500);
+          }
+          /* eslint-enable */
+
+          break;
+        }
+        case 0: {
+          const { notFound } = locale(user.languageCode).imageAnalytic;
+          await bot.sendMessage(chatId, notFound, { parse_mode: 'Markdown' });
+          break;
+        }
+        case -1: {
+          const { foundMoreThanOne } = locale(user.languageCode).imageAnalytic;
+          await bot.sendMessage(chatId, foundMoreThanOne, {
+            parse_mode: 'Markdown',
+          });
+          break;
+        }
+        default: {
+          const { notFound } = locale(user.languageCode).imageAnalytic;
+          await bot.sendMessage(chatId, notFound, { parse_mode: 'Markdown' });
+          break;
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  })
+);
 
 // 開始對話
 bot.onText(/\/start/, async message => {

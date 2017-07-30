@@ -86,13 +86,17 @@ const generateVideoMessageText = (languageCode, result) => {
     models += `${modelName} `;
   });
 
-  let tags = '';
-  result.tags.forEach(tagName => {
-    tags += `${tagName} `;
-  });
+  // FIXME 等之後有 tags 跟 duration 時再用
+  // let tags = '';
+  // result.tags.forEach(tagName => {
+  //   tags += `${tagName} `;
+  // });
 
+  // return `
+  //   ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${videoWord.tag}: *${tags}*\n${videoWord.duration}: *${result.duration}* ${videoWord.minute}\n${videoWord.image}: ${result.img_url}
+  // `;
   return `
-    ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${videoWord.tag}: *${tags}*\n${videoWord.view}: *${result.total_view_count}*\n${videoWord.duration}: *${result.duration}* ${videoWord.minute}\n${videoWord.image}: ${result.img_url}
+    ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${videoWord.image}:\n${result.img_url}
   `;
 };
 
@@ -129,6 +133,22 @@ const getRadomVideoKeyboardSettings = async (languageCode, result) => {
   return { text, options };
 };
 
+const getImageAnalyticKeyboardSettings = async (languageCode, result) => {
+  const photos = [];
+  for (let i = 0; i < result.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    const imageAnalyticKeyboard = await keyboards.imageAnalyticKeyboard(
+      result[i]
+    );
+    photos.push({
+      text: generateVideoMessageText(languageCode, result[i]),
+      options: inlineKeyboardOptions(imageAnalyticKeyboard),
+    });
+  }
+
+  return photos;
+};
+
 export {
   getLanguageKeyboardSettings,
   getDisclaimerKeyboardSettings,
@@ -138,4 +158,5 @@ export {
   getAutoDeleteMessagesKeyboardSettings,
   getVideoSourcesKeyboardSettings,
   getRadomVideoKeyboardSettings,
+  getImageAnalyticKeyboardSettings,
 };
