@@ -47,7 +47,9 @@ const videoSourcesKeyboard = async (
   for (let i = 0; i < videos.length; i += 1) {
     keyboard.push([
       {
-        text: `🔞 ${videos[i].source}   👁 ${videos[i].view_count}`,
+        // FIXME
+        // text: `🔞 ${videos[i].source}   👁 ${videos[i].view_count}`,
+        text: `🔞 ${videos[i].source}`,
         url: videos[i].url,
       },
     ]);
