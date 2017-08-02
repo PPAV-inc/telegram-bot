@@ -21,29 +21,7 @@ const getVideo = async (type, messageText, page) => {
   const db = await getDatabase();
   const results = await db
     .collection('videos')
-    .aggregate([
-      { $match: query },
-      {
-        $group: {
-          _id: '$code',
-          title: { $first: '$title' },
-          models: { $first: '$models' },
-          img_url: { $first: '$img_url' },
-          code: { $first: '$code' },
-          tags: { $first: '$tags' },
-          duration: { $first: '$duration' },
-          total_view_count: { $sum: 'view_count' },
-          videos: {
-            $push: {
-              source: '$source',
-              url: '$url',
-              view_count: '$view_count',
-            },
-          },
-        },
-      },
-      { $sort: { total_view_count: -1 } },
-    ])
+    .aggregate([{ $match: query }, { $sort: { total_view_count: -1 } }])
     .toArray();
 
   return {
@@ -60,13 +38,13 @@ const getOneRandomVideo = async () => {
   const results = await db
     .collection('videos')
     .aggregate([
-      { $sort: { count: -1 } },
+      { $sort: { total_view_count: -1 } },
       { $limit: 50 },
       { $sample: { size: 1 } },
     ])
     .toArray();
   return {
-    keyword: 'PPAV',
+    type: 'PPAV',
     result: results[0],
   };
 };
