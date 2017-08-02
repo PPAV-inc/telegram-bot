@@ -81,9 +81,16 @@ const getSettingKeyboardSettings = languageCode => {
 const generateVideoMessageText = (languageCode, result) => {
   const videoWord = locale(languageCode).videos;
 
+  Object.keys(result).map(key => {
+    if (typeof result[key] === 'string') {
+      result[key] = result[key].replace('_', '\\_'); // eslint-disable-line
+    }
+    return result[key];
+  });
+
   let models = '';
   result.models.forEach(modelName => {
-    models += `${modelName} `;
+    models += `${modelName.replace('_', '\\_')} `;
   });
 
   // FIXME 等之後有 tags 跟 duration 時再用
