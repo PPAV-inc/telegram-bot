@@ -42,6 +42,11 @@ jobs:
           command: |
             yarn config set cache-folder .yarn-cache
             yarn
+      - run:
+          name: Copy config files
+          command: |
+            cp -r ./env/bot.config.sample.js ./env/bot.config.js
+            cp -r ./env/test.sample.js ./env/test.js
       - save_cache:
           key: ppav-cache-{{checksum "yarn.lock"}}
           paths:

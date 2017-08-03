@@ -3,7 +3,7 @@ import bodyParser from 'koa-bodyparser';
 import request from 'supertest-as-promised';
 import path from 'path';
 
-const config = require(path.resolve(__dirname, '../../env/bot.config'));
+const config = require(path.resolve(__dirname, '../../../env/bot.config'));
 
 jest.mock('../../bot/telegramBot');
 
@@ -40,10 +40,13 @@ describe('bot router', () => {
       text: '111',
     },
   };
+  let app;
 
-  const app = makeApp();
-  app.use(botRouter.routes());
-  app.use(botRouter.allowedMethods());
+  beforeEach(() => {
+    app = makeApp();
+    app.use(botRouter.routes());
+    app.use(botRouter.allowedMethods());
+  });
 
   it('should be defined', () => {
     expect(botRouter).toBeDefined();

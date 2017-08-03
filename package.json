@@ -34,11 +34,8 @@
     "koa-router": "^7.2.1",
     "mongodb": "^2.2.30",
     "node-telegram-bot-api": "yagop/node-telegram-bot-api#experimental",
-<<<<<<< HEAD
+    "path": "^0.12.7",
     "sleep-promise": "^2.0.0"
-=======
-    "path": "^0.12.7"
->>>>>>> add path.resolve
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -67,19 +64,22 @@
   },
   "lint-staged": {
     "*.js": [
-<<<<<<< HEAD
       "eslint --fix",
       "git add"
-=======
-      "eslint --fix"
     ]
   },
   "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/__tests__/"
+    ],
     "testPathIgnorePatterns": [
       "node_modules/",
       "env/",
       "seeds/"
->>>>>>> add routes tests
     ]
   }
 }

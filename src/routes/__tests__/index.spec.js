@@ -11,15 +11,19 @@ function makeApp() {
 }
 
 describe('index router', () => {
+  let app;
+
+  beforeEach(() => {
+    app = makeApp();
+    app.use(indexRouter.routes());
+    app.use(indexRouter.allowedMethods());
+  });
+
   it('should be defined', () => {
     expect(indexRouter).toBeDefined();
   });
 
   it("should return 'server works' if get '/'", async () => {
-    const app = makeApp();
-    app.use(indexRouter.routes());
-    app.use(indexRouter.allowedMethods());
-
     const response = await request(app.listen()).get('/');
 
     expect(response.status).toBe(200);
@@ -27,10 +31,6 @@ describe('index router', () => {
   });
 
   it("should return status 404 if not get '/'", async () => {
-    const app = makeApp();
-    app.use(indexRouter.routes());
-    app.use(indexRouter.allowedMethods());
-
     const response = await request(app.listen()).get('/QQ');
 
     expect(response.status).toBe(404);

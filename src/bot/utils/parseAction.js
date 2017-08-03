@@ -3,7 +3,7 @@ import {
   getLanguageKeyboardSettings,
   getAutoDeleteMessagesKeyboardSettings,
   getVideoSourcesKeyboardSettings,
-  getRadomVideoKeyboardSettings,
+  getRandomVideoKeyboardSettings,
 } from './getKeyboardSettings';
 
 const regex = /type="(\w+)"&keyword="(.+)"&page="(\d+)"/;
@@ -15,7 +15,7 @@ const parseAction = async (action, languageCode = 'zh-TW') => {
     return getAutoDeleteMessagesKeyboardSettings(languageCode);
   } else if (action === 'watchMore') {
     const result = await getQueryResult('PPAV');
-    return getRadomVideoKeyboardSettings(languageCode, result);
+    return getRandomVideoKeyboardSettings(languageCode, result);
   }
 
   const data = await regex.exec(action);

@@ -1,6 +1,10 @@
 import { MongoClient } from 'mongodb';
+import path from 'path';
 
-const config = require(`../../env/${process.env.NODE_ENV || 'development'}`);
+const config = require(path.resolve(
+  __dirname,
+  `../../env/${process.env.NODE_ENV || 'development'}`
+));
 
 let _db;
 const getDatabase = async () => {
