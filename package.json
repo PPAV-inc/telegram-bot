@@ -14,7 +14,7 @@
     "lint:fix": "npm run lint -- --fix",
     "test": "npm run lint:fix && npm run testonly",
     "testonly": "cross-env NODE_ENV=test jest",
-    "testonly:cov": "jest --coverage --runInBand --forceExit --nocache",
+    "testonly:cov": "jest --coverage --runInBand --forceExit --no-cache",
     "testonly:watch": "jest --watch"
   },
   "keywords": [
@@ -34,7 +34,11 @@
     "koa-router": "^7.2.1",
     "mongodb": "^2.2.30",
     "node-telegram-bot-api": "yagop/node-telegram-bot-api#experimental",
+<<<<<<< HEAD
     "sleep-promise": "^2.0.0"
+=======
+    "path": "^0.12.7"
+>>>>>>> add path.resolve
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

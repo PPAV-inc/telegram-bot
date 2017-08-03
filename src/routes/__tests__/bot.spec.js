@@ -1,8 +1,9 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import request from 'supertest-as-promised';
+import path from 'path';
 
-import config from '../../../env/bot.config';
+const config = require(path.resolve(__dirname, '../../env/bot.config'));
 
 jest.mock('../../bot/telegramBot');
 

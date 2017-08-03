@@ -1,5 +1,10 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { botToken, url } from '../../env/bot.config';
+import path from 'path';
+
+const { botToken, url } = require(path.resolve(
+  __dirname,
+  '../../env/bot.config'
+));
 
 const options = {
   polling: true,

@@ -1,7 +1,9 @@
 import Router from 'koa-router';
+import path from 'path';
 
 import bot from '../bot';
-import config from '../../env/bot.config';
+
+const config = require(path.resolve(__dirname, '../../env/bot.config'));
 
 const { botToken } = config;
 const botRouter = new Router();
