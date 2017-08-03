@@ -11,7 +11,8 @@ botRouter.post(`/bot${botToken}`, ctx => {
   const req = ctx.request;
 
   bot.processUpdate(req.body);
-  res.sendStatus(200);
+
+  res.status = 200;
 });
 
 export default botRouter;
