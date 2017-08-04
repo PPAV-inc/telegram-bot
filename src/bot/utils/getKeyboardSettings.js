@@ -129,13 +129,13 @@ const getVideoSourcesKeyboardSettings = async (
   return { text, options };
 };
 
-const getRadomVideoKeyboardSettings = async (languageCode, result) => {
+const getRandomVideoKeyboardSettings = async (languageCode, result) => {
   const text = generateVideoMessageText(languageCode, result);
-  const radomVideoKeyboard = await keyboards.radomVideoKeyboard(
+  const randomVideoKeyboard = await keyboards.randomVideoKeyboard(
     locale(languageCode).videos.watchMore,
     result
   );
-  const options = inlineKeyboardOptions(radomVideoKeyboard);
+  const options = inlineKeyboardOptions(randomVideoKeyboard);
 
   return { text, options };
 };
@@ -164,6 +164,6 @@ export {
   getSettingKeyboardSettings,
   getAutoDeleteMessagesKeyboardSettings,
   getVideoSourcesKeyboardSettings,
-  getRadomVideoKeyboardSettings,
+  getRandomVideoKeyboardSettings,
   getImageAnalyticKeyboardSettings,
 };

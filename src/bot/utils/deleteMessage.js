@@ -1,4 +1,9 @@
-import { delayMiliseconds } from '../../../env/bot.config';
+import path from 'path';
+
+const { delayMiliseconds } = require(path.resolve(
+  __dirname,
+  '../../../env/bot.config'
+));
 
 const sleep = () =>
   new Promise(resolve => setTimeout(resolve, delayMiliseconds));

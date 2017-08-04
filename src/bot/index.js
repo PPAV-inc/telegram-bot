@@ -1,5 +1,6 @@
 import axios from 'axios';
 import sleep from 'sleep-promise';
+import path from 'path';
 
 import bot from './telegramBot';
 import locale from './locale';
@@ -16,7 +17,10 @@ import * as keyboards from './utils/getKeyboardSettings';
 import parseAction from './utils/parseAction';
 import deleteMessage from './utils/deleteMessage';
 
-import { imageAnalyticUrl } from '../../env/bot.config';
+const { imageAnalyticUrl } = require(path.resolve(
+  __dirname,
+  '../../env/bot.config'
+));
 
 const responseMiddleware = new Middleware();
 responseMiddleware.use(checkUserAcceptDisclaimer);
@@ -217,7 +221,7 @@ bot.onText(
     const { user, chatId } = response;
     const result = await getQueryResult('PPAV');
 
-    const { text, options } = await keyboards.getRadomVideoKeyboardSettings(
+    const { text, options } = await keyboards.getRandomVideoKeyboardSettings(
       user.languageCode,
       result
     );

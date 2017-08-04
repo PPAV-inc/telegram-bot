@@ -10,7 +10,12 @@
     "seed-setup": "./node_modules/.bin/seed-setup",
     "seed": "NODE_ENV=dev ./node_modules/.bin/seed",
     "precommit": "lint-staged",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "npm run lint:fix && npm run testonly",
+    "testonly": "cross-env NODE_ENV=test jest",
+    "testonly:cov": "jest --coverage --runInBand --forceExit --no-cache",
+    "testonly:watch": "jest --watch"
   },
   "keywords": [
     "PPAV",
@@ -29,14 +34,17 @@
     "koa-router": "^7.2.1",
     "mongodb": "^2.2.30",
     "node-telegram-bot-api": "yagop/node-telegram-bot-api#experimental",
+    "path": "^0.12.7",
     "sleep-promise": "^2.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.6.0",
+    "cross-env": "^5.0.2",
     "eslint": "^4.1.1",
     "eslint-config-airbnb": "^15.0.2",
     "eslint-config-prettier": "^2.3.0",
@@ -46,15 +54,32 @@
     "eslint-plugin-prettier": "^2.1.2",
     "eslint-plugin-react": "^7.1.0",
     "husky": "^0.14.3",
+    "jest": "^20.0.4",
     "lint-staged": "^4.0.1",
     "node-mongo-seeds": "^2.3.1",
     "nodemon": "^1.11.0",
-    "prettier": "^1.5.2"
+    "prettier": "^1.5.2",
+    "supertest": "^3.0.0",
+    "supertest-as-promised": "^4.0.2"
   },
   "lint-staged": {
     "*.js": [
       "eslint --fix",
       "git add"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/__tests__/"
+    ],
+    "testPathIgnorePatterns": [
+      "node_modules/",
+      "env/",
+      "seeds/"
     ]
   }
 }

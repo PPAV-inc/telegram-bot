@@ -135,17 +135,19 @@ const videoSourcesKeyboard = async (
   return keyboard;
 };
 
-const radomVideoKeyboard = (text, result) => {
+const randomVideoKeyboard = (text, result) => {
   const keyboard = [];
 
-  // FIXME
-  keyboard.push([
-    {
-      // text: `🔞 ${result.source}   👁 ${result.view_count}`,
-      text: `🔞 ${result.source}`,
-      url: result.url,
-    },
-  ]);
+  for (let i = 0; i < result.videos.length; i += 1) {
+    keyboard.push([
+      {
+        // FIXME
+        // text: `🔞 ${videos[i].source}   👁 ${videos[i].view_count}`,
+        text: `🔞 ${result.videos[i].source}`,
+        url: result.videos[i].url,
+      },
+    ]);
+  }
 
   keyboard.push([{ text, callback_data: 'watchMore' }]);
 
@@ -155,15 +157,16 @@ const radomVideoKeyboard = (text, result) => {
 const imageAnalyticKeyboard = result => {
   const keyboard = [];
 
-  // FIXME
-  keyboard.push([
-    {
-      // text: `🔞 ${result.source}   👁 ${result.view_count}`,
-      text: `🔞 ${result.source}`,
-      url: result.url,
-    },
-  ]);
-
+  for (let i = 0; i < result.videos.length; i += 1) {
+    keyboard.push([
+      {
+        // FIXME
+        // text: `🔞 ${videos[i].source}   👁 ${videos[i].view_count}`,
+        text: `🔞 ${result.videos[i].source}`,
+        url: result.videos[i].url,
+      },
+    ]);
+  }
   return keyboard;
 };
 
@@ -175,6 +178,6 @@ export {
   settingKeyboard,
   autoDeleteMessagesKeyboard,
   videoSourcesKeyboard,
-  radomVideoKeyboard,
+  randomVideoKeyboard,
   imageAnalyticKeyboard,
 };
