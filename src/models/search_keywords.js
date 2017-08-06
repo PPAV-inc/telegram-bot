@@ -1,6 +1,6 @@
 import getDatabase from './database';
 
-const saveSearchInfo = async (keyword, type) => {
+const saveSearchInfo = async (type, keyword) => {
   const db = await getDatabase();
 
   await db

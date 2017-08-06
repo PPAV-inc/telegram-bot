@@ -205,7 +205,7 @@ bot.onText(
         options
       );
 
-      await saveSearchInfo(keyword, type);
+      await saveSearchInfo(type, keyword);
 
       if (user.autoDeleteMessages) {
         await deleteMessage(chatId, sentMessageId, bot);
