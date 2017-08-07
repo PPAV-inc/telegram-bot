@@ -6,8 +6,10 @@ import path from 'path';
 const config = require(path.resolve(__dirname, '../../../env/bot.config'));
 
 jest.mock('../../bot/telegramBot');
+jest.mock('../../botimize');
 
 const botRouter = require('../bot').default;
+const botimize = require('../../botimize').default;
 
 const { botToken } = config;
 
@@ -46,6 +48,7 @@ describe('bot router', () => {
     app = makeApp();
     app.use(botRouter.routes());
     app.use(botRouter.allowedMethods());
+    botimize.logIncoming = jest.fn();
   });
 
   it('should be defined', () => {
@@ -57,6 +60,7 @@ describe('bot router', () => {
       .post(`/bot${botToken}`)
       .send(reqBody);
 
+    expect(botimize.logIncoming).toBeCalledWith(reqBody);
     expect(response.status).toBe(200);
   });
 

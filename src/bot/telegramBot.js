@@ -7,7 +7,6 @@ const { botToken, url } = require(path.resolve(
 ));
 
 const options = {
-  polling: true,
   onlyFirstMatch: true,
 };
 
