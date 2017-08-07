@@ -5,7 +5,7 @@ const { botToken, botimizeToken } = require(path.resolve(
   '../env/bot.config.js'
 ));
 
-const botimize = require('botimize')(botimizeToken, 'telegram');
+const botimize = require('botimize')(botimizeToken, 'telegram'); // eslint-disable-line
 
 botimize.sendOutgoingLog = (chatId, text) => {
   const outgoingLog = {

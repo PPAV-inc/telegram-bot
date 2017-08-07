@@ -60,7 +60,7 @@ describe('bot router', () => {
       .post(`/bot${botToken}`)
       .send(reqBody);
 
-    expect(botimize.logIncoming).toBeCalledWith(reqBody);
+    expect(botimize.logIncoming).not.toBeCalled();
     expect(response.status).toBe(200);
   });
 

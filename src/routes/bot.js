@@ -13,7 +13,9 @@ botRouter.post(`/bot${botToken}`, ctx => {
   const res = ctx.response;
   const req = ctx.request;
 
-  botimize.logIncoming(req.body);
+  if (process.env.NODE_ENV === 'production') {
+    botimize.logIncoming(req.body);
+  }
   bot.processUpdate(req.body);
 
   res.status = 200;
