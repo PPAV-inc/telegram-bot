@@ -1,41 +1,31 @@
-import http from 'http';
-import Koa from 'koa';
-import bodyparser from 'koa-bodyparser';
+import { createServer } from 'toolbot-core-experiment/koa';
 import logger from 'koa-logger';
 import compress from 'koa-compress';
 import zlib from 'zlib';
 
-import indexRouter from './src/routes/index';
-import botRouter from './src/routes/bot';
+import bot from './src/bot/';
 
 const config = require(`./env/${process.env.NODE_ENV || 'development'}`);
+const { botToken } = require('./env/bot.config');
 
-const app = new Koa();
-const port = config.port;
+const app = createServer(bot, {
+  accessToken: botToken,
+});
 
-const useRouter = (application, router) => {
-  application.use(router.routes()).use(router.allowedMethods());
-};
-
-app
-  .use(
-    compress({
-      filter: contentType => /text/i.test(contentType),
-      threshold: 2048,
-      flush: zlib.Z_SYNC_FLUSH,
-    })
-  )
-  .use(bodyparser());
+app.use(
+  compress({
+    filter: contentType => /text/i.test(contentType),
+    threshold: 2048,
+    flush: zlib.Z_SYNC_FLUSH,
+  })
+);
 
 if (config.logger) {
   app.use(logger());
 }
 
-useRouter(app, indexRouter);
-useRouter(app, botRouter);
-
-http.createServer(app.callback()).listen(port, () => {
+app.listen(config.port, () => {
   if (config.env !== 'production') {
-    console.log(`App listening on port ${port} !`); // eslint-disable-line no-console
+    console.log(`App is running on port ${config.port} !`); // eslint-disable-line no-console
   }
 });

@@ -8,9 +8,9 @@ const { delayMiliseconds } = require(path.resolve(
 const sleep = () =>
   new Promise(resolve => setTimeout(resolve, delayMiliseconds));
 
-const deleteMessage = async (chatId, sentMessageId, bot) => {
+const deleteMessage = async (sentMessageId, context) => {
   await sleep();
-  await bot.deleteMessage(chatId, sentMessageId);
+  await context.deleteMessage(sentMessageId);
 };
 
 export default deleteMessage;

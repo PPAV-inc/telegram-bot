@@ -1,29 +1,23 @@
-import bot from '../telegramBot';
 import * as users from '../../models/users';
 import { getDisclaimerKeyboardSettings } from '../utils/getKeyboardSettings';
 import locale from '../locale';
 
-const checkUserAcceptDisclaimer = next => async (message, match = []) => {
-  const response = {};
-  const { from: { id: userId }, chat: { id: chatId } } = message;
+const checkUserAcceptDisclaimer = next => async context => {
+  const { from: { id: userId } } = context.event.rawEvent.message;
 
-  response.mssage = message;
-  response.chatId = chatId;
-  response.userId = userId;
-  response.match = match;
-  response.user = await users.getUser(userId);
+  context.user = await users.getUser(userId); // eslint-disable-line
 
-  const { acceptDisclaimer, languageCode } = response.user;
+  const { acceptDisclaimer, languageCode } = context.user;
 
   if (!acceptDisclaimer) {
-    await bot.sendMessage(chatId, locale(languageCode).disclaimer, {
+    await context.sendMessage(locale(languageCode).disclaimer, {
       parse_mode: 'Markdown',
     });
 
     const { text, options } = getDisclaimerKeyboardSettings(languageCode);
-    await bot.sendMessage(chatId, text, options);
+    await context.sendMessage(text, options);
   } else {
-    next(response);
+    next(context);
   }
 };
 
