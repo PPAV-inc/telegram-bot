@@ -4,6 +4,7 @@ import path from 'path';
 
 import bot from './telegramBot';
 import locale from './locale';
+import botimize from '../botimize';
 
 import Middleware from './middleware/Middleware';
 import checkUserAcceptDisclaimer from './middleware/checkUserAcceptDisclaimer';
@@ -24,6 +25,8 @@ const { imageAnalyticUrl } = require(path.resolve(
 
 const responseMiddleware = new Middleware();
 responseMiddleware.use(checkUserAcceptDisclaimer);
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 bot.on('message', async message => {
   await bot.sendChatAction(message.chat.id, 'typing');
@@ -67,6 +70,10 @@ bot.on(
               photos[i].options
             );
 
+            if (isProduction) {
+              botimize.sendOutgoingLog(chatId, photos[i].text);
+            }
+
             if (user.autoDeleteMessages) {
               await deleteMessage(chatId, sentMessageId, bot);
             }
@@ -80,6 +87,9 @@ bot.on(
         case 0: {
           const { notFound } = locale(user.languageCode).imageAnalytic;
           await bot.sendMessage(chatId, notFound, { parse_mode: 'Markdown' });
+          if (isProduction) {
+            botimize.sendOutgoingLog(chatId, notFound);
+          }
           break;
         }
         case -1: {
@@ -87,11 +97,17 @@ bot.on(
           await bot.sendMessage(chatId, foundMoreThanOne, {
             parse_mode: 'Markdown',
           });
+          if (isProduction) {
+            botimize.sendOutgoingLog(chatId, foundMoreThanOne);
+          }
           break;
         }
         default: {
           const { notFound } = locale(user.languageCode).imageAnalytic;
           await bot.sendMessage(chatId, notFound, { parse_mode: 'Markdown' });
+          if (isProduction) {
+            botimize.sendOutgoingLog(chatId, notFound);
+          }
           break;
         }
       }
@@ -117,6 +133,9 @@ bot.onText(/\/start/, async message => {
 
   const { text, options } = keyboards.getLanguageKeyboardSettings();
   await bot.sendMessage(chatId, text, options);
+  if (isProduction) {
+    botimize.sendOutgoingLog(chatId, text);
+  }
 });
 
 // 更新使用者語言
@@ -135,6 +154,9 @@ bot.onText(/(繁體中文|English)$/i, async message => {
       languageCode
     );
     await bot.sendMessage(chatId, text, options);
+    if (isProduction) {
+      botimize.sendOutgoingLog(chatId, text);
+    }
   })(message);
 });
 
@@ -159,6 +181,9 @@ bot.onText(/(接受|Accept) ✅$|(不接受|Refuse) ❌$/i, async (message, matc
       languageCode
     );
     await bot.sendMessage(chatId, text, options);
+    if (isProduction) {
+      botimize.sendOutgoingLog(chatId, text);
+    }
   }
 });
 
@@ -204,6 +229,9 @@ bot.onText(
         text,
         options
       );
+      if (isProduction) {
+        botimize.sendOutgoingLog(chatId, text);
+      }
 
       await saveSearchInfo(type, keyword);
 
@@ -231,6 +259,9 @@ bot.onText(
       text,
       options
     );
+    if (isProduction) {
+      botimize.sendOutgoingLog(chatId, text);
+    }
 
     if (user.autoDeleteMessages) {
       await deleteMessage(chatId, sentMessageId, bot);
@@ -248,6 +279,9 @@ bot.onText(
     );
 
     await bot.sendMessage(chatId, text, options);
+    if (isProduction) {
+      botimize.sendOutgoingLog(chatId, text);
+    }
   })
 );
 
@@ -256,9 +290,13 @@ bot.onText(
   /(關於 PPAV|About PPAV) 👀$/i,
   responseMiddleware.go(async response => {
     const { user, chatId } = response;
-    await bot.sendMessage(chatId, locale(user.languageCode).about, {
+    const text = locale(user.languageCode).about;
+    await bot.sendMessage(chatId, text, {
       parse_mode: 'Markdown',
     });
+    if (isProduction) {
+      botimize.sendOutgoingLog(chatId, text);
+    }
   })
 );
 
@@ -267,9 +305,13 @@ bot.onText(
   /(免責聲明|Disclaimer) 📜$/i,
   responseMiddleware.go(async response => {
     const { user, chatId } = response;
-    await bot.sendMessage(chatId, locale(user.languageCode).disclaimer, {
+    const text = locale(user.languageCode).disclaimer;
+    await bot.sendMessage(chatId, text, {
       parse_mode: 'Markdown',
     });
+    if (isProduction) {
+      botimize.sendOutgoingLog(chatId, text);
+    }
   })
 );
 
@@ -277,9 +319,13 @@ bot.onText(
 bot.onText(
   /(意見回饋|Report) 🙏$/i,
   responseMiddleware.go(async response => {
-    await bot.sendMessage(response.chatId, locale().reportUrl, {
+    const text = locale().reportUrl;
+    await bot.sendMessage(response.chatId, text, {
       parse_mode: 'Markdown',
     });
+    if (isProduction) {
+      botimize.sendOutgoingLog(response.chatId, text);
+    }
   })
 );
 
@@ -293,6 +339,9 @@ bot.onText(
     );
 
     await bot.sendMessage(chatId, text, options);
+    if (isProduction) {
+      botimize.sendOutgoingLog(chatId, text);
+    }
   })
 );
 
@@ -321,6 +370,9 @@ bot.onText(
       languageCode
     );
     await bot.sendMessage(chatId, text, options);
+    if (isProduction) {
+      botimize.sendOutgoingLog(chatId, text);
+    }
   })
 );
 
@@ -328,14 +380,17 @@ bot.onText(
 bot.onText(
   /.+/,
   responseMiddleware.go(async response => {
-    const str = `*想看片請輸入 "PPAV"*
+    const text = `*想看片請輸入 "PPAV"*
 
   其他搜尋功能 🔥
   1. 搜尋番號："*# + 番號*"
   2. 搜尋女優："*% + 女優*"
   3. 搜尋片名："*@ + 關鍵字*"`;
 
-    await bot.sendMessage(response.chatId, str, { parse_mode: 'Markdown' });
+    await bot.sendMessage(response.chatId, text, { parse_mode: 'Markdown' });
+    if (isProduction) {
+      botimize.sendOutgoingLog(response.chatId, text);
+    }
   })
 );
 
@@ -357,6 +412,9 @@ bot.on('callback_query', async callbackQuery => {
     });
   } else {
     await bot.sendMessage(chatId, text, options);
+  }
+  if (isProduction) {
+    botimize.sendOutgoingLog(chatId, text);
   }
 });
 
