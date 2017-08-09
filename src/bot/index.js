@@ -227,94 +227,94 @@ builder.onText(
     }
   })
 );
+
+// PPAV
+builder.onText(
+ /^PPAV$/i,
+ responseMiddleware.go(async context => {
+   const { user } = context;
+   const result = await getQueryResult('PPAV');
+
+   const { text, options } = await keyboards.getRandomVideoKeyboardSettings(
+     user.languageCode,
+     result
+   );
+
+   await context.sendMessage(text, options);
+//   const { message_id: sentMessageId } = await context.sendMessage(
+//     text,
+//     options
+//   );
 //
-// // PPAV
-// bot.onText(
-//   /^PPAV$/i,
-//   responseMiddleware.go(async response => {
-//     const { user, chatId } = response;
-//     const result = await getQueryResult('PPAV');
-//
-//     const { text, options } = await keyboards.getRandomVideoKeyboardSettings(
-//       user.languageCode,
-//       result
-//     );
-//
-//     const { message_id: sentMessageId } = await bot.sendMessage(
-//       chatId,
-//       text,
-//       options
-//     );
-//
-//     if (user.autoDeleteMessages) {
-//       await deleteMessage(chatId, sentMessageId, bot);
-//     }
-//   })
-// );
-//
-// // 設定
-// bot.onText(
-//   /(設置|Setting) ⚙️$/i,
-//   responseMiddleware.go(async response => {
-//     const { user, chatId } = response;
-//     const { text, options } = keyboards.getSettingKeyboardSettings(
-//       user.languageCode
-//     );
-//
-//     await bot.sendMessage(chatId, text, options);
-//   })
-// );
-//
-// // 關於 PPAV
-// bot.onText(
-//   /(關於 PPAV|About PPAV) 👀$/i,
-//   responseMiddleware.go(async response => {
-//     const { user, chatId } = response;
-//     await bot.sendMessage(chatId, locale(user.languageCode).about, {
-//       parse_mode: 'Markdown',
-//     });
-//   })
-// );
-//
-// // 免責聲明
-// bot.onText(
-//   /(免責聲明|Disclaimer) 📜$/i,
-//   responseMiddleware.go(async response => {
-//     const { user, chatId } = response;
-//     await bot.sendMessage(chatId, locale(user.languageCode).disclaimer, {
-//       parse_mode: 'Markdown',
-//     });
-//   })
-// );
-//
-// // 意見回饋
-// bot.onText(
-//   /(意見回饋|Report) 🙏$/i,
-//   responseMiddleware.go(async response => {
-//     await bot.sendMessage(response.chatId, locale().reportUrl, {
-//       parse_mode: 'Markdown',
-//     });
-//   })
-// );
-//
-// // 聯絡我們
-// bot.onText(
-//   /(聯絡我們|Contact PPAV) 📩$/i,
-//   responseMiddleware.go(async response => {
-//     const { user, chatId } = response;
-//     const { text, options } = keyboards.getContactUsKeyboardSettings(
-//       user.languageCode
-//     );
-//
-//     await bot.sendMessage(chatId, text, options);
-//   })
-// );
-//
+//   if (user.autoDeleteMessages) {
+//     await deleteMessage(chatId, sentMessageId, bot);
+//   }
+ })
+);
+
+// 設定
+builder.onText(
+  /(設置|Setting) ⚙️$/i,
+  responseMiddleware.go(async context => {
+    const { user } = context;
+    const { text, options } = keyboards.getSettingKeyboardSettings(
+      user.languageCode
+    );
+
+    await context.sendMessage(text, options);
+  })
+);
+
+// 關於 PPAV
+builder.onText(
+  /(關於 PPAV|About PPAV) 👀$/i,
+  responseMiddleware.go(async context => {
+    const { user } = context;
+    await context.sendMessage(locale(user.languageCode).about, {
+      parse_mode: 'Markdown',
+    });
+  })
+);
+
+// 免責聲明
+builder.onText(
+  /(免責聲明|Disclaimer) 📜$/i,
+  responseMiddleware.go(async context => {
+    const { user } = context;
+    await context.sendMessage(chatId, locale(user.languageCode).disclaimer, {
+      parse_mode: 'Markdown',
+    });
+  })
+);
+
+// 意見回饋
+builder.onText(
+  /(意見回饋|Report) 🙏$/i,
+  responseMiddleware.go(async context => {
+    await context.sendMessage(locale().reportUrl, {
+      parse_mode: 'Markdown',
+    });
+  })
+);
+
+// 聯絡我們
+builder.onText(
+  /(聯絡我們|Contact PPAV) 📩$/i,
+  responseMiddleware.go(async context => {
+    const { user } = context;
+    const { text, options } = keyboards.getContactUsKeyboardSettings(
+      user.languageCode
+    );
+
+    await context.sendMessage(text, options);
+  })
+);
+
 // // 啟動/關閉 閱後即焚
 // bot.onText(
 //   /(啟動|active) 🔥$|(關閉|Inactive) ❄️$/i,
-//   responseMiddleware.go(async response => {
-//     const { user, match, chatId } = response;
+//   responseMiddleware.go(async context => {
+//     const { user, match, chatId } = context;
 //     const { languageCode, autoDeleteMessages } = user;
 //     const active = match[0].indexOf('🔥') > 0;
 //     if (!autoDeleteMessages && active) {
@@ -327,33 +327,31 @@ builder.onText(
 //       ? locale(languageCode).autoDeleteMessages.alreadyActive
 //       : locale(languageCode).autoDeleteMessages.alreadyInactive;
 //
-//     await bot.sendMessage(chatId, confirmText, {
-//       parse_mode: 'Markdown',
-//     });
+//     await context.sendMessage(confirmText, { parse_mode: 'Markdown' });
 //
 //     const { text, options } = keyboards.getMainMenuKeyboardSettings(
 //       languageCode
 //     );
-//     await bot.sendMessage(chatId, text, options);
+//     await context.sendMessage(text, options);
 //   })
 // );
-//
-// // unmatched message
-// bot.onText(
-//   /.+/,
-//   responseMiddleware.go(async response => {
-//     const str = `*想看片請輸入 "PPAV"*
-//
-//   其他搜尋功能 🔥
-//   1. 搜尋番號："*# + 番號*"
-//   2. 搜尋女優："*% + 女優*"
-//   3. 搜尋片名："*@ + 關鍵字*"`;
-//
-//     await bot.sendMessage(response.chatId, str, { parse_mode: 'Markdown' });
-//   })
-// );
-//
-// bot.on('callback_query', async callbackQuery => {
+
+// unmatched message
+builder.onText(
+  /.+/,
+  responseMiddleware.go(async context => {
+    const str = `*想看片請輸入 "PPAV"*
+
+  其他搜尋功能 🔥
+  1. 搜尋番號："*# + 番號*"
+  2. 搜尋女優："*% + 女優*"
+  3. 搜尋片名："*@ + 關鍵字*"`;
+
+    await context.sendMessage(str, { parse_mode: 'Markdown' });
+  })
+);
+
+// builder.on('callback_query', async callbackQuery => {
 //   const {
 //     from: { id: userId },
 //     message: { message_id, chat: { id: chatId } },
@@ -364,13 +362,13 @@ builder.onText(
 //   const { text, options } = await parseAction(action, languageCode);
 //
 //   if (text.indexOf(':') > -1) {
-//     await bot.editMessageText(text, {
+//     await builder.editMessageText(text, {
 //       chat_id: chatId,
 //       message_id,
 //       ...options,
 //     });
 //   } else {
-//     await bot.sendMessage(chatId, text, options);
+//     await builder.sendMessage(chatId, text, options);
 //   }
 // });
 bot.handle(builder.build());
