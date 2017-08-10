@@ -1,20 +1,24 @@
 import Router from 'koa-router';
+import bodyParser from 'koa-bodyparser';
 import path from 'path';
 
-import bot from '../bot';
+import bot from '../bot/';
 
-const config = require(path.resolve(__dirname, '../../env/bot.config'));
+const { botToken } = require(path.resolve(__dirname, '../../env/bot.config'));
 
-const { botToken } = config;
 const botRouter = new Router();
+botRouter.use(bodyParser());
 
-botRouter.post(`/bot${botToken}`, ctx => {
-  const res = ctx.response;
-  const req = ctx.request;
+const requestHandler = bot.createRequestHandler();
 
-  bot.processUpdate(req.body);
-
-  res.status = 200;
+botRouter.post(`/bot${botToken}`, async ({ request, response }) => {
+  if (!request.body) {
+    throw new Error(
+      'createMiddleware(): Missing body parser. Use `koa-bodyparser` or other similar package before this middleware.'
+    );
+  }
+  await requestHandler(request.body);
+  response.status = 200;
 });
 
 export default botRouter;

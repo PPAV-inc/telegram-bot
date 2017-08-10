@@ -2,7 +2,7 @@ import * as users from '../../models/users';
 import { getDisclaimerKeyboardSettings } from '../utils/getKeyboardSettings';
 import locale from '../locale';
 
-const checkUserAcceptDisclaimer = next => async context => {
+const userAuthenticatedMiddleware = async (context, next) => {
   const { from: { id: userId } } = context.event._rawEvent.message;
 
   context.user = await users.getUser(userId); // eslint-disable-line
@@ -21,4 +21,4 @@ const checkUserAcceptDisclaimer = next => async context => {
   }
 };
 
-export default checkUserAcceptDisclaimer;
+export default userAuthenticatedMiddleware;

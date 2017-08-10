@@ -9,7 +9,8 @@ import {
 import bot from './telegramBot';
 import locale from './locale';
 
-import checkUserAcceptDisclaimer from './middleware/checkUserAcceptDisclaimer';
+import startHandlerMiddleware from './middleware/startHandlerMiddleware';
+import mainHandlerMiddleware from './middleware/mainHandlerMiddleware';
 
 import * as users from '../models/users';
 import saveSearchInfo from '../models/search_keywords';
@@ -26,7 +27,6 @@ const { imageAnalyticUrl } = require(path.resolve(
 ));
 */
 
-const startBuilder = new TelegramHandlerBuilder();
 const builder = new TelegramHandlerBuilder();
 
 // bot.on('message', async message => {
@@ -105,68 +105,6 @@ const builder = new TelegramHandlerBuilder();
 //   })
 // );
 //
-
-// 開始對話
-startBuilder.onText(/\/start/, async context => {
-  const { from: { id: userId } } = context.event._rawEvent.message;
-
-  const user = await users.getUser(userId);
-  if (!user) {
-    await users.createUser(context.event._rawEvent.message);
-  }
-
-  await context.sendMessage(
-    '*♥️♥️ 歡迎使用 PPAV ♥️♥️*\n*♥️♥️ Welcome to PPAV ♥️♥️*',
-    { parse_mode: 'Markdown' }
-  );
-
-  const { text, options } = keyboards.getLanguageKeyboardSettings();
-  await context.sendMessage(text, options);
-});
-
-// 更新使用者語言
-startBuilder.onText(/(繁體中文|English)$/i, async context => {
-  const { from: { id: userId } } = context.event._rawEvent.message;
-  const languageCode =
-    context.event._rawEvent.message.text === '繁體中文' ? 'zh-TW' : 'en';
-
-  await users.updateUser(userId, { languageCode });
-
-  await context.sendMessage(locale(languageCode).updateUserLanguage, {
-    parse_mode: 'Markdown',
-  });
-
-  await checkUserAcceptDisclaimer(async () => {
-    const { text, options } = keyboards.getMainMenuKeyboardSettings(
-      languageCode
-    );
-    await context.sendMessage(text, options);
-  })(context);
-});
-
-// 接受/不接受 免責聲明
-startBuilder.onText(/(接受|Accept) ✅$|(不接受|Refuse) ❌$/i, async context => {
-  const message = context.event._rawEvent.message;
-  const match = /(接受|Accept) ✅$|(不接受|Refuse) ❌$/i.exec(message.text);
-  const { from: { id: userId } } = message;
-  const accept = match[0].indexOf('✅') > 0;
-  const { languageCode } = await users.getUser(userId);
-
-  await users.updateUser(userId, { acceptDisclaimer: accept });
-
-  const confirmText = accept
-    ? locale(languageCode).acceptDisclaimer.alreadyAccept
-    : locale(languageCode).acceptDisclaimer.alreadyRefuse;
-
-  await context.sendMessage(confirmText, { parse_mode: 'Markdown' });
-
-  if (accept) {
-    const { text, options } = keyboards.getMainMenuKeyboardSettings(
-      languageCode
-    );
-    await context.sendMessage(text, options);
-  }
-});
 
 // 搜尋 番號、標題、女優
 builder.onText(/([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/, async context => {
@@ -339,16 +277,12 @@ builder.onCallbackQuery(/.*/, async context => {
     await context.sendMessage(text, options);
   }
 });
-
-const startHandler = (context, next) =>
-  new TelegramHandlerBuilder()
-    .onText(/[\s\S]+/, checkUserAcceptDisclaimer(next))
-    .build()(context);
-const handler = builder.build();
+//
+// const handler = builder.build();
 
 const middlewareHandlerBuilder = new MiddlewareHandlerBuilder()
-  .use(startHandler)
-  .use(handler);
+  .use(startHandlerMiddleware)
+  .use(mainHandlerMiddleware);
 
 bot.handle(middlewareHandlerBuilder.build());
 

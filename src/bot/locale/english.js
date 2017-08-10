@@ -61,6 +61,8 @@ const english = {
     foundMoreThanOne:
       'Your photo may *contains more than one face*\nIt causes no result found 😿\nTry another photo please 🤘',
   },
+  unhandled:
+    '*Get random video please enter "PPAV"*\n  Search video 🔥\n  1. Search Code："*# + Code*"\n  2. Search Model："*% + Model*"\n  3. Seach Title："*@ + Title*"',
 };
 
 export default english;
