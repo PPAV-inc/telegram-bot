@@ -3569,9 +3569,9 @@ messaging-api-messenger@^0.2.4:
     axios "^0.16.1"
     invariant "^2.2.2"
 
-messaging-api-slack@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/messaging-api-slack/-/messaging-api-slack-0.2.4.tgz#e83bb2e9f68f3294281f999ea7deb843f012d8ea"
+messaging-api-slack@^0.2.5-1:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/messaging-api-slack/-/messaging-api-slack-0.2.5.tgz#e87b2b4f4c93fabe9caa19811d57c3188b3e12f0"
   dependencies:
     axios "^0.16.1"
     invariant "^2.2.2"
@@ -5114,9 +5114,9 @@ to-fast-properties@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-1.0.3.tgz#b83571fa4d8c25b82e231b06e3a3055de4ca1a47"
 
-toolbot-core-experiment@^0.10.0-0:
-  version "0.10.0-0"
-  resolved "https://registry.yarnpkg.com/toolbot-core-experiment/-/toolbot-core-experiment-0.10.0-0.tgz#3d8e5da3ab1259dd14212236ea726492bbed18bc"
+toolbot-core-experiment@^0.10.0-4:
+  version "0.10.0-4"
+  resolved "https://registry.yarnpkg.com/toolbot-core-experiment/-/toolbot-core-experiment-0.10.0-4.tgz#2bd703426da8714429ec91a5debffa4fc99efe65"
   dependencies:
     "@yoctol/static" "^0.0.2-1"
     axios "^0.16.2"
@@ -5146,7 +5146,7 @@ toolbot-core-experiment@^0.10.0-0:
     lodash "^4.17.4"
     messaging-api-line "^0.2.4"
     messaging-api-messenger "^0.2.4"
-    messaging-api-slack "^0.2.4"
+    messaging-api-slack "^0.2.5-1"
     messaging-api-telegram "^0.2.4"
     micro "^7.3.3"
     mongodb "^2.2.27"

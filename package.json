@@ -37,7 +37,7 @@
     "node-telegram-bot-api": "yagop/node-telegram-bot-api#experimental",
     "path": "^0.12.7",
     "sleep-promise": "^2.0.0",
-    "toolbot-core-experiment": "^0.10.0-0"
+    "toolbot-core-experiment": "^0.10.0-4"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

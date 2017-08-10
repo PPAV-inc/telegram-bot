@@ -3,7 +3,7 @@ import { getDisclaimerKeyboardSettings } from '../utils/getKeyboardSettings';
 import locale from '../locale';
 
 const checkUserAcceptDisclaimer = next => async context => {
-  const { from: { id: userId } } = context.event.rawEvent.message;
+  const { from: { id: userId } } = context.event._rawEvent.message;
 
   context.user = await users.getUser(userId); // eslint-disable-line
 
@@ -17,7 +17,7 @@ const checkUserAcceptDisclaimer = next => async context => {
     const { text, options } = getDisclaimerKeyboardSettings(languageCode);
     await context.sendMessage(text, options);
   } else {
-    next(context);
+    await next(context);
   }
 };
 
