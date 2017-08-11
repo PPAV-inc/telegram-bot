@@ -3,7 +3,12 @@ import { getDisclaimerKeyboardSettings } from '../utils/getKeyboardSettings';
 import locale from '../locale';
 
 const userAuthenticatedMiddleware = async (context, next) => {
-  const { from: { id: userId } } = context.event._rawEvent.message;
+  let userId;
+  if (context.event.callbackQuery !== undefined) {
+    userId = context.event.callbackQuery.from.id;
+  } else {
+    userId = context.event._rawEvent.message.from.id;
+  }
 
   context.user = await users.getUser(userId); // eslint-disable-line
 

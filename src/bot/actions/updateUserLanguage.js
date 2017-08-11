@@ -2,7 +2,7 @@ import locale from '../locale';
 import { updateUser } from '../../models/users';
 import userAuthenticatedMiddleware from '../middleware/userAuthenticatedMiddleware';
 
-const updateUserLanguage = async context => {
+const updateUserLanguage = async (context, next) => {
   const { from: { id: userId } } = context.event._rawEvent.message;
   const languageCode =
     context.event._rawEvent.message.text === '繁體中文' ? 'zh-TW' : 'en';
@@ -13,7 +13,7 @@ const updateUserLanguage = async context => {
     parse_mode: 'Markdown',
   });
 
-  await userAuthenticatedMiddleware(context, () => {});
+  await userAuthenticatedMiddleware(context, next);
 };
 
 export default updateUserLanguage;

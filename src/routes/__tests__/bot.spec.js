@@ -5,9 +5,11 @@ import path from 'path';
 
 const config = require(path.resolve(__dirname, '../../../env/bot.config'));
 
-jest.mock('../../bot/telegramBot');
+jest.mock('../../bot/', () => ({
+  createRequestHandler: jest.fn(() => () => Promise.resolve()),
+}));
 
-const botRouter = require('../bot').default;
+const botRouter = require('../bot');
 
 const { botToken } = config;
 

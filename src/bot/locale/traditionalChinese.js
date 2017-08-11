@@ -29,7 +29,6 @@ const traditionalChinese = {
     text: '設置 ⚙️',
     buttons: {
       changLanguage: '變更語言 🌐',
-      autoDeleteMessages: '閱後即焚 🔥',
     },
   },
   autoDeleteMessages: {

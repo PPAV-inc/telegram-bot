@@ -21,4 +21,5 @@ botRouter.post(`/bot${botToken}`, async ({ request, response }) => {
   response.status = 200;
 });
 
-export default botRouter;
+module.exports = botRouter;
+module.exports.requestHandler = requestHandler;

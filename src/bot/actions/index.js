@@ -10,6 +10,7 @@ import report from './report';
 import contactUs from './contactUs';
 import unhandled from './unhandled';
 import callbackQuery from './callbackQuery';
+import imageAnalytic from './imageAnalytic';
 
 export {
   checkAcceptDisclaimer,
@@ -24,4 +25,5 @@ export {
   contactUs,
   unhandled,
   callbackQuery,
+  imageAnalytic,
 };

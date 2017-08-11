@@ -9,6 +9,7 @@ import {
   contactUs,
   unhandled,
   callbackQuery,
+  imageAnalytic,
 } from '../actions';
 
 const mainHandlerMiddleware = context =>
@@ -17,8 +18,10 @@ const mainHandlerMiddleware = context =>
     .onText(/([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/, searchVideos)
     // PPAV
     .onText(/^PPAV$/i, randomVideo)
-    // 接受/不接受 免責聲明
+    // 設置
     .onText(/(設置|Setting) ⚙️$/i, setting)
+    // 圖片分析
+    .onPhoto(imageAnalytic)
     // 關於 PPAV
     .onText(/(關於 PPAV|About PPAV) 👀$/i, about)
     // 免責聲明
@@ -27,10 +30,10 @@ const mainHandlerMiddleware = context =>
     .onText(/(意見回饋|Report) 🙏$/i, report)
     // 聯絡我們
     .onText(/(聯絡我們|Contact PPAV) 📩$/i, contactUs)
-    // unhandled
-    .onUnhandled(unhandled)
     // callback_query
     .onCallbackQuery(/.*/, callbackQuery)
+    // unhandled
+    .onUnhandled(unhandled)
     .build()(context);
 
 export default mainHandlerMiddleware;
