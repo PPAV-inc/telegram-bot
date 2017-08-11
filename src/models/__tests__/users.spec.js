@@ -1,5 +1,6 @@
 jest.mock('mongodb');
 jest.mock('../database');
+jest.mock('../../bot/');
 
 const getDatabase = require('../database').default;
 const { createUser, getUser, updateUser } = require('../users');

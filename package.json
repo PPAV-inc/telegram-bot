@@ -33,9 +33,11 @@
     "koa-logger": "^3.0.1",
     "koa-router": "^7.2.1",
     "mongodb": "^2.2.30",
+    "ngrok": "^2.2.15",
     "node-telegram-bot-api": "yagop/node-telegram-bot-api#experimental",
     "path": "^0.12.7",
-    "sleep-promise": "^2.0.0"
+    "sleep-promise": "^2.0.0",
+    "toolbot-core-experiment": "^0.10.0-4"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

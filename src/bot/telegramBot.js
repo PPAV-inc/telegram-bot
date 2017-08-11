@@ -1,4 +1,5 @@
-import TelegramBot from 'node-telegram-bot-api';
+import { TelegramBot } from 'toolbot-core-experiment';
+
 import path from 'path';
 
 const { botToken, url } = require(path.resolve(
@@ -6,13 +7,10 @@ const { botToken, url } = require(path.resolve(
   '../../env/bot.config'
 ));
 
-const options = {
-  polling: true,
-  onlyFirstMatch: true,
-};
+const bot = new TelegramBot({
+  accessToken: botToken,
+});
 
-const bot = new TelegramBot(botToken, options);
-
-bot.setWebHook(`${url}/bot${botToken}`);
+bot.connector._client.setWebhook(`${url}/bot${botToken}`);
 
 export default bot;
