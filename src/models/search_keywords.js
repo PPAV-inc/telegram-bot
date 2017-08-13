@@ -12,6 +12,10 @@ const saveSearchInfo = async (type, keyword) => {
       { upsert: true }
     );
 
+  // set expired time to remove old document
+  await db
+    .collection('hot_search_keywords')
+    .createIndex({ created_at: 1 }, { expireAfterSeconds: 604800 });
   await db.collection('hot_search_keywords').insertOne({
     keyword,
     type,
