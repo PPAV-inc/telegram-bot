@@ -9,13 +9,15 @@ const start = async context => {
     await users.createUser(context.event._rawEvent.message);
   }
 
-  await context.sendMessage(
-    '*♥️♥️ 歡迎使用 PPAV ♥️♥️*\n*♥️♥️ Welcome to PPAV ♥️♥️*',
-    { parse_mode: 'Markdown' }
-  );
+  const messageContent = getLanguageKeyboardSettings();
 
-  const { text, options } = getLanguageKeyboardSettings();
-  await context.sendMessage(text, options);
+  context.sendMessageContent.push(
+    {
+      text: '*♥️♥️ 歡迎使用 PPAV ♥️♥️*\n*♥️♥️ Welcome to PPAV ♥️♥️*',
+      options: { parse_mode: 'Markdown' },
+    },
+    messageContent
+  );
 };
 
 export default start;

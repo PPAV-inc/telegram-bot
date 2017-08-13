@@ -18,7 +18,10 @@ const callbackQuery = async context => {
       ...options,
     });
   } else {
-    await context.sendMessage(text, options);
+    context.sendMessageContent.push({
+      text,
+      options,
+    });
   }
 };
 

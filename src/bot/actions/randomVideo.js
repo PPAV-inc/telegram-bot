@@ -5,20 +5,12 @@ const randomVideo = async context => {
   const { user } = context;
   const result = await getQueryResult('PPAV');
 
-  const { text, options } = await getRandomVideoKeyboardSettings(
+  const messageContent = await getRandomVideoKeyboardSettings(
     user.languageCode,
     result
   );
 
-  await context.sendMessage(text, options);
-  //   const { message_id: sentMessageId } = await context.sendMessage(
-  //     text,
-  //     options
-  //   );
-  //
-  //   if (user.autoDeleteMessages) {
-  //     await deleteMessage(chatId, sentMessageId, bot);
-  //   }
+  context.sendMessageContent.push(messageContent);
 };
 
 export default randomVideo;

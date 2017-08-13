@@ -3,4 +3,5 @@ module.exports = {
   url: '__PUBLIC_URL__',
   delayMiliseconds: 10000,
   imageAnalyticUrl: '__IMAGE_ANALYTIC_URL__',
+  botimizeToken: '__BOTIMIZE_TOKEN__',
 };

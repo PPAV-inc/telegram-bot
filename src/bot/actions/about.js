@@ -2,8 +2,10 @@ import locale from '../locale';
 
 const about = async context => {
   const { user } = context;
-  await context.sendMessage(locale(user.languageCode).about, {
-    parse_mode: 'Markdown',
+
+  context.sendMessageContent.push({
+    text: locale(user.languageCode).about,
+    options: { parse_mode: 'Markdown' },
   });
 };
 
