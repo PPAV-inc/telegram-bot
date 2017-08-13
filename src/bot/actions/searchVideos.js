@@ -23,8 +23,11 @@ const searchVideos = async context => {
   const { totalCount, result } = await getQueryResult(type, keyword, firstPage);
 
   if (totalCount === 0) {
-    await context.sendMessage(locale(user.languageCode).videos.notFound, {
-      parse_mode: 'Markdown',
+    context.sendMessageContent.push({
+      text: locale(user.languageCode).videos.notFound,
+      options: {
+        parse_mode: 'Markdown',
+      },
     });
   } else {
     const { text, options } = await getVideoSourcesKeyboardSettings(
@@ -36,18 +39,11 @@ const searchVideos = async context => {
       totalCount
     );
 
-    // FIXME
-    // const { message_id: sentMessageId } = await context.sendMessage(
-    //   text,
-    //   options
-    // );
-    //
-    // if (user.autoDeleteMessages) {
-    //   await deleteMessage(sentMessageId, context);
-    // }
-
-    await context.sendMessage(text, options);
     await saveSearchInfo(keyword, type);
+    context.sendMessageContent.push({
+      text,
+      options,
+    });
   }
 };
 

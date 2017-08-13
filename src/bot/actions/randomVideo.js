@@ -10,15 +10,10 @@ const randomVideo = async context => {
     result
   );
 
-  await context.sendMessage(text, options);
-  //   const { message_id: sentMessageId } = await context.sendMessage(
-  //     text,
-  //     options
-  //   );
-  //
-  //   if (user.autoDeleteMessages) {
-  //     await deleteMessage(chatId, sentMessageId, bot);
-  //   }
+  context.sendMessageContent.push({
+    text,
+    options,
+  });
 };
 
 export default randomVideo;

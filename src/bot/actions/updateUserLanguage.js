@@ -9,8 +9,11 @@ const updateUserLanguage = async (context, next) => {
 
   await updateUser(userId, { languageCode });
 
-  await context.sendMessage(locale(languageCode).updateUserLanguage, {
-    parse_mode: 'Markdown',
+  context.sendMessageContent.push({
+    text: locale(languageCode).updateUserLanguage,
+    options: {
+      parse_mode: 'Markdown',
+    },
   });
 
   await userAuthenticatedMiddleware(context, next);

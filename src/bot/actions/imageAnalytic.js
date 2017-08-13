@@ -1,5 +1,4 @@
 import axios from 'axios';
-import sleep from 'sleep-promise';
 import path from 'path';
 
 import locale from '../locale';
@@ -43,38 +42,34 @@ const imageAnalytic = async context => {
           result
         );
 
-        /* eslint-disable */
         for (let i = 0; i < photos.length; i += 1) {
-          const { message_id: sentMessageId } = await context.sendMessage(
-            photos[i].text,
-            photos[i].options
-          );
-
-          // if (user.autoDeleteMessages) {
-          //   await deleteMessage(sentMessageId, context);
-          // }
-
-          await sleep(500);
+          context.sendMessageContent.push({
+            text: photos[i].text,
+            options: photos[i].options,
+          });
         }
-        /* eslint-enable */
 
         break;
       }
       case 0: {
-        const { notFound } = locale(user.languageCode).imageAnalytic;
-        await context.sendMessage(notFound, { parse_mode: 'Markdown' });
+        context.sendMessageContent.push({
+          text: locale(user.languageCode).imageAnalytic.notFound,
+          options: { parse_mode: 'Markdown' },
+        });
         break;
       }
       case -1: {
-        const { foundMoreThanOne } = locale(user.languageCode).imageAnalytic;
-        await context.sendMessage(foundMoreThanOne, {
-          parse_mode: 'Markdown',
+        context.sendMessageContent.push({
+          text: locale(user.languageCode).imageAnalytic.foundMoreThanOne,
+          options: { parse_mode: 'Markdown' },
         });
         break;
       }
       default: {
-        const { notFound } = locale(user.languageCode).imageAnalytic;
-        await context.sendMessage(notFound, { parse_mode: 'Markdown' });
+        context.sendMessageContent.push({
+          text: locale(user.languageCode).imageAnalytic.notFound,
+          options: { parse_mode: 'Markdown' },
+        });
         break;
       }
     }

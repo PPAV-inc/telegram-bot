@@ -15,12 +15,19 @@ const userAuthenticatedMiddleware = async (context, next) => {
   const { acceptDisclaimer, languageCode } = context.user;
 
   if (!acceptDisclaimer) {
-    await context.sendMessage(locale(languageCode).disclaimer, {
-      parse_mode: 'Markdown',
+    context.sendMessageContent.push({
+      text: locale(languageCode).disclaimer,
+      options: {
+        parse_mode: 'Markdown',
+      },
     });
 
     const { text, options } = getDisclaimerKeyboardSettings(languageCode);
-    await context.sendMessage(text, options);
+
+    context.sendMessageContent.push({
+      text,
+      options,
+    });
   } else {
     await next(context);
   }

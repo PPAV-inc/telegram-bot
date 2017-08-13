@@ -4,9 +4,6 @@ import { start, updateUserLanguage, checkAcceptDisclaimer } from '../actions';
 
 const startHandlerMiddleware = (context, next) =>
   new TelegramHandlerBuilder()
-    .onMessage(() => {
-      context.sendChatAction('typing');
-    })
     // 開始對話
     .onText(/\/start/, start)
     // 更新使用者語言

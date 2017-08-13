@@ -3,11 +3,19 @@ import { getMainMenuKeyboardSettings } from '../utils/getKeyboardSettings';
 
 const unhandled = async context => {
   const { user } = context;
-  await context.sendMessage(locale(user.languageCode).unhandled, {
-    parse_mode: 'Markdown',
+  context.sendMessageContent.push({
+    text: locale(user.languageCode).unhandled,
+    options: {
+      parse_mode: 'Markdown',
+    },
   });
+
   const { text, options } = getMainMenuKeyboardSettings(user.languageCode);
-  await context.sendMessage(text, options);
+
+  context.sendMessageContent.push({
+    text,
+    options,
+  });
 };
 
 export default unhandled;

@@ -15,11 +15,17 @@ const checkAcceptDisclaimer = async context => {
     ? locale(languageCode).acceptDisclaimer.alreadyAccept
     : locale(languageCode).acceptDisclaimer.alreadyRefuse;
 
-  await context.sendMessage(confirmText, { parse_mode: 'Markdown' });
+  context.sendMessageContent.push({
+    text: confirmText,
+    options: { parse_mode: 'Markdown' },
+  });
 
   if (accept) {
     const { text, options } = getMainMenuKeyboardSettings(languageCode);
-    await context.sendMessage(text, options);
+    context.sendMessageContent.push({
+      text,
+      options,
+    });
   }
 };
 

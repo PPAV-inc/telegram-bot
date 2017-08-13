@@ -4,7 +4,10 @@ const contactUs = async context => {
   const { user } = context;
   const { text, options } = getContactUsKeyboardSettings(user.languageCode);
 
-  await context.sendMessage(text, options);
+  context.sendMessageContent.push({
+    text,
+    options,
+  });
 };
 
 export default contactUs;
