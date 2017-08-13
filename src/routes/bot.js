@@ -12,11 +12,6 @@ botRouter.use(bodyParser());
 const requestHandler = bot.createRequestHandler();
 
 botRouter.post(`/bot${botToken}`, async ({ request, response }) => {
-  if (!request.body) {
-    throw new Error(
-      'createMiddleware(): Missing body parser. Use `koa-bodyparser` or other similar package before this middleware.'
-    );
-  }
   await requestHandler(request.body);
   response.status = 200;
 });
