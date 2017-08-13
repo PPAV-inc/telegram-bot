@@ -5,15 +5,12 @@ const randomVideo = async context => {
   const { user } = context;
   const result = await getQueryResult('PPAV');
 
-  const { text, options } = await getRandomVideoKeyboardSettings(
+  const messageContent = await getRandomVideoKeyboardSettings(
     user.languageCode,
     result
   );
 
-  context.sendMessageContent.push({
-    text,
-    options,
-  });
+  context.sendMessageContent.push(messageContent);
 };
 
 export default randomVideo;

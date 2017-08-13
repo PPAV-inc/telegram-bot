@@ -1,9 +1,9 @@
 import { TelegramHandlerBuilder } from 'toolbot-core-experiment';
 import sleep from 'sleep-promise';
 
-const snedMessageMiddleware = (context, next) =>
+const snedMessageMiddleware = (outerContext, next) =>
   new TelegramHandlerBuilder()
-    .onUnhandled(async () => {
+    .onUnhandled(async context => {
       context.sendChatAction('typing');
       context.sendMessageContent = []; // eslint-disable-line no-param-reassign
       await next();
@@ -16,6 +16,6 @@ const snedMessageMiddleware = (context, next) =>
       }
       /* eslint-enable */
     })
-    .build()(context);
+    .build()(outerContext);
 
 export default snedMessageMiddleware;

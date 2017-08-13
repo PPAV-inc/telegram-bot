@@ -21,11 +21,8 @@ const checkAcceptDisclaimer = async context => {
   });
 
   if (accept) {
-    const { text, options } = getMainMenuKeyboardSettings(languageCode);
-    context.sendMessageContent.push({
-      text,
-      options,
-    });
+    const messageContent = getMainMenuKeyboardSettings(languageCode);
+    context.sendMessageContent.push(messageContent);
   }
 };
 

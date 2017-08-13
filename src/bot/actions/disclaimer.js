@@ -5,9 +5,7 @@ const disclaimer = async context => {
 
   context.sendMessageContent.push({
     text: locale(user.languageCode).disclaimer,
-    options: {
-      parse_mode: 'Markdown',
-    },
+    options: { parse_mode: 'Markdown' },
   });
 };
 

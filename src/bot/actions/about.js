@@ -5,9 +5,7 @@ const about = async context => {
 
   context.sendMessageContent.push({
     text: locale(user.languageCode).about,
-    options: {
-      parse_mode: 'Markdown',
-    },
+    options: { parse_mode: 'Markdown' },
   });
 };
 

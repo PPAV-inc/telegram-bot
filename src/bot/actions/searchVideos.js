@@ -22,15 +22,14 @@ const searchVideos = async context => {
 
   const { totalCount, result } = await getQueryResult(type, keyword, firstPage);
 
+  let messageContent;
   if (totalCount === 0) {
-    context.sendMessageContent.push({
+    messageContent = {
       text: locale(user.languageCode).videos.notFound,
-      options: {
-        parse_mode: 'Markdown',
-      },
-    });
+      options: { parse_mode: 'Markdown' },
+    };
   } else {
-    const { text, options } = await getVideoSourcesKeyboardSettings(
+    messageContent = await getVideoSourcesKeyboardSettings(
       user.languageCode,
       keyword,
       result,
@@ -39,12 +38,10 @@ const searchVideos = async context => {
       totalCount
     );
 
-    await saveSearchInfo(keyword, type);
-    context.sendMessageContent.push({
-      text,
-      options,
-    });
+    await saveSearchInfo(keyword, messageContent.type);
   }
+
+  context.sendMessageContent.push(messageContent);
 };
 
 export default searchVideos;

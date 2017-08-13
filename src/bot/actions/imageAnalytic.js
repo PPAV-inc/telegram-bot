@@ -34,6 +34,7 @@ const imageAnalytic = async context => {
       }
     );
 
+    const messageContentArr = [];
     switch (analyticResult.isFaceExist) {
       case 1: {
         const result = await getAnalyticVideos(analyticResult.candidate);
@@ -43,7 +44,7 @@ const imageAnalytic = async context => {
         );
 
         for (let i = 0; i < photos.length; i += 1) {
-          context.sendMessageContent.push({
+          messageContentArr.push({
             text: photos[i].text,
             options: photos[i].options,
           });
@@ -52,27 +53,29 @@ const imageAnalytic = async context => {
         break;
       }
       case 0: {
-        context.sendMessageContent.push({
+        messageContentArr.push({
           text: locale(user.languageCode).imageAnalytic.notFound,
           options: { parse_mode: 'Markdown' },
         });
         break;
       }
       case -1: {
-        context.sendMessageContent.push({
+        messageContentArr.push({
           text: locale(user.languageCode).imageAnalytic.foundMoreThanOne,
           options: { parse_mode: 'Markdown' },
         });
         break;
       }
       default: {
-        context.sendMessageContent.push({
+        messageContentArr.push({
           text: locale(user.languageCode).imageAnalytic.notFound,
           options: { parse_mode: 'Markdown' },
         });
         break;
       }
     }
+
+    context.sendMessageContent.push(...messageContentArr);
   } catch (err) {
     console.log(err);
   }
