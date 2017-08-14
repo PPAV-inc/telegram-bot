@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "dashbot": "^9.2.0",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-compress": "^2.0.0",
