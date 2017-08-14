@@ -1,5 +1,8 @@
 import { TelegramHandlerBuilder } from 'toolbot-core-experiment';
 import sleep from 'sleep-promise';
+import botimize from '../../botimize';
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 const snedMessageMiddleware = (outerContext, next) =>
   new TelegramHandlerBuilder()
@@ -13,6 +16,13 @@ const snedMessageMiddleware = (outerContext, next) =>
         const { text, options } = context.sendMessageContent[i];
         await context.sendMessage(text, options);
         await sleep(500);
+
+        if (isProduction) {
+          botimize.sendOutgoingLog(
+            context.event._rawEvent.message.chat.id,
+            text
+          );
+        }
       }
       /* eslint-enable */
     })

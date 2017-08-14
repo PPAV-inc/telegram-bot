@@ -8,8 +8,10 @@ const config = require(path.resolve(__dirname, '../../../env/bot.config'));
 jest.mock('../../bot/', () => ({
   createRequestHandler: jest.fn(() => () => Promise.resolve()),
 }));
+jest.mock('../../botimize');
 
 const botRouter = require('../bot');
+const botimize = require('../../botimize').default;
 
 const { botToken } = config;
 
@@ -48,6 +50,7 @@ describe('bot router', () => {
     app = makeApp();
     app.use(botRouter.routes());
     app.use(botRouter.allowedMethods());
+    botimize.logIncoming = jest.fn();
   });
 
   it('should be defined', () => {
@@ -59,7 +62,19 @@ describe('bot router', () => {
       .post(`/bot${botToken}`)
       .send(reqBody);
 
+    expect(botimize.logIncoming).not.toBeCalled();
     expect(response.status).toBe(200);
+  });
+
+  it('should return status 200 and call botimize if process.env.NODE_ENV is production', async () => {
+    process.env.NODE_ENV = 'production';
+    const response = await request(app.listen())
+      .post(`/bot${botToken}`)
+      .send(reqBody);
+
+    expect(botimize.logIncoming).toBeCalledWith(reqBody);
+    expect(response.status).toBe(200);
+    process.env.NODE_ENV = 'test';
   });
 
   it('should return status 404 if post wrong url', async () => {
