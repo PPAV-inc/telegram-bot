@@ -906,6 +906,13 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
+botimize@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/botimize/-/botimize-1.0.2.tgz#0e6c0f8df4f988830e19c8b597dc48cae0769528"
+  dependencies:
+    lodash "^4.17.4"
+    request "^2.74.0"
+
 boxen@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/boxen/-/boxen-1.1.0.tgz#b1b69dd522305e807a99deee777dbd6e5167b102"
@@ -4492,7 +4499,7 @@ request-promise@^4.1.1:
     stealthy-require "^1.1.0"
     tough-cookie ">=2.3.0"
 
-request@^2.55.0, request@^2.69.0, request@^2.79.0, request@^2.81.0:
+request@^2.55.0, request@^2.69.0, request@^2.74.0, request@^2.79.0, request@^2.81.0:
   version "2.81.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.81.0.tgz#c6928946a0e06c5f8d6f8a9333469ffda46298a0"
   dependencies:

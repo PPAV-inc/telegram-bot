@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "botimize": "^1.0.2",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-compress": "^2.0.0",
