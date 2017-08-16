@@ -83,14 +83,14 @@ const generateVideoMessageText = (languageCode, result) => {
 
   Object.keys(result).map(key => {
     if (typeof result[key] === 'string') {
-      result[key] = result[key].replace('_', '\\_'); // eslint-disable-line
+      result[key] = result[key].replace(/[_]/g, '\\_'); // eslint-disable-line
     }
     return result[key];
   });
 
   let models = '';
   result.models.forEach(modelName => {
-    models += `${modelName.replace('_', '\\_')} `;
+    models += `${modelName.replace(/[_]/g, '\\_')} `;
   });
 
   // FIXME 等之後有 tags 跟 duration 時再用
