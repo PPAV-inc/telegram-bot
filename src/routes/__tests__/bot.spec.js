@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-import request from 'supertest-as-promised';
+import request from 'supertest';
 import path from 'path';
 
 const config = require(path.resolve(__dirname, '../../../env/bot.config'));
