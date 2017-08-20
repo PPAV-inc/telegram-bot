@@ -7,7 +7,7 @@ const checkAcceptDisclaimer = async context => {
   const match = /(接受|Accept) ✅$|(不接受|Refuse) ❌$/i.exec(message.text);
   const { from: { id: userId } } = message;
   const accept = match[0].indexOf('✅') > 0;
-  const { languageCode } = await users.getUser(userId);
+  const { languageCode } = context.user;
 
   await users.updateUser(userId, { acceptDisclaimer: accept });
 
