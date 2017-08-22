@@ -15,6 +15,7 @@ const createUser = async message => {
 
   const db = await getDatabase();
   await db.collection('users').update({ userId: id }, user, { upsert: true });
+  return user;
 };
 
 const getUser = async userId => {
