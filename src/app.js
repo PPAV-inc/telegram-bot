@@ -3,12 +3,12 @@ import logger from 'koa-logger';
 import compress from 'koa-compress';
 import zlib from 'zlib';
 
-import indexRouter from './src/routes/index';
-import botRouter from './src/routes/bot';
-import bot from './src/bot/';
+import indexRouter from './routes/index';
+import botRouter from './routes/bot';
+import bot from './bot/';
 
-const config = require(`./env/${process.env.NODE_ENV || 'development'}`);
-const { botToken } = require('./env/bot.config');
+const config = require(`../env/${process.env.NODE_ENV || 'development'}`);
+const { botToken } = require('../env/bot.config');
 
 const app = createServer(bot, {
   accessToken: botToken,
@@ -33,8 +33,4 @@ if (config.logger) {
 useRouter(app, indexRouter);
 useRouter(app, botRouter);
 
-app.listen(config.port, () => {
-  if (config.env !== 'production') {
-    console.log(`App is running on port ${config.port} !`); // eslint-disable-line no-console
-  }
-});
+export default app;

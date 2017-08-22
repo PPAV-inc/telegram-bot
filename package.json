@@ -5,8 +5,10 @@
   "description": "PPAV Telegram Bot",
   "main": "app.js",
   "scripts": {
-    "dev": "./node_modules/nodemon/bin/nodemon.js app.js --watch src --exec babel-node",
-    "start": "yarn ;env NODE_ENV=production babel-node app.js",
+    "build": "NODE_ENV=production npm run clean && babel src --out-dir lib --ignore __tests__",
+    "clean": "rimraf lib coverage",
+    "dev": "./node_modules/nodemon/bin/nodemon.js ./bin/bot.dev.js --watch src --exec babel-node",
+    "start": "yarn ;env NODE_ENV=production node ./bin/bot.js",
     "seed-setup": "./node_modules/.bin/seed-setup",
     "seed": "NODE_ENV=dev ./node_modules/.bin/seed",
     "precommit": "lint-staged",
@@ -27,6 +29,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "babel-polyfill": "^6.26.0",
     "dashbot": "^9.2.0",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
@@ -34,7 +37,6 @@
     "koa-logger": "^3.0.1",
     "koa-router": "^7.2.1",
     "mongodb": "^2.2.30",
-    "ngrok": "^2.2.15",
     "path": "^0.12.7",
     "sleep-promise": "^2.0.0",
     "toolbot-core-experiment": "^0.10.0-6"
@@ -45,6 +47,7 @@
     "babel-jest": "^20.0.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "eslint": "^4.1.1",
     "eslint-config-airbnb": "^15.0.2",
@@ -60,6 +63,7 @@
     "node-mongo-seeds": "^2.3.1",
     "nodemon": "^1.11.0",
     "prettier": "^1.5.2",
+    "rimraf": "^2.6.1",
     "supertest": "^3.0.0"
   },
   "lint-staged": {
