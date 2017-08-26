@@ -3,7 +3,12 @@ import bodyParser from 'koa-bodyparser';
 import path from 'path';
 
 import bot from '../bot/';
-import { sendLogIncoming } from '../dashbot';
+
+let sendLogIncoming = () => {};
+if (process.env.NODE_ENV === 'production') {
+  // eslint-disable-next-line global-require
+  sendLogIncoming = require('../dashbot').sendLogIncoming;
+}
 
 const { botToken } = require(path.resolve(__dirname, '../../env/bot.config'));
 
