@@ -43,6 +43,7 @@ const getOneRandomVideo = async () => {
       { $sample: { size: 1 } },
     ])
     .toArray();
+  console.log(results);
   return {
     type: 'PPAV',
     result: results[0],

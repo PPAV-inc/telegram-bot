@@ -1,7 +1,13 @@
 import { TelegramHandlerBuilder } from 'toolbot-core-experiment';
-import sleep from 'sleep-promise';
-import { sendLogOutgoing } from '../../dashbot';
+// import sleep from 'sleep-promise';
+
 import * as users from '../../models/users';
+
+let sendLogOutgoing = () => {};
+if (process.env.NODE_ENV === 'production') {
+  // eslint-disable-next-line global-require
+  sendLogOutgoing = require('../../dashbot').sendLogOutgoing;
+}
 
 const snedMessageMiddleware = (outerContext, next) =>
   new TelegramHandlerBuilder()
@@ -27,7 +33,7 @@ const snedMessageMiddleware = (outerContext, next) =>
         const { text, options } = context.sendMessageContent[i];
         await context.sendMessage(text, options);
         sendLogOutgoing(context.event._rawEvent, text, options);
-        await sleep(500);
+        // await sleep(500);
       }
       /* eslint-enable */
     })

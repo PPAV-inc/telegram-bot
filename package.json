@@ -7,7 +7,7 @@
   "scripts": {
     "build": "NODE_ENV=production npm run clean && babel src --out-dir lib --ignore __tests__",
     "clean": "rimraf lib coverage",
-    "dev": "./node_modules/nodemon/bin/nodemon.js ./bin/bot.dev.js --watch src --exec babel-node",
+    "dev": "nodemon ./bin/bot.dev.js --watch src",
     "start": "yarn ;env NODE_ENV=production node ./bin/bot.js",
     "seed-setup": "./node_modules/.bin/seed-setup",
     "seed": "NODE_ENV=dev ./node_modules/.bin/seed",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "babel-register": "^6.26.0",
     "dashbot": "^9.2.0",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
