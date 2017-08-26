@@ -41,7 +41,7 @@ describe('getVideo', () => {
           },
         ],
         score: 10,
-        length: '240 分鐘',
+        length: 240,
         publishedAt: new Date('2016-04-13T00:00:00.000Z'),
       },
     ]);

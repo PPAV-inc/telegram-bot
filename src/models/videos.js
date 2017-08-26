@@ -25,19 +25,21 @@ const getVideo = async (type, messageText, page) => {
     .aggregate([{ $match: query }, { $sort: { total_view_count: -1 } }])
     .toArray();
 
-  const result = results[page - 1];
+  let result;
+  if (results.length > 0) {
+    result = results[page - 1];
 
-  const _id = result._id;
-  result.videos = result.videos.map(video => ({
-    ...video,
-    url: `${config.url}/?url=${encodeURI(video.url)}&_id=${_id}`,
-  }));
+    result.videos = result.videos.map(video => ({
+      ...video,
+      url: `${config.url}/?url=${encodeURI(video.url)}&_id=${result._id}`,
+    }));
+  }
 
   return {
     keyword,
     type,
     result,
-    total_count: results.length,
+    totalCount: results.length,
   };
 };
 
@@ -53,10 +55,9 @@ const getOneRandomVideo = async () => {
     ])
     .toArray();
 
-  const _id = result._id;
   result.videos = result.videos.map(video => ({
     ...video,
-    url: `${config.url}/?url=${encodeURI(video.url)}&_id=${_id}`,
+    url: `${config.url}/?url=${encodeURI(video.url)}&_id=${result._id}`,
   }));
 
   return {
