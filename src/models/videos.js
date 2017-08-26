@@ -31,7 +31,9 @@ const getVideo = async (type, messageText, page) => {
 
     result.videos = result.videos.map(video => ({
       ...video,
-      url: `${config.url}/?url=${encodeURI(video.url)}&_id=${result._id}`,
+      url: `${config.url}/redirect/?url=${encodeURI(
+        video.url
+      )}&_id=${result._id}`,
     }));
   }
 
@@ -57,7 +59,9 @@ const getOneRandomVideo = async () => {
 
   result.videos = result.videos.map(video => ({
     ...video,
-    url: `${config.url}/?url=${encodeURI(video.url)}&_id=${result._id}`,
+    url: `${config.url}/redirect/?url=${encodeURI(
+      video.url
+    )}&_id=${result._id}`,
   }));
 
   return {
