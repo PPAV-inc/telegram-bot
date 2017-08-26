@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import getDatabase from './database';
+import config from '../../env/bot.config';
 
 const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
@@ -24,10 +25,18 @@ const getVideo = async (type, messageText, page) => {
     .aggregate([{ $match: query }, { $sort: { total_view_count: -1 } }])
     .toArray();
 
+  const result = results[page - 1];
+
+  const _id = result._id;
+  result.videos = result.videos.map(video => ({
+    ...video,
+    url: `${config.url}/?url=${encodeURI(video.url)}&_id=${_id}`,
+  }));
+
   return {
     keyword,
     type,
-    result: results[page - 1],
+    result,
     total_count: results.length,
   };
 };
@@ -35,7 +44,7 @@ const getVideo = async (type, messageText, page) => {
 // FIXME
 const getOneRandomVideo = async () => {
   const db = await getDatabase();
-  const results = await db
+  const [result] = await db
     .collection('videos')
     .aggregate([
       { $sort: { total_view_count: -1 } },
@@ -43,10 +52,16 @@ const getOneRandomVideo = async () => {
       { $sample: { size: 1 } },
     ])
     .toArray();
-  console.log(results);
+
+  const _id = result._id;
+  result.videos = result.videos.map(video => ({
+    ...video,
+    url: `${config.url}/?url=${encodeURI(video.url)}&_id=${_id}`,
+  }));
+
   return {
     type: 'PPAV',
-    result: results[0],
+    result,
   };
 };
 
