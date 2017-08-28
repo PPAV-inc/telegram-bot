@@ -1,34 +1,34 @@
 import { ObjectId } from 'mongodb';
-import getDatabase from './database';
+import { getMongoDatabase, getElasticsearchDatabase } from './database';
 import config from '../../env/bot.config';
 
 const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
-const getVideo = async (type, messageText, page) => {
+const getVideo = async (messageText, page) => {
   const keyword = escapeRegex(messageText);
-  const query = {};
 
-  if (type === 'models') {
-    query[type] = {
-      $in: [new RegExp(keyword, 'gi')],
-    };
-  } else {
-    query[type] = {
-      $regex: keyword,
-      $options: 'gi',
-    };
-  }
+  const esClient = getElasticsearchDatabase();
 
-  const db = await getDatabase();
-  const results = await db
-    .collection('videos')
-    .aggregate([{ $match: query }, { $sort: { total_view_count: -1 } }])
-    .toArray();
+  const {
+    hits: { total: totalCount, hits: [{ _source: result }] },
+  } = await esClient.search({
+    index: 'videos',
+    type: 'videos',
+    body: {
+      query: {
+        multi_match: {
+          query: keyword,
+          type: 'cross_fields',
+          fields: ['tags^80', 'title^50', 'models^100', 'code^1000'],
+        },
+      },
+      min_score: 30,
+      from: page - 1,
+      size: 1,
+    },
+  });
 
-  let result;
-  if (results.length > 0) {
-    result = results[page - 1];
-
+  if (totalCount !== 0) {
     result.videos = result.videos.map(video => ({
       ...video,
       url: `${config.url}/redirect/?url=${encodeURI(
@@ -39,15 +39,14 @@ const getVideo = async (type, messageText, page) => {
 
   return {
     keyword,
-    type,
     result,
-    totalCount: results.length,
+    totalCount,
   };
 };
 
 // FIXME
 const getOneRandomVideo = async () => {
-  const db = await getDatabase();
+  const db = await getMongoDatabase();
   const [result] = await db
     .collection('videos')
     .aggregate([
@@ -71,7 +70,7 @@ const getOneRandomVideo = async () => {
 };
 
 const getAnalyticVideos = async candidates => {
-  const db = await getDatabase();
+  const db = await getMongoDatabase();
   const videosIds = candidates.map(candidate => ObjectId(candidate.video_id));
   return db.collection('videos').find({ _id: { $in: videosIds } }).toArray();
 };
