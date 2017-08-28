@@ -1,7 +1,7 @@
-import getDatabase from './database';
+import { getMongoDatabase } from './database';
 
 const insertSearchKeyword = async (type, keyword) => {
-  const db = await getDatabase();
+  const db = await getMongoDatabase();
   const now = new Date();
 
   await db

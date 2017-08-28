@@ -5,13 +5,12 @@ import config from '../../env/bot.config';
 const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
 const getVideo = async (messageText, page) => {
+  let result = {};
   const keyword = escapeRegex(messageText);
 
   const esClient = getElasticsearchDatabase();
 
-  const {
-    hits: { total: totalCount, hits: [{ _source: result }] },
-  } = await esClient.search({
+  const { hits: { total: totalCount, hits } } = await esClient.search({
     index: 'videos',
     type: 'videos',
     body: {
@@ -29,11 +28,11 @@ const getVideo = async (messageText, page) => {
   });
 
   if (totalCount !== 0) {
+    [{ _source: result }] = hits;
     result.videos = result.videos.map(video => ({
       ...video,
-      url: `${config.url}/redirect/?url=${encodeURI(
-        video.url
-      )}&_id=${result._id}`,
+      url: `${config.url}/redirect/?url=${encodeURI(video.url)}&_id=${hits[0]
+        ._id}`,
     }));
   }
 

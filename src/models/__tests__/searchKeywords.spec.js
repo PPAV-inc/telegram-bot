@@ -1,7 +1,7 @@
 jest.mock('mongodb');
 jest.mock('../database');
 
-const getDatabase = require('../database').default;
+const { getMongoDatabase } = require('../database');
 const insertSearchKeywords = require('../searchKeywords').default;
 
 describe('insertSearchKeywords', () => {
@@ -16,10 +16,10 @@ describe('insertSearchKeywords', () => {
         return constantDate;
       }
     };
-    getDatabase.mockReturnValue({
+    getMongoDatabase.mockReturnValue({
       collection: jest.fn().mockReturnThis(),
     });
-    getDatabase().collection.mockReturnValue({
+    getMongoDatabase().collection.mockReturnValue({
       update: jest.fn(),
       insertOne: jest.fn(),
       createIndex: jest.fn(),
@@ -42,9 +42,9 @@ describe('insertSearchKeywords', () => {
 
     await insertSearchKeywords(type, keyword);
 
-    expect(getDatabase).toBeCalled();
-    expect(getDatabase().collection).toBeCalledWith('search_keywords');
-    expect(getDatabase().collection().update).toBeCalledWith(
+    expect(getMongoDatabase).toBeCalled();
+    expect(getMongoDatabase().collection).toBeCalledWith('search_keywords');
+    expect(getMongoDatabase().collection().update).toBeCalledWith(
       { type, keyword },
       { $inc: { count: 1 }, $set: { updated_at: now } },
       { upsert: true }

@@ -7,6 +7,7 @@ export const getConfig = env =>
 
 let _mongodb;
 let _elasticsearchdb;
+
 const getMongoDatabase = async () => {
   if (_mongodb) {
     return _mongodb;
@@ -16,6 +17,7 @@ const getMongoDatabase = async () => {
     getConfig(process.env.NODE_ENV).mongodbPath
   );
   _mongodb = db;
+
   return _mongodb;
 };
 
@@ -28,8 +30,8 @@ const getElasticsearchDatabase = () => {
     host: getConfig(process.env.NODE_ENV).elasticsearchUrl,
     log: 'error',
   });
-
   _elasticsearchdb = db;
+
   return _elasticsearchdb;
 };
 
