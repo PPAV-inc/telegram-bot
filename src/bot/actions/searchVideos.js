@@ -1,7 +1,8 @@
 import locale from '../locale';
 import getQueryResult from '../utils/getQueryResult';
 import { getVideoSourcesKeyboardSettings } from '../utils/getKeyboardSettings';
-import saveSearchInfo from '../../models/search_keywords';
+import insertSearchKeywords from '../../models/searchKeywords';
+import insertHotSearchKeywords from '../../models/hotSearchKeywords';
 
 const searchVideos = async context => {
   const match = context.event._rawEvent.message.text.match(
@@ -38,7 +39,8 @@ const searchVideos = async context => {
       totalCount
     );
 
-    await saveSearchInfo(keyword, messageContent.type);
+    await insertSearchKeywords(messageContent.type, keyword);
+    await insertHotSearchKeywords(messageContent.type, keyword);
   }
 
   context.sendMessageContent.push(messageContent);
