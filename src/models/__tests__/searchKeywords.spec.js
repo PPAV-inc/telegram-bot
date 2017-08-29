@@ -36,16 +36,15 @@ describe('insertSearchKeywords', () => {
   });
 
   it('should call update', async () => {
-    const type = 'code';
     const keyword = '123';
     const now = new Date();
 
-    await insertSearchKeywords(type, keyword);
+    await insertSearchKeywords(keyword);
 
     expect(getMongoDatabase).toBeCalled();
     expect(getMongoDatabase().collection).toBeCalledWith('search_keywords');
     expect(getMongoDatabase().collection().update).toBeCalledWith(
-      { type, keyword },
+      { keyword },
       { $inc: { count: 1 }, $set: { updated_at: now } },
       { upsert: true }
     );

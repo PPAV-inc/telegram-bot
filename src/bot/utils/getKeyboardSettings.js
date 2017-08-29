@@ -111,7 +111,6 @@ const getVideoSourcesKeyboardSettings = async (
   languageCode,
   keyword,
   result,
-  type,
   nowPage,
   totalCount
 ) => {
@@ -120,7 +119,6 @@ const getVideoSourcesKeyboardSettings = async (
   const videoSourcesKeyboard = await keyboards.videoSourcesKeyboard(
     keyword,
     result.videos,
-    type,
     nowPage,
     totalCount
   );

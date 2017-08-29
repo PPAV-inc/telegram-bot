@@ -6,7 +6,7 @@ import {
   getRandomVideoKeyboardSettings,
 } from './getKeyboardSettings';
 
-const regex = /type="(\w+)"&keyword="(.+)"&page="(\d+)"/;
+const regex = /keyword="(.+)"&page="(\d+)"/;
 
 const parseAction = async (action, languageCode = 'zh-TW') => {
   if (action === 'changLanguage') {
@@ -19,17 +19,15 @@ const parseAction = async (action, languageCode = 'zh-TW') => {
   }
 
   const data = await regex.exec(action);
-  const type = data[1];
-  const keyword = data[2];
-  const page = parseInt(data[3], 10);
+  const keyword = data[1];
+  const page = parseInt(data[2], 10);
 
-  const { totalCount, result } = await getQueryResult(type, keyword, page);
+  const { totalCount, result } = await getQueryResult('search', keyword, page);
 
   const { text, options } = await getVideoSourcesKeyboardSettings(
     languageCode,
     keyword,
     result,
-    type,
     page,
     totalCount
   );
