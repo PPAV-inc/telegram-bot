@@ -3,7 +3,6 @@ import { getMongoDatabase, getElasticsearchDatabase } from './database';
 import config from '../../env/bot.config';
 
 const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-const MAX_TOTAL_COUNT = 30;
 
 const getVideo = async (messageText, page) => {
   let result = {};
@@ -11,7 +10,7 @@ const getVideo = async (messageText, page) => {
 
   const esClient = getElasticsearchDatabase();
 
-  const { hits: { total, hits } } = await esClient.search({
+  const { hits: { total: totalCount, hits } } = await esClient.search({
     index: 'videos',
     type: 'videos',
     body: {
@@ -27,7 +26,6 @@ const getVideo = async (messageText, page) => {
       size: 1,
     },
   });
-  let totalCount = total;
 
   if (totalCount !== 0) {
     [{ _source: result }] = hits;
@@ -36,10 +34,6 @@ const getVideo = async (messageText, page) => {
       url: `${config.url}/redirect/?url=${encodeURI(video.url)}&_id=${hits[0]
         ._id}`,
     }));
-  }
-
-  if (totalCount > MAX_TOTAL_COUNT) {
-    totalCount = MAX_TOTAL_COUNT;
   }
 
   return {
@@ -80,4 +74,4 @@ const getAnalyticVideos = async candidates => {
   return db.collection('videos').find({ _id: { $in: videosIds } }).toArray();
 };
 
-export { getVideo, getOneRandomVideo, getAnalyticVideos, MAX_TOTAL_COUNT };
+export { getVideo, getOneRandomVideo, getAnalyticVideos };

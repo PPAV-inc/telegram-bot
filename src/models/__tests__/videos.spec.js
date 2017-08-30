@@ -5,12 +5,7 @@ jest.mock('mongodb');
 jest.mock('../database');
 
 const { getMongoDatabase, getElasticsearchDatabase } = require('../database');
-const {
-  getVideo,
-  getOneRandomVideo,
-  getAnalyticVideos,
-  MAX_TOTAL_COUNT,
-} = require('../videos');
+const { getVideo, getOneRandomVideo, getAnalyticVideos } = require('../videos');
 
 describe('getVideo', () => {
   beforeEach(() => {
@@ -109,38 +104,6 @@ describe('getVideo', () => {
     expect(getElasticsearchDatabase().search).toBeCalled();
     expect(result).toEqual({});
     expect(totalCount).toBe(0);
-  });
-
-  it('should return MAX_TOTAL_COUNT totalCount even query result total is over MAX_TOTAL_COUNT', async () => {
-    const hits = [];
-    for (let i = 0; i < MAX_TOTAL_COUNT + 1; i += 1) {
-      hits.push({
-        _id: i,
-        _source: {
-          title: 'title',
-          videos: [
-            {
-              source: 'youav',
-              url: 'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4',
-              view_count: 666,
-            },
-          ],
-        },
-      });
-    }
-    getElasticsearchDatabase().search.mockReturnValue({
-      hits: {
-        total: MAX_TOTAL_COUNT + 1,
-        hits,
-      },
-    });
-    const messageText = '123';
-    const page = 1;
-
-    const { totalCount } = await getVideo(messageText, page);
-    expect(getElasticsearchDatabase).toBeCalled();
-    expect(getElasticsearchDatabase().search).toBeCalled();
-    expect(totalCount).toBe(MAX_TOTAL_COUNT);
   });
 });
 
