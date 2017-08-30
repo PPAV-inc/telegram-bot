@@ -1,12 +1,20 @@
-import getDatabase, { getConfig } from '../database';
+import {
+  getMongoDatabase,
+  getElasticsearchDatabase,
+  getConfig,
+} from '../database';
 
 jest.mock('mongodb');
+jest.mock('elasticsearch');
 
 const { MongoClient } = require('mongodb');
+const elasticsearch = require('elasticsearch');
 
-describe('getDatabase', () => {
+elasticsearch.Client = jest.fn();
+
+describe('getMongoDatabase', () => {
   it('should be defined', () => {
-    expect(getDatabase).toBeDefined();
+    expect(getMongoDatabase).toBeDefined();
   });
 
   it('should require /env/development.js if process.env.NODE_ENV is null', async () => {
@@ -14,7 +22,7 @@ describe('getDatabase', () => {
     expect(config.env).toBe('development');
   });
 
-  it('should return _db if called more than one time', async () => {
+  it('should return _mongodb if called more than one time', async () => {
     MongoClient.connect.mockClear();
     MongoClient.connect.mockReturnValue({
       domain: null,
@@ -24,14 +32,35 @@ describe('getDatabase', () => {
       },
     });
 
-    await getDatabase();
-    await getDatabase();
+    await getMongoDatabase();
+    await getMongoDatabase();
 
     expect(MongoClient.connect).toHaveBeenCalledTimes(1);
   });
 
   it("should call MongoClient.connect with getConfig('test').mongodbPath", async () => {
-    await getDatabase();
+    await getMongoDatabase();
     expect(MongoClient.connect).toBeCalledWith(getConfig('test').mongodbPath);
+  });
+});
+
+describe('getElasticsearchDatabase', () => {
+  it('should be defined', () => {
+    expect(getElasticsearchDatabase).toBeDefined();
+  });
+
+  it('should return _elasticsearchdb if called more than one time', async () => {
+    await getElasticsearchDatabase();
+    await getElasticsearchDatabase();
+
+    expect(elasticsearch.Client).toHaveBeenCalledTimes(1);
+  });
+
+  it("should call elasticsearch.Client with getConfig('test').elasticsearchUrl", async () => {
+    await getElasticsearchDatabase();
+    expect(elasticsearch.Client).toBeCalledWith({
+      host: getConfig('test').elasticsearchUrl,
+      log: 'error',
+    });
   });
 });

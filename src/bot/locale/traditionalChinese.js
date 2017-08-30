@@ -43,7 +43,7 @@ const traditionalChinese = {
     title: '片名',
     model: '女優',
     tag: '標籤',
-    duration: '片長',
+    length: '片長',
     view: '點擊數',
     image: '圖片',
     watchMore: '🙌 給我更多 🙌',
@@ -56,8 +56,7 @@ const traditionalChinese = {
     notFound: '很抱歉您傳送的圖片可能*未包含一張完整清晰的臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
     foundMoreThanOne: '很抱歉您傳送的圖片可能*包含多張臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
   },
-  unhandled:
-    '*想看片請輸入 "PPAV"*\n  其他搜尋功能 🔥\n  1. 搜尋番號："*# + 番號*"\n  2. 搜尋女優："*% + 女優*"\n  3. 搜尋片名："*@ + 關鍵字*"',
+  unhandled: '1️⃣*隨機影片* 請輸入： "*PPAV*"\n\n2️⃣*搜尋影片* 請輸入： "*# 關鍵字*"',
 };
 
 export default traditionalChinese;

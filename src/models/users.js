@@ -1,4 +1,4 @@
-import getDatabase from './database';
+import { getMongoDatabase } from './database';
 
 const createUser = async message => {
   const { id, first_name, last_name, language_code, username } = message.from;
@@ -13,19 +13,19 @@ const createUser = async message => {
     created_at: new Date(),
   };
 
-  const db = await getDatabase();
+  const db = await getMongoDatabase();
   await db.collection('users').update({ userId: id }, user, { upsert: true });
   return user;
 };
 
 const getUser = async userId => {
-  const db = await getDatabase();
+  const db = await getMongoDatabase();
   const user = await db.collection('users').findOne({ userId });
   return user;
 };
 
 const updateUser = async (userId, field) => {
-  const db = await getDatabase();
+  const db = await getMongoDatabase();
   await db
     .collection('users')
     .update({ userId }, { $set: { ...field } }, { upsert: true });

@@ -35,13 +35,7 @@ const settingKeyboard = buttons => {
   return keyboard;
 };
 
-const videoSourcesKeyboard = async (
-  keyword,
-  videos,
-  type,
-  nowPage,
-  totalPage
-) => {
+const videoSourcesKeyboard = async (keyword, videos, nowPage, totalPage) => {
   const keyboard = [];
 
   for (let i = 0; i < videos.length; i += 1) {
@@ -60,57 +54,54 @@ const videoSourcesKeyboard = async (
     for (let i = 1; i <= 5 && i <= totalPage; i += 1) {
       pageButtons[i] = {
         text: `${i}`,
-        callback_data: `type="${type}"&keyword="${keyword}"&page="${i}"`,
+        callback_data: `keyword="${keyword}"&page="${i}"`,
       };
     }
 
     pageButtons[nowPage] = {
       text: `⋆${nowPage}⋆`,
-      callback_data: `type="${type}"&keyword="${keyword}"&page="${nowPage}"`,
+      callback_data: `keyword="${keyword}"&page="${nowPage}"`,
     };
 
     if (totalPage > 4) {
       pageButtons[4] = {
         text: `4 >`,
-        callback_data: `type="${type}"&keyword="${keyword}"&page="4"`,
+        callback_data: `keyword="${keyword}"&page="4"`,
       };
       pageButtons[5] = {
         text: `${totalPage} ≫`,
-        callback_data: `type="${type}"&keyword="${keyword}"&page="${totalPage}"`,
+        callback_data: `keyword="${keyword}"&page="${totalPage}"`,
       };
     }
   } else if (totalPage - nowPage > 2) {
     pageButtons[1] = {
       text: `≪ 1`,
-      callback_data: `type="${type}"&keyword="${keyword}"&page="1"`,
+      callback_data: `keyword="${keyword}"&page="1"`,
     };
     pageButtons[2] = {
       text: `< ${nowPage - 1}`,
-      callback_data: `type="${type}"&keyword="${keyword}"&page="${nowPage -
-        1}"`,
+      callback_data: `keyword="${keyword}"&page="${nowPage - 1}"`,
     };
     pageButtons[3] = {
       text: `⋆${nowPage}⋆`,
-      callback_data: `type="${type}"&keyword="${keyword}"&page="${nowPage}"`,
+      callback_data: `keyword="${keyword}"&page="${nowPage}"`,
     };
     pageButtons[4] = {
       text: `${nowPage + 1} >`,
-      callback_data: `type="${type}"&keyword="${keyword}"&page="${nowPage +
-        1}"`,
+      callback_data: `keyword="${keyword}"&page="${nowPage + 1}"`,
     };
     pageButtons[5] = {
       text: `${totalPage} ≫`,
-      callback_data: `type="${type}"&keyword="${keyword}"&page="${totalPage}"`,
+      callback_data: `keyword="${keyword}"&page="${totalPage}"`,
     };
   } else {
     pageButtons[1] = {
       text: `≪ 1`,
-      callback_data: `type="${type}"&keyword="${keyword}"&page="1"`,
+      callback_data: `keyword="${keyword}"&page="1"`,
     };
     pageButtons[2] = {
       text: `< ${totalPage - 3}`,
-      callback_data: `type="${type}"&keyword="${keyword}"&page="${totalPage -
-        3}"`,
+      callback_data: `keyword="${keyword}"&page="${totalPage - 3}"`,
     };
 
     let count = 3;
@@ -118,13 +109,12 @@ const videoSourcesKeyboard = async (
       if (nowPage === totalPage - i) {
         pageButtons[(count += 1)] = {
           text: `⋆${nowPage}⋆`,
-          callback_data: `type="${type}"&keyword="${keyword}"&page="${nowPage}"`,
+          callback_data: `keyword="${keyword}"&page="${nowPage}"`,
         };
       } else {
         pageButtons[(count += 1)] = {
           text: `${totalPage - i}`,
-          callback_data: `type="${type}"&keyword="${keyword}"&page="${totalPage -
-            i}"`,
+          callback_data: `keyword="${keyword}"&page="${totalPage - i}"`,
         };
       }
     }

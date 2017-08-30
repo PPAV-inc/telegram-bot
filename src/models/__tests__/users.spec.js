@@ -2,7 +2,7 @@ jest.mock('mongodb');
 jest.mock('../database');
 jest.mock('../../bot/');
 
-const getDatabase = require('../database').default;
+const { getMongoDatabase } = require('../database');
 const { createUser, getUser, updateUser } = require('../users');
 
 describe('createUser', () => {
@@ -17,10 +17,10 @@ describe('createUser', () => {
         return constantDate;
       }
     };
-    getDatabase.mockReturnValue({
+    getMongoDatabase.mockReturnValue({
       collection: jest.fn().mockReturnThis(),
     });
-    getDatabase().collection.mockReturnValue({
+    getMongoDatabase().collection.mockReturnValue({
       update: jest.fn(),
       findOne: jest.fn(),
     });
@@ -71,9 +71,9 @@ describe('createUser', () => {
 
     await createUser(message);
 
-    expect(getDatabase).toBeCalled();
-    expect(getDatabase().collection).toBeCalledWith('users');
-    expect(getDatabase().collection().update).toBeCalledWith(
+    expect(getMongoDatabase).toBeCalled();
+    expect(getMongoDatabase().collection).toBeCalledWith('users');
+    expect(getMongoDatabase().collection().update).toBeCalledWith(
       { userId: id },
       user,
       { upsert: true }
@@ -89,9 +89,9 @@ describe('getUser', () => {
   it('should call findOne', async () => {
     const userId = 123;
     await getUser(userId);
-    expect(getDatabase).toBeCalled();
-    expect(getDatabase().collection).toBeCalledWith('users');
-    expect(getDatabase().collection().findOne).toBeCalledWith({ userId });
+    expect(getMongoDatabase).toBeCalled();
+    expect(getMongoDatabase().collection).toBeCalledWith('users');
+    expect(getMongoDatabase().collection().findOne).toBeCalledWith({ userId });
   });
 });
 
@@ -104,9 +104,9 @@ describe('updateUser', () => {
     const userId = 123;
     const field = 'field';
     await updateUser(userId, field);
-    expect(getDatabase).toBeCalled();
-    expect(getDatabase().collection).toBeCalledWith('users');
-    expect(getDatabase().collection().update).toBeCalledWith(
+    expect(getMongoDatabase).toBeCalled();
+    expect(getMongoDatabase().collection).toBeCalledWith('users');
+    expect(getMongoDatabase().collection().update).toBeCalledWith(
       { userId },
       { $set: { ...field } },
       { upsert: true }

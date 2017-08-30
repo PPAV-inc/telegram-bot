@@ -1,21 +1,20 @@
 import * as videos from '../../models/videos';
 
+const MAX_TOTAL_COUNT = 30;
+
 const getQueryResult = async (type, keyword = null, page = null) => {
-  if (type === 'PPAV') {
+  if (type.toUpperCase() === 'PPAV') {
     const { result } = await videos.getOneRandomVideo();
     return result;
   }
 
-  let _keyword = keyword;
-  for (let i = 0; i <= 2; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    const { totalCount, result } = await videos.getVideo(type, _keyword, page);
-    _keyword = _keyword.substring(0, _keyword.length - 1);
+  const { totalCount, result } = await videos.getVideo(keyword, page);
 
-    if (totalCount !== 0 || i === 2) {
-      return { totalCount, result };
-    }
+  if (totalCount > MAX_TOTAL_COUNT) {
+    return { totalCount: MAX_TOTAL_COUNT, result };
   }
+
+  return { totalCount, result };
 };
 
 export default getQueryResult;

@@ -6,22 +6,17 @@ import insertHotSearchKeywords from '../../models/hotSearchKeywords';
 
 const searchVideos = async context => {
   const match = context.event._rawEvent.message.text.match(
-    /([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/i
+    /[#＃]\s*\+*\s*(\S+)/i
   );
   const { user } = context;
-  let type = match[1];
-  const keyword = match[2];
+  const keyword = match[1];
   const firstPage = 1;
 
-  if (match[1] === '#' || match[1] === '＃') {
-    type = 'code';
-  } else if (match[1] === '%' || match[1] === '％') {
-    type = 'models';
-  } else {
-    type = 'title';
-  }
-
-  const { totalCount, result } = await getQueryResult(type, keyword, firstPage);
+  const { totalCount, result } = await getQueryResult(
+    'search',
+    keyword,
+    firstPage
+  );
 
   let messageContent;
   if (totalCount === 0) {
@@ -34,13 +29,12 @@ const searchVideos = async context => {
       user.languageCode,
       keyword,
       result,
-      type,
       firstPage,
       totalCount
     );
 
-    await insertSearchKeywords(messageContent.type, keyword);
-    await insertHotSearchKeywords(messageContent.type, keyword);
+    await insertSearchKeywords(keyword);
+    await insertHotSearchKeywords(keyword);
   }
 
   context.sendMessageContent.push(messageContent);
