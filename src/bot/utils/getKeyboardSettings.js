@@ -1,3 +1,4 @@
+import dateFormat from 'dateformat';
 import * as keyboards from './keyboards';
 import locale from '../locale';
 
@@ -93,10 +94,22 @@ const generateVideoMessageText = (languageCode, result) => {
     models += `${modelName.replace(/[_]/g, '\\_')} `;
   });
 
-  const tags = result.tags.join(', ');
+  const tags = result.tags
+    ? `${videoWord.tag}: *${result.tags.join(', ')}*\n`
+    : '';
+  const score = result.score ? `${videoWord.score}: *${result.score}*\n` : '';
+  const length = result.length
+    ? `${videoWord.length}: *${result.length}* ${videoWord.minute}\n`
+    : '';
+  const publishedAt = result.publishedAt
+    ? `${videoWord.publishedAt}: *${dateFormat(
+        result.publishedAt,
+        'yyyy/mm/dd'
+      )}*\n`
+    : '';
 
   return `
-    ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${videoWord.tag}: *${tags}*\n${videoWord.length}: *${result.length}* ${videoWord.minute}\n${videoWord.image}: ${result.img_url}
+    ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${tags}${score}${length}${publishedAt}${videoWord.image}: ${result.img_url}
   `;
 };
 

@@ -48,6 +48,8 @@ const traditionalChinese = {
     image: '圖片',
     watchMore: '🙌 給我更多 🙌',
     minute: '分鐘',
+    score: '評分',
+    publishedAt: '發行日期',
     notFound: '很抱歉，我們無法搜尋到任何結果 😿',
   },
   imageAnalytic: {
