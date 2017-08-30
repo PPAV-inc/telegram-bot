@@ -45,7 +45,7 @@ const english = {
     title: 'Title',
     model: 'Models',
     tag: 'Tags',
-    duration: 'Duration',
+    length: 'Length',
     view: 'View',
     image: 'Image',
     watchMore: '🙌 I need more 🙌',

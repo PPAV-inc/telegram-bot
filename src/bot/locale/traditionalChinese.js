@@ -43,7 +43,7 @@ const traditionalChinese = {
     title: '片名',
     model: '女優',
     tag: '標籤',
-    duration: '片長',
+    length: '片長',
     view: '點擊數',
     image: '圖片',
     watchMore: '🙌 給我更多 🙌',

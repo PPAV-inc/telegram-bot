@@ -93,17 +93,10 @@ const generateVideoMessageText = (languageCode, result) => {
     models += `${modelName.replace(/[_]/g, '\\_')} `;
   });
 
-  // FIXME 等之後有 tags 跟 duration 時再用
-  // let tags = '';
-  // result.tags.forEach(tagName => {
-  //   tags += `${tagName} `;
-  // });
+  const tags = result.tags.join(', ');
 
-  // return `
-  //   ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${videoWord.tag}: *${tags}*\n${videoWord.duration}: *${result.duration}* ${videoWord.minute}\n${videoWord.image}: ${result.img_url}
-  // `;
   return `
-    ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${videoWord.image}:\n${result.img_url}
+    ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${videoWord.tag}: *${tags}*\n${videoWord.length}: *${result.length}* ${videoWord.minute}\n${videoWord.image}: ${result.img_url}
   `;
 };
 
