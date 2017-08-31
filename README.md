@@ -27,3 +27,16 @@ $ yarn run dev
 ```js
 $ yarn run start
 ```
+
+## Dokcer
+> Before docker run, remember to run ealsticsearch and mongo containers
+
+### build
+```js
+$ docker build -t telegram-bot .
+```
+
+### Run
+```js
+$ docker run -p 3000:3000 -d --link elasticsearch:elasticsearch --link mongo:mongo --name telegram-bot telegram-bot
+```  
