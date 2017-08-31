@@ -50,6 +50,8 @@ const english = {
     image: 'Image',
     watchMore: '🙌 I need more 🙌',
     minute: 'mins',
+    score: 'Score',
+    publishedAt: 'Published at',
     notFound: 'Sorry, I cannot find any result 😿',
   },
   imageAnalytic: {
