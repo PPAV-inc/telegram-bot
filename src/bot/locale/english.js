@@ -26,7 +26,8 @@ const english = {
     mailUrl:
       'https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&source=mailto&to=PPAV2017@gmail.com',
   },
-  about: 'Hello, I am a chatbot which is able to search AV for you.',
+  about:
+    '*We are going to overthrow experience of searching adult videos.*\n\nWe convince that "Technology ALWAYES Comes From Human Nature".\nHowever, adult websites are still in the ancient times, so we are working on changing the future of adult industry.\n\nChatbot is our first step to achieve the plan.\nwe hope you can create a better future with us.',
   setting: {
     text: 'Setting ⚙️',
     buttons: {

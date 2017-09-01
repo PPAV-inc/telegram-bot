@@ -12,6 +12,7 @@ const updateUserLanguage = async (context, next) => {
     text: locale(languageCode).updateUserLanguage,
     options: { parse_mode: 'Markdown' },
   });
+  context.user.languageCode = languageCode; // eslint-disable-line no-param-reassign
 
   await userAuthenticatedMiddleware(context, next);
 };

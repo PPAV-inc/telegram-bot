@@ -24,7 +24,8 @@ const traditionalChinese = {
     mailUrl:
       'https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&source=mailto&to=PPAV2017@gmail.com',
   },
-  about: '你好我是會幫你找片子的聊天機器人',
+  about:
+    '我們是一群有夢的青年，深信*「科技始終來自於人性」*，\n\n但成人網站卻還停留在遠古時代，因此我們正著手改變成人產業的未來。\n\n聊天機器人是我們實現計劃的第一步，希望你我能攜手共創未來。',
   setting: {
     text: '設置 ⚙️',
     buttons: {
