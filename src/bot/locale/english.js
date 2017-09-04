@@ -66,6 +66,20 @@ const english = {
     foundMoreThanOne:
       'Your photo may *contains more than one face*\nIt causes no result found 😿\nTry another photo please 🤘',
   },
+  tutorial: {
+    randomVideo_photo:
+      'AgADBQADCagxGyo8aFVH3IgMEMT1LJoRzDIABA0QyNe9qR6i0DoCAAEC',
+    randomVideo:
+      '1️⃣ Random Video\n\nType "PPAV" in input box or click "PPAV 🔥" in main menu.\nPPAV will send you a hot video randomly.',
+    searchVideos_photo_1:
+      'AgADBQADCqgxGyo8aFX0jYJIBZXc5yF80DIABHvx8QSyiDngOgsAAgI',
+    searchVideos_caption_1:
+      '2️⃣-1️⃣ Search Video\n\nType "#Keyword" in input box to search video.\n\nKeyword can be\n1.「Model」, e.g. "#三上悠亞"\n2.「Tag」, e.g. "#高校生"\n3.「Code」, e.g. "#887"\n4.「Title」, e.g. "#美少女完全予約制"',
+    searchVideos_photo_2:
+      'AgADBQADC6gxGyo8aFX_dZEn5cYzxD0fzDIABLdmB8MkeAxyREMCAAEC',
+    searchVideos_caption_2:
+      "2️⃣-2️⃣ Select Page\n\nPPAV will send you 30 videos at most for one searching. You can click page number below to select your favorite video.\n\nPlease be patient after clicking the page button. Click it duplicatedly won't speed up anything!",
+  },
   unhandled:
     'Instruction:\n\n1️⃣*Random Videos* please enter： "*PPAV*"\n\n2️⃣*Search Videos* please enter： "*# Keyword*"',
 };

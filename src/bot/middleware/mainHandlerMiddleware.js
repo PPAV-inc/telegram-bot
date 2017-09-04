@@ -2,6 +2,7 @@ import { TelegramHandlerBuilder } from 'toolbot-core-experiment';
 import {
   searchVideos,
   randomVideo,
+  tutorial,
   setting,
   about,
   disclaimer,
@@ -18,6 +19,8 @@ const mainHandlerMiddleware = context =>
     .onText(/[#＃]\s*\+*\s*(\S+)/, searchVideos)
     // PPAV
     .onText(/(^PPAV$|^PPAV 🔥$)/i, randomVideo)
+    // 設置
+    .onText(/(使用說明|Tutorial) 📖$/i, tutorial)
     // 設置
     .onText(/(設置|Setting) ⚙️$/i, setting)
     // 圖片分析

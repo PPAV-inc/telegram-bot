@@ -3,6 +3,7 @@ import start from './start';
 import updateUserLanguage from './updateUserLanguage';
 import searchVideos from './searchVideos';
 import randomVideo from './randomVideo';
+import tutorial from './tutorial';
 import setting from './setting';
 import about from './about';
 import disclaimer from './disclaimer';
@@ -18,6 +19,7 @@ export {
   updateUserLanguage,
   searchVideos,
   randomVideo,
+  tutorial,
   setting,
   about,
   disclaimer,
