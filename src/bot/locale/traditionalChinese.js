@@ -51,7 +51,7 @@ const traditionalChinese = {
     minute: '分鐘',
     score: '評分',
     publishedAt: '發行日期',
-    notFound: '很抱歉，我們無法搜尋到任何結果 😿',
+    notFound: '很抱歉，PPAV 無法搜尋到任何結果 😿\n為您推薦熱門影片，也許您會喜歡！ 🚀',
   },
   imageAnalytic: {
     prePostText: '請稍待片刻\nPPAV 正努力為您搜尋中... 🔎',
@@ -59,7 +59,7 @@ const traditionalChinese = {
     notFound: '很抱歉您傳送的圖片可能*未包含一張完整清晰的臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
     foundMoreThanOne: '很抱歉您傳送的圖片可能*包含多張臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
   },
-  unhandled: '1️⃣*隨機影片* 請輸入： "*PPAV*"\n\n2️⃣*搜尋影片* 請輸入： "*# 關鍵字*"',
+  unhandled: '操作說明：\n\n1️⃣*隨機影片* 請輸入： "*PPAV*"\n\n2️⃣*搜尋影片* 請輸入： "*# 關鍵字*"',
 };
 
 export default traditionalChinese;
