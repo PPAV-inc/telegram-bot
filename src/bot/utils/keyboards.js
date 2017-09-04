@@ -5,12 +5,15 @@ const disclaimerKeyboard = (accept, refuse) => [
 ];
 
 const mainMenuKeyboard = (
+  randomVideo,
+  tutorial,
   about,
   checkDisclaimer,
   report,
   contactUs,
   setting
 ) => [
+  [{ text: `${randomVideo}` }, { text: `${tutorial}` }],
   [{ text: `${about}` }, { text: `${report}` }],
   [{ text: `${checkDisclaimer}` }, { text: `${contactUs}` }],
   [{ text: `${setting}` }],

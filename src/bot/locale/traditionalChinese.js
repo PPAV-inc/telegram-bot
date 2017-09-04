@@ -10,7 +10,9 @@ const traditionalChinese = {
     alreadyRefuse: '很抱歉您拒絕 PPAV 免責聲明 ❌\n\n❗️*請注意：在您未同意免責聲明前將無法使用 PPAV 任何功能*❗️',
   },
   mainMenu: {
-    text: '有任何需要歡迎點擊下方的按鈕們 👇',
+    text: '有任何疑問歡迎點擊右下方的按鈕開啟主選單 🎛',
+    randomVideo: 'PPAV 🔥',
+    tutorial: '使用說明 📖',
     about: '關於 PPAV 👀',
     checkDisclaimer: '免責聲明 📜',
     report: '意見回饋 🙏',

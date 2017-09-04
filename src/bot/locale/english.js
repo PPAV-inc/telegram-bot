@@ -12,7 +12,9 @@ const english = {
       'We are sorry about you refuse PPAV disclaimer ❌\n\n❗️*Attention, before accepting the disclaimer, you are not be able to use PPAV*❗️',
   },
   mainMenu: {
-    text: 'Feel free to click buttons in menu 👇',
+    text: 'Feel free to click bottom right corner button to open menu 🎛',
+    randomVideo: 'PPAV 🔥',
+    tutorial: 'Tutorial 📖',
     about: 'About PPAV 👀',
     checkDisclaimer: 'Disclaimer 📜',
     report: 'Report 🙏',

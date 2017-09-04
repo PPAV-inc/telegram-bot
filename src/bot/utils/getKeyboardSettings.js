@@ -47,10 +47,19 @@ const getDisclaimerKeyboardSettings = languageCode => {
 };
 
 const getMainMenuKeyboardSettings = languageCode => {
-  const { text, about, checkDisclaimer, report, contactUs, setting } = locale(
-    languageCode
-  ).mainMenu;
+  const {
+    text,
+    randomVideo,
+    tutorial,
+    about,
+    checkDisclaimer,
+    report,
+    contactUs,
+    setting,
+  } = locale(languageCode).mainMenu;
   const mainMenuKeyboard = keyboards.mainMenuKeyboard(
+    randomVideo,
+    tutorial,
     about,
     checkDisclaimer,
     report,
