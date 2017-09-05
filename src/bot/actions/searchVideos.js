@@ -1,3 +1,4 @@
+import randomVideo from './randomVideo';
 import locale from '../locale';
 import getQueryResult from '../utils/getQueryResult';
 import { getVideoSourcesKeyboardSettings } from '../utils/getKeyboardSettings';
@@ -24,6 +25,9 @@ const searchVideos = async context => {
       text: locale(user.languageCode).videos.notFound,
       options: { parse_mode: 'Markdown' },
     };
+    context.sendMessageContent.push(messageContent);
+
+    await randomVideo(context);
   } else {
     messageContent = await getVideoSourcesKeyboardSettings(
       user.languageCode,
@@ -35,9 +39,9 @@ const searchVideos = async context => {
 
     await insertSearchKeywords(keyword);
     await insertHotSearchKeywords(keyword);
-  }
 
-  context.sendMessageContent.push(messageContent);
+    context.sendMessageContent.push(messageContent);
+  }
 };
 
 export default searchVideos;

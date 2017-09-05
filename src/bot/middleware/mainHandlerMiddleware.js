@@ -15,7 +15,7 @@ import {
 const mainHandlerMiddleware = context =>
   new TelegramHandlerBuilder()
     // 搜尋 番號、標題、女優
-    .onText(/([#＃]|[%％]|[@＠])\s*\+*\s*(\S+)/, searchVideos)
+    .onText(/[#＃]\s*\+*\s*(\S+)/, searchVideos)
     // PPAV
     .onText(/^PPAV$/i, randomVideo)
     // 設置

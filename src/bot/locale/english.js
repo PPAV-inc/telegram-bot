@@ -53,7 +53,8 @@ const english = {
     minute: 'mins',
     score: 'Score',
     publishedAt: 'Published at',
-    notFound: 'Sorry, I cannot find any result 😿',
+    notFound:
+      'Sorry, PPAV cannot find any result 😿\nThis is a Hot video, hope you will like it! 🚀',
   },
   imageAnalytic: {
     prePostText: 'Please give PPAV a second\nSearching... 🔎',
@@ -64,7 +65,7 @@ const english = {
       'Your photo may *contains more than one face*\nIt causes no result found 😿\nTry another photo please 🤘',
   },
   unhandled:
-    '1️⃣*Random Videos* please enter： "*PPAV*"\n\n2️⃣*Search Videos* please enter： "*# Keyword*"',
+    'Instruction:\n\n1️⃣*Random Videos* please enter： "*PPAV*"\n\n2️⃣*Search Videos* please enter： "*# Keyword*"',
 };
 
 export default english;
