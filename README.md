@@ -38,5 +38,5 @@ $ docker build -t telegram-bot .
 
 ### Run
 ```js
-$ docker run -p 3000:3000 -d --link elasticsearch:elasticsearch --link mongo:mongo --name telegram-bot telegram-bot@latest
+$ docker run -p 3000:3000 -d --link elasticsearch:elasticsearch --link mongo:mongo --name telegram-bot --restart always telegram-bot:latest
 ```  
