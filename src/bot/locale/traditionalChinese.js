@@ -62,16 +62,13 @@ const traditionalChinese = {
     foundMoreThanOne: '很抱歉您傳送的圖片可能*包含多張臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
   },
   tutorial: {
-    randomVideo_photo:
-      'AgADBQADCagxGyo8aFVH3IgMEMT1LJoRzDIABA0QyNe9qR6i0DoCAAEC',
+    randomVideo_photo: 'https://imgur.com/7ouKmPL.jpg',
     randomVideo:
       '1️⃣ 隨機影片\n\n在輸入框內輸入 "PPAV"，或在主選單中點選 "PPAV 🔥"，PPAV 將會隨機傳送一部熱門影片給您',
-    searchVideos_photo_1:
-      'AgADBQADCqgxGyo8aFX0jYJIBZXc5yF80DIABHvx8QSyiDngOgsAAgI',
+    searchVideos_photo_1: 'https://imgur.com/rZX96do.jpg',
     searchVideos_caption_1:
       '2️⃣-1️⃣ 搜尋影片\n\n在輸入框內輸入 "#關鍵字" 可以搜尋影片\n\n關鍵字可以是\n1.「女優名字」，例如："#三上悠亞"\n2.「標籤」，例如："#高校生"\n3.「番號」，例如："#887"\n4.「片名」，例如："#美少女完全予約制"',
-    searchVideos_photo_2:
-      'AgADBQADC6gxGyo8aFX_dZEn5cYzxD0fzDIABLdmB8MkeAxyREMCAAEC',
+    searchVideos_photo_2: 'https://imgur.com/9Lq3Zfu.jpg',
     searchVideos_caption_2:
       '2️⃣-2️⃣ 點選頁數\n\n每次搜尋 PPAV 將最多傳送 30 部片，在每部片的下方可以點選頁數來挑選您喜歡的影片\n\n點選頁數時請耐心等候回應，重複點選頁數並不會比較快！',
   },
