@@ -6,11 +6,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.3.0] -
+## [0.4.0]
 ### Added
 - Run ngrok when developing automatically.
-- Use elasticsearch as search database.
-- Fuzzy search. Let user find video easier.
+
+### Changed
+- Better tutorial messages.
+
+## [0.3.0] - 2017-09-06
+### Added
+- Use Elasticsearch as search database.
+- Fuzzy search. User recently can search videos by only one prefix, and get result with high probability.
+- Use redirect url as video's url.
+- Add maximum video count to constraint too much searching result.
+- Show tags and video length in message.
+- Send a random video when searching result is none.
+- Add tutorial button, and PPAV shortcut key in main menu.
+
+### Fixed
+- Check user information at very beginning.
+- More accurately Docker commend.
+
+### Changed
+- Rewrite babel settings.
+- Split saving search information models into saving keywords and hot keywords.
 
 ## [0.2.0] - 2017-08-17
 ### Added
