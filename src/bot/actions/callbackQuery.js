@@ -10,7 +10,7 @@ const callbackQuery = async context => {
   const { text, options } = await parseAction(action, languageCode);
 
   if (text.indexOf(':') > -1) {
-    await context._client.editMessageText(text, {
+    await context.client.editMessageText(text, {
       chat_id: chatId,
       message_id,
       ...options,

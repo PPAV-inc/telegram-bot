@@ -11,6 +11,6 @@ const middlewareHandlerBuilder = new MiddlewareHandlerBuilder()
   .use(startHandlerMiddleware)
   .use(mainHandlerMiddleware);
 
-bot.handle(middlewareHandlerBuilder.build());
+bot.onEvent(middlewareHandlerBuilder.build());
 
 export default bot;

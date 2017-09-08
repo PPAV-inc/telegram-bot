@@ -10,20 +10,19 @@ if (process.env.NODE_ENV === 'production') {
 
 const sendMessageMiddleware = (outerContext, next) =>
   new TelegramHandlerBuilder()
-    .onUnhandled(async context => {
-      context.sendChatAction('typing');
-      context.sendMessageContent = []; // eslint-disable-line no-param-reassign
-
+    .onEvent(async context => {
       const message =
-        context.event._rawEvent.message || context.event.callbackQuery;
-      const userId = message.from.id;
+        context.event._rawEvent.message || context.event.callbackQuery.message;
+      context.sendChatAction('typing');
 
+      const userId = message.chat.id;
       let user = await users.getUser(userId);
       if (!user) {
         user = await users.createUser(message);
       }
 
-      context.user = user; // eslint-disable-line
+      context.sendMessageContent = []; // eslint-disable-line no-param-reassign
+      context.user = user; // eslint-disable-line no-param-reassign
 
       await next();
 

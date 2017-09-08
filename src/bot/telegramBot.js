@@ -11,6 +11,6 @@ const bot = new TelegramBot({
   accessToken: botToken,
 });
 
-bot.connector._client.setWebhook(`${url}/bot${botToken}`);
+bot.connector.client.setWebhook(`${url}/bot${botToken}`);
 
 export default bot;
