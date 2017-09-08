@@ -36,7 +36,7 @@ const mainHandlerMiddleware = context =>
     // callback_query
     .onCallbackQuery(/.*/, callbackQuery)
     // unhandled
-    .onUnhandled(unhandled)
+    .onEvent(unhandled)
     .build()(context);
 
 export default mainHandlerMiddleware;

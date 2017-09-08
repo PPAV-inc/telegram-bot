@@ -15,12 +15,14 @@ const imageAnalytic = async context => {
     user.languageCode
   ).imageAnalytic;
 
-  await context.sendDocument(searchingGifUrl, { caption: prePostText });
+  await context.sendDocument(searchingGifUrl, {
+    caption: prePostText,
+  });
 
-  const { result: fileInfo } = await context._client.getFile(
+  const { result: fileInfo } = await context.client.getFile(
     context.event._rawEvent.message.photo.pop().file_id
   );
-  const image = `https://api.telegram.org/file/bot${context._client
+  const image = `https://api.telegram.org/file/bot${context.client
     ._token}/${fileInfo.file_path}`;
 
   try {
