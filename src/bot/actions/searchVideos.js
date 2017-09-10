@@ -2,8 +2,9 @@ import randomVideo from './randomVideo';
 import locale from '../locale';
 import getQueryResult from '../utils/getQueryResult';
 import { getVideoSourcesKeyboardSettings } from '../utils/getKeyboardSettings';
-import insertSearchKeywords from '../../models/searchKeywords';
-import insertHotSearchKeywords from '../../models/hotSearchKeywords';
+import insertSearchKeyword from '../../models/searchKeywords';
+import insertHotSearchKeyword from '../../models/hotSearchKeywords';
+import insertNotFoundLog from '../../models/notFoundLogs';
 
 const searchVideos = async context => {
   const match = context.event._rawEvent.message.text.match(
@@ -21,6 +22,8 @@ const searchVideos = async context => {
 
   let messageContent;
   if (totalCount === 0) {
+    insertNotFoundLog(keyword);
+
     messageContent = {
       text: locale(user.languageCode).videos.notFound,
       options: { parse_mode: 'Markdown' },
@@ -37,8 +40,8 @@ const searchVideos = async context => {
       totalCount
     );
 
-    await insertSearchKeywords(keyword);
-    await insertHotSearchKeywords(keyword);
+    insertSearchKeyword(keyword);
+    insertHotSearchKeyword(keyword);
 
     context.sendMessageContent.push(messageContent);
   }
