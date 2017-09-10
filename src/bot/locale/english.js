@@ -57,6 +57,10 @@ const english = {
     publishedAt: 'Published at',
     notFound:
       'Sorry, PPAV cannot find any result 😿\nThis is a Hot video, hope you will like it! 🚀',
+    wantWatchMore: 'Cannot find your type?',
+    noWatchMore:
+      'Sorry, no more searching results 😿.\nWe will do our best to find more resource for you! 🚖',
+    searchingKeyword: 'Searching keyword: ',
   },
   imageAnalytic: {
     prePostText: 'Please give PPAV a second\nSearching... 🔎',

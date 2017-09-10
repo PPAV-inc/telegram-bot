@@ -1,6 +1,6 @@
-import dateFormat from 'dateformat';
 import * as keyboards from './keyboards';
 import locale from '../locale';
+import generateVideoMessageText from './generateVideoMessageText';
 
 const replyKeyboardOptions = (keyboard, onTimeKeyboard) => ({
   reply_markup: {
@@ -88,69 +88,46 @@ const getSettingKeyboardSettings = languageCode => {
   return { text, options };
 };
 
-const generateVideoMessageText = (languageCode, result) => {
-  const videoWord = locale(languageCode).videos;
+const getSearchVideoKeyboardSettings = async (languageCode, result) => {
+  const searchVideoKeyboard = await keyboards.searchVideoKeyboard(
+    result.videos
+  );
+  const options = inlineKeyboardOptions(searchVideoKeyboard);
 
-  Object.keys(result).map(key => {
-    if (typeof result[key] === 'string') {
-      result[key] = result[key].replace(/[_]/g, '\\_'); // eslint-disable-line
-    }
-    return result[key];
-  });
-
-  let models = '';
-  result.models.forEach(modelName => {
-    models += `${modelName.replace(/[_]/g, '\\_')} `;
-  });
-
-  const tags = result.tags
-    ? `${videoWord.tag}: *${result.tags.join(', ')}*\n`
-    : '';
-  const score = result.score ? `${videoWord.score}: *${result.score}*\n` : '';
-  const length = result.length
-    ? `${videoWord.length}: *${result.length}* ${videoWord.minute}\n`
-    : '';
-  const publishedAt = result.publishedAt
-    ? `${videoWord.publishedAt}: *${dateFormat(
-        result.publishedAt,
-        'yyyy/mm/dd'
-      )}*\n`
-    : '';
-
-  return `
-    ${videoWord.code}: *${result.code}*\n${videoWord.title}: *${result.title}*\n${videoWord.model}: *${models}*\n${tags}${score}${length}${publishedAt}${videoWord.image}: ${result.img_url}
-  `;
+  return {
+    imageUrl: result.img_url,
+    options: {
+      ...options,
+      caption: generateVideoMessageText(languageCode, result),
+    },
+  };
 };
 
-const getVideoSourcesKeyboardSettings = async (
-  languageCode,
-  keyword,
-  result,
-  nowPage,
-  totalCount
-) => {
-  const text = generateVideoMessageText(languageCode, result);
-
-  const videoSourcesKeyboard = await keyboards.videoSourcesKeyboard(
+const getWatchMoreKeyboardSettings = async (languageCode, keyword, nowPage) => {
+  const text = `${locale(languageCode).videos
+    .searchingKeyword}#${keyword}\n${locale(languageCode).videos
+    .wantWatchMore}`;
+  const watchMoreKeyBoard = await keyboards.watchMoreKeyBoard(
+    locale(languageCode).videos.watchMore,
     keyword,
-    result.videos,
-    nowPage,
-    totalCount
+    nowPage
   );
-  const options = inlineKeyboardOptions(videoSourcesKeyboard);
+  const options = inlineKeyboardOptions(watchMoreKeyBoard);
 
   return { text, options };
 };
 
 const getRandomVideoKeyboardSettings = async (languageCode, result) => {
-  const text = generateVideoMessageText(languageCode, result);
   const randomVideoKeyboard = await keyboards.randomVideoKeyboard(
     locale(languageCode).videos.watchMore,
     result
   );
-  const options = inlineKeyboardOptions(randomVideoKeyboard);
+  const options = {
+    ...inlineKeyboardOptions(randomVideoKeyboard),
+    caption: generateVideoMessageText(languageCode, result),
+  };
 
-  return { text, options };
+  return { imageUrl: result.img_url, options };
 };
 
 const getImageAnalyticKeyboardSettings = async (languageCode, result) => {
@@ -176,7 +153,8 @@ export {
   getContactUsKeyboardSettings,
   getSettingKeyboardSettings,
   getAutoDeleteMessagesKeyboardSettings,
-  getVideoSourcesKeyboardSettings,
+  getSearchVideoKeyboardSettings,
+  getWatchMoreKeyboardSettings,
   getRandomVideoKeyboardSettings,
   getImageAnalyticKeyboardSettings,
 };

@@ -54,6 +54,9 @@ const traditionalChinese = {
     score: '評分',
     publishedAt: '發行日期',
     notFound: '很抱歉，PPAV 無法搜尋到任何結果 😿\n為您推薦熱門影片，也許您會喜歡！ 🚀',
+    wantWatchMore: '找不到喜歡的片子嗎？',
+    noWatchMore: '很抱歉，沒有更多搜尋結果了 😿\n我們會努力為您開拓更多片源！🚖',
+    searchingKeyword: '搜尋關鍵字：',
   },
   imageAnalytic: {
     prePostText: '請稍待片刻\nPPAV 正努力為您搜尋中... 🔎',

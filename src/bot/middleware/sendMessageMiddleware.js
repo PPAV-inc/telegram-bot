@@ -28,9 +28,14 @@ const sendMessageMiddleware = (outerContext, next) =>
 
       /* eslint-disable */
       for (let i = 0; i < context.sendMessageContent.length; i += 1) {
-        const { text, options } = context.sendMessageContent[i];
-        await context.sendMessage(text, options);
-        sendLogOutgoing(context.event._rawEvent, text, options);
+        const { imageUrl, text, options } = context.sendMessageContent[i];
+        if (imageUrl) {
+          await context.sendPhoto(imageUrl, options);
+          sendLogOutgoing(context.event._rawEvent, options.caption);
+        } else {
+          await context.sendMessage(text, options);
+          sendLogOutgoing(context.event._rawEvent, text, options);
+        }
       }
       /* eslint-enable */
     })

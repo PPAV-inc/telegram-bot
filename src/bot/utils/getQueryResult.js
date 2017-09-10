@@ -1,18 +1,12 @@
 import * as videos from '../../models/videos';
 
-const MAX_TOTAL_COUNT = 30;
-
 const getQueryResult = async (type, keyword = null, page = null) => {
   if (type.toUpperCase() === 'PPAV') {
-    const { result } = await videos.getOneRandomVideo();
+    const { result } = await videos.getRandomVideos();
     return result;
   }
 
-  const { totalCount, result } = await videos.getVideo(keyword, page);
-
-  if (totalCount > MAX_TOTAL_COUNT) {
-    return { totalCount: MAX_TOTAL_COUNT, result };
-  }
+  const { totalCount, result } = await videos.searchVideos(keyword, page);
 
   return { totalCount, result };
 };

@@ -4,8 +4,8 @@ import config from '../../env/bot.config';
 
 const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
-const getVideo = async (messageText, page) => {
-  let result = {};
+const searchVideos = async (messageText, page) => {
+  const result = [];
   const keyword = escapeRegex(messageText);
 
   const esClient = getElasticsearchDatabase();
@@ -18,22 +18,26 @@ const getVideo = async (messageText, page) => {
         multi_match: {
           query: keyword,
           type: 'cross_fields',
-          fields: ['tags^80', 'title^50', 'models^100', 'code^1000'],
+          fields: ['tags^200', 'title^50', 'models^100', 'code^1000'],
         },
       },
       min_score: 50,
       from: page - 1,
-      size: 1,
+      size: 5,
     },
   });
 
   if (totalCount !== 0) {
-    [{ _source: result }] = hits;
-    result.videos = result.videos.map(video => ({
-      ...video,
-      url: `${config.url}/redirect/?url=${encodeURI(video.url)}&_id=${hits[0]
-        ._id}`,
-    }));
+    hits.forEach(hit => {
+      const { _source: source } = hit;
+      source.videos = source.videos.map(video => ({
+        ...video,
+        url: `${config.url}/redirect/?url=${encodeURI(
+          video.url
+        )}&_id=${hit._id}`,
+      }));
+      result.push(source);
+    });
   }
 
   return {
@@ -44,23 +48,27 @@ const getVideo = async (messageText, page) => {
 };
 
 // FIXME
-const getOneRandomVideo = async () => {
+const getRandomVideos = async () => {
   const db = await getMongoDatabase();
-  const [result] = await db
+
+  const result = await db
     .collection('videos')
     .aggregate([
       { $sort: { total_view_count: -1 } },
-      { $limit: 50 },
-      { $sample: { size: 1 } },
+      { $limit: 100 },
+      { $sample: { size: 3 } },
     ])
     .toArray();
 
-  result.videos = result.videos.map(video => ({
-    ...video,
-    url: `${config.url}/redirect/?url=${encodeURI(
-      video.url
-    )}&_id=${result._id}`,
-  }));
+  result.forEach(eachResult => {
+    // eslint-disable-next-line no-param-reassign
+    eachResult.videos = eachResult.videos.map(video => ({
+      ...video,
+      url: `${config.url}/redirect/?url=${encodeURI(
+        video.url
+      )}&_id=${eachResult._id}`,
+    }));
+  });
 
   return {
     type: 'PPAV',
@@ -74,4 +82,4 @@ const getAnalyticVideos = async candidates => {
   return db.collection('videos').find({ _id: { $in: videosIds } }).toArray();
 };
 
-export { getVideo, getOneRandomVideo, getAnalyticVideos };
+export { searchVideos, getRandomVideos, getAnalyticVideos };
