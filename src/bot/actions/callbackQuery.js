@@ -1,25 +1,69 @@
-import parseAction from '../utils/parseAction';
+import randomVideo from './randomVideo';
+import locale from '../locale';
+import getQueryResult from '../utils/getQueryResult';
+import {
+  getLanguageKeyboardSettings,
+  getAutoDeleteMessagesKeyboardSettings,
+  getSearchVideoKeyboardSettings,
+  getWatchMoreKeyboardSettings,
+} from '../utils/getKeyboardSettings';
+
+const regex = /keyword="(.+)"&page="(\d+)"/;
 
 const callbackQuery = async context => {
-  const {
-    message: { message_id, chat: { id: chatId } },
-    data: action,
-  } = context.event.callbackQuery;
-
+  const { data: action } = context.event.callbackQuery;
   const { languageCode } = context.user;
-  const { text, options } = await parseAction(action, languageCode);
 
-  if (text.indexOf(':') > -1) {
-    await context.client.editMessageText(text, {
-      chat_id: chatId,
-      message_id,
-      ...options,
-    });
-  } else {
-    context.sendMessageContent.push({
-      text,
-      options,
-    });
+  let result;
+  switch (action) {
+    case 'changLanguage':
+      result = getLanguageKeyboardSettings();
+      context.sendMessageContent.push(result);
+      break;
+    case 'autoDeleteMessages':
+      result = getAutoDeleteMessagesKeyboardSettings(languageCode);
+      context.sendMessageContent.push(result);
+      break;
+    case 'watchMore':
+      await randomVideo(context);
+      break;
+    default: {
+      const data = await regex.exec(action);
+      const keyword = data[1];
+      const page = parseInt(data[2], 10);
+
+      const { totalCount, result: videos } = await getQueryResult(
+        'search',
+        keyword,
+        page
+      );
+
+      for (let i = 0; i < videos.length; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        const messageContent = await getSearchVideoKeyboardSettings(
+          languageCode,
+          videos[i]
+        );
+        context.sendMessageContent.push(messageContent);
+      }
+
+      if (totalCount >= page + 5) {
+        const watchMore = await getWatchMoreKeyboardSettings(
+          languageCode,
+          keyword,
+          page
+        );
+        context.sendMessageContent.push(watchMore);
+      } else {
+        const messageContent = {
+          text: `${locale(languageCode).videos
+            .searchingKeyword}#${keyword}\n${locale(languageCode).videos
+            .noWatchMore}`,
+          options: { parse_mode: 'Markdown' },
+        };
+        context.sendMessageContent.push(messageContent);
+      }
+    }
   }
 };
 

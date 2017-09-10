@@ -5,9 +5,13 @@ jest.mock('mongodb');
 jest.mock('../database');
 
 const { getMongoDatabase, getElasticsearchDatabase } = require('../database');
-const { getVideo, getOneRandomVideo, getAnalyticVideos } = require('../videos');
+const {
+  searchVideos,
+  getRandomVideos,
+  getAnalyticVideos,
+} = require('../videos');
 
-describe('getVideo', () => {
+describe('searchVideos', () => {
   beforeEach(() => {
     getElasticsearchDatabase.mockReturnValue({
       search: jest.fn(),
@@ -52,40 +56,42 @@ describe('getVideo', () => {
   });
 
   it('should be defined', () => {
-    expect(getVideo).toBeDefined();
+    expect(searchVideos).toBeDefined();
   });
 
   it('should return an object when type is models', async () => {
     const messageText = '小美';
     const page = 1;
 
-    const { result, totalCount } = await getVideo(messageText, page);
+    const { result, totalCount } = await searchVideos(messageText, page);
 
     expect(getElasticsearchDatabase).toBeCalled();
     expect(getElasticsearchDatabase().search).toBeCalled();
-    expect(result).toEqual({
-      title:
-        '出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 南まゆ出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 雲乃亜美出会って4秒で即ハメされてイキまくり！ 長瀬麻美出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 長澤えりな出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 伊東紅出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 有沢杏出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 彩乃なな出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ！ 宇沙城らん出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 澁谷果歩出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ 皆野あい出会って即合体スペシャル4',
-      models: ['南まゆ', '雲乃亜美', '長瀬麻美'],
-      img_url:
-        'http://pics.dmm.co.jp/digital/video/td005dvaj130h/td005dvaj130hpl.jpg',
-      code: 'DVAJ-130',
-      tags: ['中出', '制服', '長腿', '精選、綜合', '巨乳', '4小時以上作品', '紀錄片', '立即口交'],
-      duration: 150,
-      total_view_count: 666,
-      videos: [
-        {
-          source: 'youav',
-          url: `${config.url}/redirect/?url=${encodeURI(
-            'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4'
-          )}&_id=598200798612d0d9c9cfaf7c`,
-          view_count: 666,
-        },
-      ],
-      score: 10,
-      length: 240,
-      publishedAt: new Date('2016-04-13T00:00:00.000Z'),
-    });
+    expect(result).toEqual([
+      {
+        title:
+          '出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 南まゆ出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 雲乃亜美出会って4秒で即ハメされてイキまくり！ 長瀬麻美出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 長澤えりな出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 伊東紅出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 有沢杏出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 彩乃なな出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ！ 宇沙城らん出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 澁谷果歩出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ 皆野あい出会って即合体スペシャル4',
+        models: ['南まゆ', '雲乃亜美', '長瀬麻美'],
+        img_url:
+          'http://pics.dmm.co.jp/digital/video/td005dvaj130h/td005dvaj130hpl.jpg',
+        code: 'DVAJ-130',
+        tags: ['中出', '制服', '長腿', '精選、綜合', '巨乳', '4小時以上作品', '紀錄片', '立即口交'],
+        duration: 150,
+        total_view_count: 666,
+        videos: [
+          {
+            source: 'youav',
+            url: `${config.url}/redirect/?url=${encodeURI(
+              'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4'
+            )}&_id=598200798612d0d9c9cfaf7c`,
+            view_count: 666,
+          },
+        ],
+        score: 10,
+        length: 240,
+        publishedAt: new Date('2016-04-13T00:00:00.000Z'),
+      },
+    ]);
     expect(totalCount).toBe(1);
   });
 
@@ -99,15 +105,15 @@ describe('getVideo', () => {
     const messageText = '123';
     const page = 1;
 
-    const { result, totalCount } = await getVideo(messageText, page);
+    const { result, totalCount } = await searchVideos(messageText, page);
     expect(getElasticsearchDatabase).toBeCalled();
     expect(getElasticsearchDatabase().search).toBeCalled();
-    expect(result).toEqual({});
+    expect(result).toEqual([]);
     expect(totalCount).toBe(0);
   });
 });
 
-describe('getOneRandomVideo', () => {
+describe('getRandomVideos', () => {
   beforeEach(() => {
     getMongoDatabase.mockReturnValue({
       collection: jest.fn().mockReturnThis(),
@@ -151,18 +157,18 @@ describe('getOneRandomVideo', () => {
   });
 
   it('should be defined', () => {
-    expect(getOneRandomVideo).toBeDefined();
+    expect(getRandomVideos).toBeDefined();
   });
 
   it('should return an object', async () => {
-    await getOneRandomVideo();
+    await getRandomVideos();
 
     expect(getMongoDatabase).toBeCalled();
     expect(getMongoDatabase().collection).toBeCalledWith('videos');
     expect(getMongoDatabase().collection().aggregate).toBeCalledWith([
       { $sort: { total_view_count: -1 } },
-      { $limit: 50 },
-      { $sample: { size: 1 } },
+      { $limit: 100 },
+      { $sample: { size: 3 } },
     ]);
     expect(getMongoDatabase().collection().aggregate().toArray).toBeCalled();
   });
