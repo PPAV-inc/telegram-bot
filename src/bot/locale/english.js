@@ -51,13 +51,17 @@ const english = {
     length: 'Length',
     view: 'View',
     image: 'Image',
-    watchMore: '🙌 I need more 🙌',
+    watchMore: '🙌 Give me more 🙌',
     minute: 'mins',
     score: 'Score',
     publishedAt: 'Published at',
     notFound:
       'Sorry, PPAV cannot find any result 😿\nThis is a Hot video, hope you will like it! 🚀',
-    wantWatchMore: 'Cannot find your type?',
+    wantWatchMore: [
+      'Cannot find your type?',
+      'Need more excitement?',
+      "I'm gonna cum!",
+    ],
     noWatchMore:
       'Sorry, no more searching results 😿.\nWe will do our best to find more resource for you! 🚖',
     searchingKeyword: 'Searching keyword: ',
@@ -73,16 +77,23 @@ const english = {
   tutorial: {
     randomVideo_photo: 'https://imgur.com/7ouKmPL.jpg',
     randomVideo:
-      '1️⃣ Random Video\n\nType "PPAV" in input box or click "PPAV 🔥" in main menu.\nPPAV will send you a hot video randomly.',
+      '1️⃣ Random Video\n\nType "PPAV" in input box or click "PPAV 🔥" in main menu.\nPPAV will send you three hot videos randomly.',
     searchVideos_photo_1: 'https://imgur.com/rZX96do.jpg',
     searchVideos_caption_1:
       '2️⃣-1️⃣ Search Video\n\nType "#Keyword" in input box to search video.\n\nKeyword can be\n1.「Model」, e.g. "#三上悠亞"\n2.「Tag」, e.g. "#高校生"\n3.「Code」, e.g. "#887"\n4.「Title」, e.g. "#美少女完全予約制"',
-    searchVideos_photo_2: 'https://imgur.com/9Lq3Zfu.jpg',
+    searchVideos_photo_2: 'https://imgur.com/QqPcCUc.jpg',
     searchVideos_caption_2:
-      "2️⃣-2️⃣ Select Page\n\nPPAV will send you 30 videos at most for one searching. You can click page number below to select your favorite video.\n\nPlease be patient after clicking the page button. Click it duplicatedly won't speed up anything!",
+      '2️⃣-2️⃣ Give me more\n\nPPAV will send you 5 videos at first after searching keyword. If You want see more searching results, click "Give me more" to get 5 more videos.',
   },
-  unhandled:
-    'Instruction:\n\n1️⃣*Random Videos* please enter： "*PPAV*"\n\n2️⃣*Search Videos* please enter： "*# Keyword*"',
+  unhandled: {
+    minor: [
+      'Wanna search videos?',
+      'Already prepare your tissues?',
+      "Let's do it",
+    ],
+    main:
+      'Instruction:\n\n1️⃣*Random Videos* please enter： "*PPAV*"\n\n2️⃣*Search Videos* please enter： "*# Keyword*"',
+  },
 };
 
 export default english;

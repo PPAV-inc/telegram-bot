@@ -1,3 +1,4 @@
+import uniqueRandomArray from 'unique-random-array';
 import * as keyboards from './keyboards';
 import locale from '../locale';
 import generateVideoMessageText from './generateVideoMessageText';
@@ -105,8 +106,9 @@ const getSearchVideoKeyboardSettings = async (languageCode, result) => {
 
 const getWatchMoreKeyboardSettings = async (languageCode, keyword, nowPage) => {
   const text = `${locale(languageCode).videos
-    .searchingKeyword}#${keyword}\n${locale(languageCode).videos
-    .wantWatchMore}`;
+    .searchingKeyword}#${keyword}\n${uniqueRandomArray(
+    locale(languageCode).videos.wantWatchMore
+  )()}`;
   const watchMoreKeyBoard = await keyboards.watchMoreKeyBoard(
     locale(languageCode).videos.watchMore,
     keyword,

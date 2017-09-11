@@ -54,7 +54,13 @@ const traditionalChinese = {
     score: '評分',
     publishedAt: '發行日期',
     notFound: '很抱歉，PPAV 無法搜尋到任何結果 😿\n為您推薦熱門影片，也許您會喜歡！ 🚀',
-    wantWatchMore: '找不到喜歡的片子嗎？',
+    wantWatchMore: [
+      '找不到喜歡的片子嗎？',
+      '還射不出來嗎？',
+      '快出來了還差一點！',
+      '我還要我還要我還要我還要我還要',
+      '褲子都脫了你給我看這些？',
+    ],
     noWatchMore: '很抱歉，沒有更多搜尋結果了 😿\n我們會努力為您開拓更多片源！🚖',
     searchingKeyword: '搜尋關鍵字：',
   },
@@ -67,15 +73,18 @@ const traditionalChinese = {
   tutorial: {
     randomVideo_photo: 'https://imgur.com/7ouKmPL.jpg',
     randomVideo:
-      '1️⃣ 隨機影片\n\n在輸入框內輸入 "PPAV"，或在主選單中點選 "PPAV 🔥"，PPAV 將會隨機傳送一部熱門影片給您',
+      '1️⃣ 隨機影片\n\n在輸入框內輸入 "PPAV"，或在主選單中點選 "PPAV 🔥"，PPAV 將會傳送三部熱門影片給您。',
     searchVideos_photo_1: 'https://imgur.com/rZX96do.jpg',
     searchVideos_caption_1:
-      '2️⃣-1️⃣ 搜尋影片\n\n在輸入框內輸入 "#關鍵字" 可以搜尋影片\n\n關鍵字可以是\n1.「女優名字」，例如："#三上悠亞"\n2.「標籤」，例如："#高校生"\n3.「番號」，例如："#887"\n4.「片名」，例如："#美少女完全予約制"',
-    searchVideos_photo_2: 'https://imgur.com/9Lq3Zfu.jpg',
+      '2️⃣-1️⃣ 搜尋影片\n\n在輸入框內輸入 "#關鍵字" 可以搜尋影片。\n\n關鍵字可以是\n1.「女優名字」，例如："#三上悠亞"\n2.「標籤」，例如："#高校生"\n3.「番號」，例如："#887"\n4.「片名」，例如："#美少女完全予約制"',
+    searchVideos_photo_2: 'https://imgur.com/QqPcCUc.jpg',
     searchVideos_caption_2:
-      '2️⃣-2️⃣ 點選頁數\n\n每次搜尋 PPAV 將最多傳送 30 部片，在每部片的下方可以點選頁數來挑選您喜歡的影片\n\n點選頁數時請耐心等候回應，重複點選頁數並不會比較快！',
+      '2️⃣-2️⃣ 給我更多\n\n每次搜尋 PPAV 將一次傳送五部影片給您，如果在五筆搜尋結果中找不到喜歡的影片，點選 "給我更多" PPAV 將再傳送五筆搜尋結果給您！',
   },
-  unhandled: '操作說明：\n\n1️⃣*隨機影片* 請輸入： "*PPAV*"\n\n2️⃣*搜尋影片* 請輸入： "*# 關鍵字*"',
+  unhandled: {
+    minor: ['想找片子嗎？', '衛生紙準備好了嗎？', '你媽知道你在這裡看片嗎？'],
+    main: '操作說明：\n\n1️⃣*隨機影片* 請輸入： "*PPAV*"\n\n2️⃣*搜尋影片* 請輸入： "*# 關鍵字*"',
+  },
 };
 
 export default traditionalChinese;

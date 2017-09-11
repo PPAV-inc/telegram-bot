@@ -41,7 +41,8 @@
     "mongodb": "^2.2.30",
     "path": "^0.12.7",
     "sleep-promise": "^2.0.0",
-    "toolbot-core-experiment": "^0.12.0"
+    "toolbot-core-experiment": "^0.12.0",
+    "unique-random-array": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
