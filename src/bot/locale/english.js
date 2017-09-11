@@ -51,13 +51,17 @@ const english = {
     length: 'Length',
     view: 'View',
     image: 'Image',
-    watchMore: '🙌 I need more 🙌',
+    watchMore: '🙌 Give me more 🙌',
     minute: 'mins',
     score: 'Score',
     publishedAt: 'Published at',
     notFound:
       'Sorry, PPAV cannot find any result 😿\nThis is a Hot video, hope you will like it! 🚀',
-    wantWatchMore: 'Cannot find your type?',
+    wantWatchMore: [
+      'Cannot find your type?',
+      'Need more excitement?',
+      "I'm gonna cum!",
+    ],
     noWatchMore:
       'Sorry, no more searching results 😿.\nWe will do our best to find more resource for you! 🚖',
     searchingKeyword: 'Searching keyword: ',
@@ -81,8 +85,15 @@ const english = {
     searchVideos_caption_2:
       "2️⃣-2️⃣ Select Page\n\nPPAV will send you 30 videos at most for one searching. You can click page number below to select your favorite video.\n\nPlease be patient after clicking the page button. Click it duplicatedly won't speed up anything!",
   },
-  unhandled:
-    'Instruction:\n\n1️⃣*Random Videos* please enter： "*PPAV*"\n\n2️⃣*Search Videos* please enter： "*# Keyword*"',
+  unhandled: {
+    minor: [
+      'Wanna search videos?',
+      'Already prepare your tissues?',
+      "Let's do it",
+    ],
+    main:
+      'Instruction:\n\n1️⃣*Random Videos* please enter： "*PPAV*"\n\n2️⃣*Search Videos* please enter： "*# Keyword*"',
+  },
 };
 
 export default english;

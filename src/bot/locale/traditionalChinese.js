@@ -54,7 +54,13 @@ const traditionalChinese = {
     score: '評分',
     publishedAt: '發行日期',
     notFound: '很抱歉，PPAV 無法搜尋到任何結果 😿\n為您推薦熱門影片，也許您會喜歡！ 🚀',
-    wantWatchMore: '找不到喜歡的片子嗎？',
+    wantWatchMore: [
+      '找不到喜歡的片子嗎？',
+      '還射不出來嗎？',
+      '快出來了還差一點！',
+      '我還要我還要我還要我還要我還要',
+      '褲子都脫了你給我看這些？',
+    ],
     noWatchMore: '很抱歉，沒有更多搜尋結果了 😿\n我們會努力為您開拓更多片源！🚖',
     searchingKeyword: '搜尋關鍵字：',
   },
@@ -75,7 +81,10 @@ const traditionalChinese = {
     searchVideos_caption_2:
       '2️⃣-2️⃣ 點選頁數\n\n每次搜尋 PPAV 將最多傳送 30 部片，在每部片的下方可以點選頁數來挑選您喜歡的影片\n\n點選頁數時請耐心等候回應，重複點選頁數並不會比較快！',
   },
-  unhandled: '操作說明：\n\n1️⃣*隨機影片* 請輸入： "*PPAV*"\n\n2️⃣*搜尋影片* 請輸入： "*# 關鍵字*"',
+  unhandled: {
+    minor: ['想找片嗎？', '衛生紙準備好了嗎？', '你媽知道你在這裡看片嗎？'],
+    main: '操作說明：\n\n1️⃣*隨機影片* 請輸入： "*PPAV*"\n\n2️⃣*搜尋影片* 請輸入： "*# 關鍵字*"',
+  },
 };
 
 export default traditionalChinese;
