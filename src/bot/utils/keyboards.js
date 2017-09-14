@@ -44,9 +44,7 @@ const searchVideoKeyboard = videos => {
   for (let i = 0; i < videos.length; i += 1) {
     keyboard.push([
       {
-        // FIXME
-        // text: `🔞 ${videos[i].source}   👁 ${videos[i].view_count}`,
-        text: `🔞 ${videos[i].source}`,
+        text: `🔞 ${videos[i].source}   👁 ${videos[i].view_count || 0}`,
         url: videos[i].url,
       },
     ]);
@@ -69,9 +67,8 @@ const randomVideoKeyboard = (text, result) => {
   for (let i = 0; i < result.videos.length; i += 1) {
     keyboard.push([
       {
-        // FIXME
-        // text: `🔞 ${videos[i].source}   👁 ${videos[i].view_count}`,
-        text: `🔞 ${result.videos[i].source}`,
+        text: `🔞 ${result.videos[i].source}   👁 ${result.videos[i]
+          .view_count || 0}`,
         url: result.videos[i].url,
       },
     ]);
@@ -88,9 +85,8 @@ const imageAnalyticKeyboard = result => {
   for (let i = 0; i < result.videos.length; i += 1) {
     keyboard.push([
       {
-        // FIXME
-        // text: `🔞 ${videos[i].source}   👁 ${videos[i].view_count}`,
-        text: `🔞 ${result.videos[i].source}`,
+        text: `🔞 ${result.videos[i].source}   👁 ${result.videos[i]
+          .view_count || 0}`,
         url: result.videos[i].url,
       },
     ]);
