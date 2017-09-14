@@ -182,6 +182,7 @@ describe('sendLogOutgoing', () => {
       text,
       userId: 12345,
       conversationId: 12345,
+      images: [],
       buttons: [],
       platformJson: textMessage,
     });
@@ -202,6 +203,7 @@ describe('sendLogOutgoing', () => {
       text,
       userId: 12345,
       conversationId: 12345,
+      images: [],
       buttons: [],
       platformJson: photoMessage,
     });
@@ -214,6 +216,7 @@ describe('sendLogOutgoing', () => {
       text,
       userId: 12345,
       conversationId: 12345,
+      images: [],
       buttons: [],
       platformJson: callbackQuery,
     });
@@ -246,6 +249,7 @@ describe('sendLogOutgoing', () => {
       text,
       userId: 12345,
       conversationId: 12345,
+      images: [],
       buttons: [
         {
           id: 109322656,

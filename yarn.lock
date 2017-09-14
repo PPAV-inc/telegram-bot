@@ -964,6 +964,13 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
+botimize@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/botimize/-/botimize-1.0.2.tgz#0e6c0f8df4f988830e19c8b597dc48cae0769528"
+  dependencies:
+    lodash "^4.17.4"
+    request "^2.74.0"
+
 brace-expansion@^1.1.7:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.8.tgz#c07b211c7c952ec1f8efd51a77ef0d1d3990a292"
@@ -4480,7 +4487,7 @@ repeating@^2.0.0:
   dependencies:
     is-finite "^1.0.0"
 
-request@^2.79.0, request@^2.81.0:
+request@^2.74.0, request@^2.79.0, request@^2.81.0:
   version "2.81.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.81.0.tgz#c6928946a0e06c5f8d6f8a9333469ffda46298a0"
   dependencies:

@@ -64,6 +64,7 @@ const sendLogIncoming = async request => {
 const sendLogOutgoing = async (rawEvent, text, options) => {
   try {
     const buttons = [];
+    const images = [];
     const { updateId, userId, conversationId } = await parseMessage(rawEvent);
 
     if (
@@ -81,10 +82,17 @@ const sendLogOutgoing = async (rawEvent, text, options) => {
       });
     }
 
+    if (options.imageUrl !== undefined) {
+      images.push({
+        url: options.imageUrl,
+      });
+    }
+
     dashbot.logOutgoing({
       text,
       userId,
       conversationId,
+      images,
       buttons,
       platformJson: rawEvent,
     });

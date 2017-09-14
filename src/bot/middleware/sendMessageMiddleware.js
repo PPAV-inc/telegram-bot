@@ -2,10 +2,17 @@ import { TelegramHandlerBuilder } from 'toolbot-core-experiment';
 
 import * as users from '../../models/users';
 
-let sendLogOutgoing = () => {};
+let dashbot = {
+  sendLogIncoming: () => {},
+};
+let botimize = {
+  logIncoming: () => {},
+};
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line global-require
-  sendLogOutgoing = require('../../dashbot').sendLogOutgoing;
+  dashbot = require('../../dashbot');
+  // eslint-disable-next-line global-require
+  botimize = require('../../botimize').default;
 }
 
 const sendMessageMiddleware = (outerContext, next) =>
@@ -31,10 +38,23 @@ const sendMessageMiddleware = (outerContext, next) =>
         const { imageUrl, text, options } = context.sendMessageContent[i];
         if (imageUrl) {
           await context.sendPhoto(imageUrl, options);
-          sendLogOutgoing(context.event._rawEvent, options.caption);
+          dashbot.sendLogOutgoing(context.event._rawEvent, options.caption, {
+            ...options,
+            imageUrl,
+          });
+          botimize.sendOutgoingLog({
+            chat_id: userId,
+            photo: imageUrl,
+            ...options,
+          });
         } else {
           await context.sendMessage(text, options);
-          sendLogOutgoing(context.event._rawEvent, text, options);
+          dashbot.sendLogOutgoing(context.event._rawEvent, text, options);
+          botimize.sendOutgoingLog({
+            chat_id: userId,
+            text,
+            ...options,
+          });
         }
       }
       /* eslint-enable */
