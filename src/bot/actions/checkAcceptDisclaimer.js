@@ -1,3 +1,5 @@
+import uniqueRandomArray from 'unique-random-array';
+
 import locale from '../locale';
 import { getMainMenuKeyboardSettings } from '../utils/getKeyboardSettings';
 import * as users from '../../models/users';
@@ -23,7 +25,9 @@ const checkAcceptDisclaimer = async context => {
   if (accept) {
     context.sendMessageContent.push(
       {
-        text: locale(languageCode).unhandled,
+        text: `${uniqueRandomArray(
+          locale(languageCode).unhandled.minor
+        )()}\n${locale(languageCode).unhandled.main}`,
         options: {
           parse_mode: 'Markdown',
         },

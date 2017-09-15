@@ -25,8 +25,10 @@ const about = async context => {
   ];
 
   for (let i = 0; i < message.length; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await context.sendPhoto(message[i].photo, message[i].options);
+    context.sendMessageContent.push({
+      imageUrl: message[i].photo,
+      options: message[i].options,
+    });
   }
 };
 
