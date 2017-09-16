@@ -1,6 +1,6 @@
 import { getMongoDatabase } from './database';
 
-const insertHotSearchKeyword = async keyword => {
+const insertHotSearchKeyword = async (keyword, user) => {
   const db = await getMongoDatabase();
   const now = new Date();
 
@@ -8,6 +8,7 @@ const insertHotSearchKeyword = async keyword => {
   await db.collection('hot_search_keywords').insertOne({
     keyword,
     created_at: now,
+    userId: user.userId,
   });
 };
 
