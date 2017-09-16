@@ -25,8 +25,12 @@ botRouter.use(bodyParser());
 const requestHandler = bot.createRequestHandler();
 
 botRouter.post(`/bot${botToken}`, async ({ request, response }) => {
-  dashbot.sendLogIncoming(request.body);
-  botimize.logIncoming(request.body);
+  try {
+    dashbot.sendLogIncoming(request.body);
+    botimize.logIncoming(request.body);
+  } catch (err) {
+    console.log(err);
+  }
   await requestHandler(request.body);
   response.status = 200;
 });

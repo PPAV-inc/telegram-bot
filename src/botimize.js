@@ -12,7 +12,11 @@ botimize.sendOutgoingLog = messageBody => {
     ...messageBody,
     accessToken: botToken,
   };
-  botimize.logOutgoing(outgoingLog, { parse: 'pure' });
+  try {
+    botimize.logOutgoing(outgoingLog, { parse: 'pure' });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export default botimize;
