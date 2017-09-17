@@ -122,38 +122,45 @@ describe('getRandomVideos', () => {
       find: jest.fn(),
       aggregate: jest.fn(),
     });
-    getMongoDatabase().collection().aggregate.mockReturnValue({
-      toArray: jest.fn(),
-    });
-    getMongoDatabase().collection().find.mockReturnValue({
-      toArray: jest.fn(),
-    });
-    getMongoDatabase().collection().aggregate().toArray.mockReturnValue([
-      {
-        _id: ObjectId('598200798612d0d9c9cfaf7c'),
-        title:
-          '出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 南まゆ出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 雲乃亜美出会って4秒で即ハメされてイキまくり！ 長瀬麻美出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 長澤えりな出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 伊東紅出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 有沢杏出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 彩乃なな出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ！ 宇沙城らん出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 澁谷果歩出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ 皆野あい出会って即合体スペシャル4',
-        models: ['南まゆ', '雲乃亜美', '長瀬麻美'],
-        img_url:
-          'http://pics.dmm.co.jp/digital/video/td005dvaj130h/td005dvaj130hpl.jpg',
-        code: 'DVAJ-130',
-        tags: ['中出', '制服', '長腿', '精選、綜合', '巨乳', '4小時以上作品', '紀錄片', '立即口交'],
-        duration: 150,
-        total_view_count: 666,
-        videos: [
-          {
-            source: 'youav',
-            url: `${config.url}/redirect/?url=${encodeURI(
-              'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4'
-            )}&_id=598200798612d0d9c9cfaf7c`,
-            view_count: 666,
-          },
-        ],
-        score: 10,
-        length: 240,
-        publishedAt: new Date('2016-04-13T00:00:00.000Z'),
-      },
-    ]);
+    getMongoDatabase()
+      .collection()
+      .aggregate.mockReturnValue({
+        toArray: jest.fn(),
+      });
+    getMongoDatabase()
+      .collection()
+      .find.mockReturnValue({
+        toArray: jest.fn(),
+      });
+    getMongoDatabase()
+      .collection()
+      .aggregate()
+      .toArray.mockReturnValue([
+        {
+          _id: ObjectId('598200798612d0d9c9cfaf7c'),
+          title:
+            '出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 南まゆ出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 雲乃亜美出会って4秒で即ハメされてイキまくり！ 長瀬麻美出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 長澤えりな出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 伊東紅出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 有沢杏出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 彩乃なな出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ！ 宇沙城らん出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 澁谷果歩出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ 皆野あい出会って即合体スペシャル4',
+          models: ['南まゆ', '雲乃亜美', '長瀬麻美'],
+          img_url:
+            'http://pics.dmm.co.jp/digital/video/td005dvaj130h/td005dvaj130hpl.jpg',
+          code: 'DVAJ-130',
+          tags: ['中出', '制服', '長腿', '精選、綜合', '巨乳', '4小時以上作品', '紀錄片', '立即口交'],
+          duration: 150,
+          total_view_count: 666,
+          videos: [
+            {
+              source: 'youav',
+              url: `${config.url}/redirect/?url=${encodeURI(
+                'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4'
+              )}&_id=598200798612d0d9c9cfaf7c`,
+              view_count: 666,
+            },
+          ],
+          score: 10,
+          length: 240,
+          publishedAt: new Date('2016-04-13T00:00:00.000Z'),
+        },
+      ]);
   });
 
   it('should be defined', () => {
@@ -170,7 +177,11 @@ describe('getRandomVideos', () => {
       { $limit: 100 },
       { $sample: { size: 3 } },
     ]);
-    expect(getMongoDatabase().collection().aggregate().toArray).toBeCalled();
+    expect(
+      getMongoDatabase()
+        .collection()
+        .aggregate().toArray
+    ).toBeCalled();
   });
 });
 
@@ -197,6 +208,10 @@ describe('getAnalyticVideos', () => {
     expect(getMongoDatabase().collection().find).toBeCalledWith({
       _id: { $in: videosIds },
     });
-    expect(getMongoDatabase().collection().find().toArray).toBeCalled();
+    expect(
+      getMongoDatabase()
+        .collection()
+        .find().toArray
+    ).toBeCalled();
   });
 });

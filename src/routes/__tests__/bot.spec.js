@@ -3,15 +3,22 @@ import bodyParser from 'koa-bodyparser';
 import request from 'supertest';
 import path from 'path';
 
-const config = require(path.resolve(__dirname, '../../../env/bot.config'));
+const { botToken } = require(path.resolve(
+  __dirname,
+  '../../../env/bot.config'
+));
 
 jest.mock('../../bot/', () => ({
-  createRequestHandler: jest.fn(() => () => Promise.resolve()),
+  createRequestHandler: jest.fn(() => jest.fn(() => Promise.resolve())),
 }));
-
-const botRouter = require('../bot');
-
-const { botToken } = config;
+jest.mock('../../dashbot', () => ({
+  sendLogIncoming: jest.fn(),
+}));
+jest.mock('../../botimize', () => ({
+  default: {
+    logIncoming: jest.fn(),
+  },
+}));
 
 function makeApp() {
   const app = new Koa();
@@ -43,11 +50,26 @@ describe('bot router', () => {
     },
   };
   let app;
+  let botRouter;
+  let requestHandler;
+  let dashbot;
+  let botimize;
 
   beforeEach(() => {
+    /* eslint-disable global-require */
+    botRouter = require('../bot');
+    requestHandler = require('../bot').requestHandler;
+    dashbot = require('../bot').dashbot;
+    botimize = require('../bot').botimize;
+    /* eslint-enable */
+
     app = makeApp();
     app.use(botRouter.routes());
     app.use(botRouter.allowedMethods());
+  });
+
+  afterEach(() => {
+    process.env.NODE_ENV = 'test';
   });
 
   it('should be defined', () => {
@@ -59,12 +81,65 @@ describe('bot router', () => {
       .post(`/bot${botToken}`)
       .send(reqBody);
 
+    expect(requestHandler).toBeCalledWith(reqBody);
     expect(response.status).toBe(200);
   });
 
   it('should return status 404 if post wrong url', async () => {
-    const response = await request(app.listen()).post(`/bot`).send(reqBody);
+    const response = await request(app.listen())
+      .post(`/bot`)
+      .send(reqBody);
 
     expect(response.status).toBe(404);
+  });
+
+  it('should call botimize and dashbot', async () => {
+    jest.resetModules();
+    process.env.NODE_ENV = 'production';
+
+    /* eslint-disable global-require */
+    botRouter = require('../bot');
+    dashbot = require('../bot').dashbot;
+    botimize = require('../bot').botimize;
+    /* eslint-enable */
+
+    app = makeApp();
+    app.use(botRouter.routes());
+    app.use(botRouter.allowedMethods());
+
+    await request(app.listen())
+      .post(`/bot${botToken}`)
+      .send(reqBody);
+
+    expect(dashbot.sendLogIncoming).toBeCalledWith(reqBody);
+    expect(botimize.logIncoming).toBeCalledWith(reqBody);
+  });
+
+  it('should catch Error', async () => {
+    jest.resetModules();
+    process.env.NODE_ENV = 'production';
+
+    /* eslint-disable global-require */
+    botRouter = require('../bot');
+    dashbot = require('../bot').dashbot;
+    botimize = require('../bot').botimize;
+    /* eslint-enable */
+
+    app = makeApp();
+    app.use(botRouter.routes());
+    app.use(botRouter.allowedMethods());
+
+    console.log = jest.fn();
+    dashbot.sendLogIncoming.mockImplementationOnce(() => {
+      throw new Error('dashbot error');
+    });
+
+    await request(app.listen())
+      .post(`/bot${botToken}`)
+      .send(reqBody);
+
+    expect(dashbot.sendLogIncoming).toBeCalledWith(reqBody);
+    expect(botimize.logIncoming).not.toBeCalled();
+    expect(console.log).toBeCalledWith(new Error('dashbot error'));
   });
 });

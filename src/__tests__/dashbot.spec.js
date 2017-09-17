@@ -224,6 +224,7 @@ describe('sendLogOutgoing', () => {
 
   it('should call logOutgoing with reply_markup options', async () => {
     options = {
+      imageUrl: 'http://example/ppav.jpg',
       reply_markup: {
         inline_keyboard: [
           [
@@ -249,7 +250,11 @@ describe('sendLogOutgoing', () => {
       text,
       userId: 12345,
       conversationId: 12345,
-      images: [],
+      images: [
+        {
+          url: 'http://example/ppav.jpg',
+        },
+      ],
       buttons: [
         {
           id: 109322656,
