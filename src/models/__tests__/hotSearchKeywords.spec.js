@@ -36,15 +36,19 @@ describe('insertHotSearchKeywords', () => {
 
   it('should call insertOne', async () => {
     const keyword = '123';
+    const user = {
+      userId: '666',
+    };
     const now = new Date();
 
-    await insertHotSearchKeywords(keyword);
+    await insertHotSearchKeywords(keyword, user);
 
     expect(getMongoDatabase).toBeCalled();
     expect(getMongoDatabase().collection).toBeCalledWith('hot_search_keywords');
     expect(getMongoDatabase().collection().insertOne).toBeCalledWith({
       keyword,
       created_at: now,
+      userId: user.userId,
     });
   });
 });

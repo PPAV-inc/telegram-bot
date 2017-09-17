@@ -64,7 +64,7 @@ const searchVideos = async context => {
     }
 
     insertSearchKeyword(keyword);
-    insertHotSearchKeyword(keyword);
+    insertHotSearchKeyword(keyword, user);
   }
 };
 
