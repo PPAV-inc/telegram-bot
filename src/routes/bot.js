@@ -37,3 +37,5 @@ botRouter.post(`/bot${botToken}`, async ({ request, response }) => {
 
 module.exports = botRouter;
 module.exports.requestHandler = requestHandler;
+module.exports.dashbot = dashbot;
+module.exports.botimize = botimize;

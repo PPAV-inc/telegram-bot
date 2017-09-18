@@ -79,7 +79,10 @@ const getRandomVideos = async () => {
 const getAnalyticVideos = async candidates => {
   const db = await getMongoDatabase();
   const videosIds = candidates.map(candidate => ObjectId(candidate.video_id));
-  return db.collection('videos').find({ _id: { $in: videosIds } }).toArray();
+  return db
+    .collection('videos')
+    .find({ _id: { $in: videosIds } })
+    .toArray();
 };
 
 export { searchVideos, getRandomVideos, getAnalyticVideos };
