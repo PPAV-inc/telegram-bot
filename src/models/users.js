@@ -10,6 +10,8 @@ const createUser = async message => {
     acceptDisclaimer: false,
     autoDeleteMessages: false,
     languageCode: language_code,
+    subscribe: false,
+    subscribeHour: 22,
     created_at: new Date(),
   };
 

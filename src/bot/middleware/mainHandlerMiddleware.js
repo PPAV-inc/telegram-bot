@@ -11,6 +11,7 @@ import {
   unhandled,
   callbackQuery,
   imageAnalytic,
+  subscribe,
 } from '../actions';
 
 const mainHandlerMiddleware = context =>
@@ -25,6 +26,8 @@ const mainHandlerMiddleware = context =>
     .onText(/(設置|Setting) ⚙️$/i, setting)
     // 圖片分析
     .onPhoto(imageAnalytic)
+    // 訂閱推播
+    .onText(/^(gginin|nogg|Gginin|Nogg)\s*(\d*)$/i, subscribe)
     // 關於 PPAV
     .onText(/(關於 PPAV|About PPAV) 👀$/i, about)
     // 免責聲明
