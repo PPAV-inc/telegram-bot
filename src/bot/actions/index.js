@@ -1,4 +1,4 @@
-import checkAcceptDisclaimer from './checkAcceptDisclaimer';
+import acceptDisclaimer from './acceptDisclaimer';
 import start from './start';
 import updateUserLanguage from './updateUserLanguage';
 import searchVideos from './searchVideos';
@@ -14,7 +14,7 @@ import callbackQuery from './callbackQuery';
 import imageAnalytic from './imageAnalytic';
 
 export {
-  checkAcceptDisclaimer,
+  acceptDisclaimer,
   start,
   updateUserLanguage,
   searchVideos,

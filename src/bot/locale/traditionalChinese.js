@@ -5,9 +5,7 @@ const traditionalChinese = {
   acceptDisclaimer: {
     text: '*是否接受以上免責聲明？*',
     accept: '接受 ✅',
-    refuse: '不接受 ❌',
     alreadyAccept: '*讚喔！您已接受 PPAV 免責聲明 ✅*\n\n🔥🔥 歡迎踏上 PPAV 的奇幻體驗 🔥🔥',
-    alreadyRefuse: '很抱歉您拒絕 PPAV 免責聲明 ❌\n\n❗️*請注意：在您未同意免責聲明前將無法使用 PPAV 任何功能*❗️',
   },
   mainMenu: {
     text: '有任何疑問歡迎點擊右下方的按鈕開啟主選單 🎛',
