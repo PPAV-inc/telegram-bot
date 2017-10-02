@@ -10,7 +10,7 @@ import {
   contactUs,
   unhandled,
   callbackQuery,
-  imageAnalytic,
+  // imageAnalytic,
   subscribe,
 } from '../actions';
 
@@ -25,9 +25,9 @@ const mainHandlerMiddleware = context =>
     // 設置
     .onText(/(設置|Setting) ⚙️$/i, setting)
     // 圖片分析
-    .onPhoto(imageAnalytic)
+    // .onPhoto(imageAnalytic)
     // 訂閱推播
-    .onText(/^(gginin|nogg|Gginin|Nogg)\s*(\d*)$/i, subscribe)
+    .onText(/^(gginin|nogg)\s*(\d*)/i, subscribe)
     // 關於 PPAV
     .onText(/(關於 PPAV|About PPAV) 👀$/i, about)
     // 免責聲明
