@@ -5,9 +5,7 @@ const traditionalChinese = {
   acceptDisclaimer: {
     text: '*是否接受以上免責聲明？*',
     accept: '接受 ✅',
-    refuse: '不接受 ❌',
     alreadyAccept: '*讚喔！您已接受 PPAV 免責聲明 ✅*\n\n🔥🔥 歡迎踏上 PPAV 的奇幻體驗 🔥🔥',
-    alreadyRefuse: '很抱歉您拒絕 PPAV 免責聲明 ❌\n\n❗️*請注意：在您未同意免責聲明前將無法使用 PPAV 任何功能*❗️',
   },
   mainMenu: {
     text: '有任何疑問歡迎點擊右下方的按鈕開啟主選單 🎛',
@@ -80,6 +78,15 @@ const traditionalChinese = {
     searchVideos_photo_2: 'https://imgur.com/QqPcCUc.jpg',
     searchVideos_caption_2:
       '2️⃣-2️⃣ 給我更多\n\n每次搜尋 PPAV 將一次傳送五部影片給您，如果在五筆搜尋結果中找不到喜歡的影片，點選 "給我更多" PPAV 將再傳送五筆搜尋結果給您！',
+  },
+  subscribe: {
+    success: hour =>
+      `*訂閱成功* 🛫\n您訂閱的時間為每天的 *${hour}* 點，我們將會在 ${hour} 至 ${hour +
+        1} 點間推播三部每日新片給您 ⏰ `,
+    unsubscribe: '取消訂閱成功 😭',
+    alreadyUnsubscribe: '您目前無訂閱推播～',
+    failed:
+      '*Oops! 訂閱失敗* ⁉️ \n可能的原因如下：\n1. 輸入錯誤格式，請確認您輸入的格式符合 "gginin 小時數"，例如："gginin 22"。\n2. 訂閱小時數錯誤，請確認您訂閱的小時數是介於 0 至 23！',
   },
   unhandled: {
     minor: ['想找片子嗎？', '衛生紙準備好了嗎？', '你媽知道你在這裡看片嗎？'],

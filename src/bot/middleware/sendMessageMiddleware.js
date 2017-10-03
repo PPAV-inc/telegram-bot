@@ -3,10 +3,10 @@ import { TelegramHandlerBuilder } from 'toolbot-core-experiment';
 import * as users from '../../models/users';
 
 let dashbot = {
-  sendLogIncoming: () => {},
+  sendLogOutgoing: () => {},
 };
 let botimize = {
-  logIncoming: () => {},
+  sendOutgoingLog: () => {},
 };
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line global-require

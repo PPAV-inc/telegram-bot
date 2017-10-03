@@ -40,8 +40,8 @@ const getAutoDeleteMessagesKeyboardSettings = languageCode => {
 };
 
 const getDisclaimerKeyboardSettings = languageCode => {
-  const { text, accept, refuse } = locale(languageCode).acceptDisclaimer;
-  const disclaimerKeyboard = keyboards.disclaimerKeyboard(accept, refuse);
+  const { text, accept } = locale(languageCode).acceptDisclaimer;
+  const disclaimerKeyboard = keyboards.disclaimerKeyboard(accept);
   const options = replyKeyboardOptions(disclaimerKeyboard, true);
 
   return { text, options };
