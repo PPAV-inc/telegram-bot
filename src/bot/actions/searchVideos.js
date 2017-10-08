@@ -1,6 +1,7 @@
 import randomVideo from './randomVideo';
 import locale from '../locale';
 import getQueryResult from '../utils/getQueryResult';
+import aesEncrypt from '../utils/aesEncrypt';
 import {
   getSearchVideoKeyboardSettings,
   getWatchMoreKeyboardSettings,
@@ -17,11 +18,23 @@ const searchVideos = async context => {
   const keyword = match[1];
   const firstPage = 1;
 
+  // FIXME: result naming
   const { totalCount, result } = await getQueryResult(
     'search',
     keyword,
     firstPage
   );
+
+  const encryptUserId = aesEncrypt(`${user.userId}`);
+  /* eslint-disable no-param-reassign */
+  const results = result.map(res => {
+    res.videos = res.videos.map(video => {
+      video.url += `&user=${encodeURI(encryptUserId)}`;
+      return video;
+    });
+    return res;
+  });
+  /* eslint-enable no-param-reassign */
 
   let messageContent;
   if (totalCount === 0) {
@@ -37,11 +50,11 @@ const searchVideos = async context => {
 
     await randomVideo(context);
   } else {
-    for (let i = 0; i < result.length; i += 1) {
+    for (let i = 0; i < results.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
       messageContent = await getSearchVideoKeyboardSettings(
         user.languageCode,
-        result[i]
+        results[i]
       );
       context.sendMessageContent.push(messageContent);
     }
