@@ -10,7 +10,7 @@ const randomVideo = async context => {
   /* eslint-disable no-param-reassign */
   results = results.map(result => {
     result.videos = result.videos.map(video => {
-      video.url += `&user=${encodeURI(encryptUserId)}`;
+      video.url += `&user=${encodeURIComponent(encryptUserId)}`;
       return video;
     });
     return result;

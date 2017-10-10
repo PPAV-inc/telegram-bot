@@ -29,7 +29,7 @@ const searchVideos = async context => {
   /* eslint-disable no-param-reassign */
   const results = result.map(res => {
     res.videos = res.videos.map(video => {
-      video.url += `&user=${encodeURI(encryptUserId)}`;
+      video.url += `&user=${encodeURIComponent(encryptUserId)}`;
       return video;
     });
     return res;
