@@ -32,7 +32,7 @@ const searchVideos = async (messageText, page) => {
       const { _source: source } = hit;
       source.videos = source.videos.map(video => ({
         ...video,
-        url: `${config.url}/redirect/?url=${encodeURI(
+        url: `${config.url}/redirect/?url=${encodeURIComponent(
           video.url
         )}&_id=${hit._id}`,
       }));
@@ -64,7 +64,7 @@ const getRandomVideos = async () => {
     // eslint-disable-next-line no-param-reassign
     eachResult.videos = eachResult.videos.map(video => ({
       ...video,
-      url: `${config.url}/redirect/?url=${encodeURI(
+      url: `${config.url}/redirect/?url=${encodeURIComponent(
         video.url
       )}&_id=${eachResult._id}`,
     }));

@@ -81,7 +81,7 @@ describe('searchVideos', () => {
         videos: [
           {
             source: 'youav',
-            url: `${config.url}/redirect/?url=${encodeURI(
+            url: `${config.url}/redirect/?url=${encodeURIComponent(
               'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4'
             )}&_id=598200798612d0d9c9cfaf7c`,
             view_count: 666,
@@ -150,7 +150,7 @@ describe('getRandomVideos', () => {
           videos: [
             {
               source: 'youav',
-              url: `${config.url}/redirect/?url=${encodeURI(
+              url: `${config.url}/redirect/?url=${encodeURIComponent(
                 'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4'
               )}&_id=598200798612d0d9c9cfaf7c`,
               view_count: 666,
