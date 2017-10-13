@@ -85,8 +85,9 @@ const english = {
   subscribe: {
     success: hour =>
       `*Subscribe successfully* 🛫\nPPAV will send you three new videos between ${hour} and ${hour +
-        1} o'clock everyday ⏰ `,
-    unsubscribe: 'Unsubscribe successfully 😭',
+        1} o'clock everyday ⏰\nEnter "nogg" to unsubscribe.`,
+    unsubscribe:
+      'Unsubscribe successfully 😭\nResubscribe please enter： "*gginin Hour*" 🏎',
     alreadyUnsubscribe: 'You already have unsubscribed !',
     failed:
       '*Oops! Subscirbe unsuccessfully* ⁉️ \nThere are some reasons：\n1. Input wrong format. Please make sure you input following format "gginin hour", e.g. "gginin 22"\n2. Input wrong number of hour. Please make sure the hour is between 0 and 23 !',
@@ -98,7 +99,7 @@ const english = {
       "Let's do it",
     ],
     main:
-      'Instruction:\n\n1️⃣*Random Videos* please enter： "*PPAV*"\n\n2️⃣*Search Videos* please enter： "*# Keyword*"',
+      'Instruction:\n\n1️⃣*Random Videos* please enter： "*PPAV*"\n\n2️⃣*Search Videos* please enter： "*# Keyword*"\n\n3️⃣*Subscribe* please enter： "*gginin Hour*"',
   },
 };
 
