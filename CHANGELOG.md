@@ -4,14 +4,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-## [0.4.0]
+## [0.4.1] - 2017/10/13
 ### Added
-- Run ngrok when developing automatically.
+- Encryp `userId` to let redirect server knows user.
+- Add subscribe hints in some messages.
 
 ### Changed
-- Better tutorial messages.
+- Replace `encodeURI` with `encodeURIComponent`.
+
+## [0.4.0] - 2017-10-03
+### Added
+- New feature: Sucsribe "gginin Hour".
+- Randomly reply some simple text.
+- Add `.dockerignore`.
+
+### Changed
+- Remove refuse disclaimer button.
+- Upgrade `prettier` to 1.7.0 version.
+- Update tutorial.
+- Open video view_count. Let user know each source has been clicked how many times.
+
+### Fixed
+- Fix checkAcceptDisclaimer text bug.
+
+## [0.3.1] - 2017-09-10
+### Added
+- Insert logs when keywords that users search are not found.
+
+### Changed
+- Send five videos at one time.
+- Upgrade Bottender to 0.12.0 version.
+- Update videos seed according to latest schema.
 
 ## [0.3.0] - 2017-09-06
 ### Added
