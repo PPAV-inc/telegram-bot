@@ -28,8 +28,8 @@ $ yarn run dev
 $ yarn run start
 ```
 
-## Dokcer
-> Before docker run, remember to run ealsticsearch and mongo containers
+## Docker
+> Before docker run, remember to run elasticsearch and mongo containers
 
 ### build
 ```js
