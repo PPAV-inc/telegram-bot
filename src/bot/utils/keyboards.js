@@ -1,6 +1,9 @@
 const languageKeyboard = [[{ text: '繁體中文' }, { text: 'English' }]];
 
-const disclaimerKeyboard = accept => [[{ text: `${accept}` }]];
+const disclaimerKeyboard = (disclaimer, accept) => [
+  [{ text: `${accept}` }],
+  [{ text: `${disclaimer}` }],
+];
 
 const mainMenuKeyboard = (
   randomVideo,
