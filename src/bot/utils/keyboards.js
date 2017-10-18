@@ -1,3 +1,7 @@
+import locale from '../locale';
+
+const paidWebsites = ['iavtv'];
+
 const languageKeyboard = [[{ text: '繁體中文' }, { text: 'English' }]];
 
 const disclaimerKeyboard = (disclaimer, accept) => [
@@ -39,13 +43,18 @@ const settingKeyboard = buttons => {
   return keyboard;
 };
 
-const searchVideoKeyboard = videos => {
+const searchVideoKeyboard = (languageCode, videos) => {
   const keyboard = [];
+  const { paid } = locale(languageCode).videos;
 
   for (let i = 0; i < videos.length; i += 1) {
+    const { source, view_count: viewCount } = videos[i];
+    const text = `${paidWebsites.indexOf(source) > -1
+      ? paid
+      : ''}🔞 ${source}   👁 ${viewCount || 0}`;
     keyboard.push([
       {
-        text: `🔞 ${videos[i].source}   👁 ${videos[i].view_count || 0}`,
+        text,
         url: videos[i].url,
       },
     ]);
@@ -62,20 +71,24 @@ const watchMoreKeyBoard = async (text, keyword, nowPage) => {
   return keyboard;
 };
 
-const randomVideoKeyboard = (text, result) => {
+const randomVideoKeyboard = (languageCode, videos) => {
   const keyboard = [];
+  const { watchMore, paid } = locale(languageCode).videos;
 
-  for (let i = 0; i < result.videos.length; i += 1) {
+  for (let i = 0; i < videos.length; i += 1) {
+    const { source, view_count: viewCount } = videos[i];
+    const text = `${paidWebsites.indexOf(source) > -1
+      ? paid
+      : ''}🔞 ${source}   👁 ${viewCount || 0}`;
     keyboard.push([
       {
-        text: `🔞 ${result.videos[i].source}   👁 ${result.videos[i]
-          .view_count || 0}`,
-        url: result.videos[i].url,
+        text,
+        url: videos[i].url,
       },
     ]);
   }
 
-  keyboard.push([{ text, callback_data: 'watchMore' }]);
+  keyboard.push([{ text: watchMore, callback_data: 'watchMore' }]);
 
   return keyboard;
 };

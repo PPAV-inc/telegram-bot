@@ -64,6 +64,7 @@ const english = {
     noWatchMore:
       'Sorry, no more searching results 😿.\nWe will do our best to find more resource for you! 🚖',
     searchingKeyword: 'Searching keyword: ',
+    paid: '#Paid  ',
   },
   imageAnalytic: {
     prePostText: 'Please give PPAV a second\nSearching... 🔎',
