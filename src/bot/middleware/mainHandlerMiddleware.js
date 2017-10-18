@@ -5,7 +5,6 @@ import {
   tutorial,
   setting,
   about,
-  disclaimer,
   report,
   contactUs,
   unhandled,
@@ -30,8 +29,6 @@ const mainHandlerMiddleware = context =>
     .onText(/^(gginin|nogg)\s*(\d*)/i, subscribe)
     // 關於 PPAV
     .onText(/(關於 PPAV|About PPAV) 👀$/i, about)
-    // 免責聲明
-    .onText(/(免責聲明|Disclaimer) 📜$/i, disclaimer)
     // 意見回饋
     .onText(/(意見回饋|Report) 🙏$/i, report)
     // 聯絡我們
