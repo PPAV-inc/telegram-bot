@@ -91,6 +91,7 @@ const getSettingKeyboardSettings = languageCode => {
 
 const getSearchVideoKeyboardSettings = async (languageCode, result) => {
   const searchVideoKeyboard = await keyboards.searchVideoKeyboard(
+    languageCode,
     result.videos
   );
   const options = inlineKeyboardOptions(searchVideoKeyboard);
@@ -121,8 +122,8 @@ const getWatchMoreKeyboardSettings = async (languageCode, keyword, nowPage) => {
 
 const getRandomVideoKeyboardSettings = async (languageCode, result) => {
   const randomVideoKeyboard = await keyboards.randomVideoKeyboard(
-    locale(languageCode).videos.watchMore,
-    result
+    languageCode,
+    result.videos
   );
   const options = {
     ...inlineKeyboardOptions(randomVideoKeyboard),

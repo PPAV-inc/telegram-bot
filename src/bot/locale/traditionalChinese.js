@@ -63,6 +63,7 @@ const traditionalChinese = {
     ],
     noWatchMore: '很抱歉，沒有更多搜尋結果了 😿\n我們會努力為您開拓更多片源！🚖',
     searchingKeyword: '搜尋關鍵字：',
+    paid: '#付費  ',
   },
   imageAnalytic: {
     prePostText: '請稍待片刻\nPPAV 正努力為您搜尋中... 🔎',
