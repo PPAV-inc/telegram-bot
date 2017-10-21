@@ -1,4 +1,4 @@
-import { TelegramHandlerBuilder } from 'toolbot-core-experiment';
+import { TelegramHandler } from 'bottender';
 import userAuthenticatedMiddleware from './userAuthenticatedMiddleware';
 import {
   start,
@@ -8,7 +8,7 @@ import {
 } from '../actions';
 
 const startHandlerMiddleware = (context, next) =>
-  new TelegramHandlerBuilder()
+  new TelegramHandler()
     // 開始對話
     .onText(/\/start/, start)
     // 更新使用者語言

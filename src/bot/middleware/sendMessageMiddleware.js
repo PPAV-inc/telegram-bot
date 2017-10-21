@@ -1,4 +1,4 @@
-import { TelegramHandlerBuilder } from 'toolbot-core-experiment';
+import { TelegramHandler } from 'bottender';
 
 import * as users from '../../models/users';
 
@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const sendMessageMiddleware = (outerContext, next) =>
-  new TelegramHandlerBuilder()
+  new TelegramHandler()
     .onEvent(async context => {
       const message =
         context.event._rawEvent.message || context.event.callbackQuery.message;

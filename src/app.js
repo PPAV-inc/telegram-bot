@@ -1,4 +1,4 @@
-import { createServer } from 'toolbot-core-experiment/koa';
+import { createServer } from 'bottender/koa';
 import logger from 'koa-logger';
 import compress from 'koa-compress';
 import zlib from 'zlib';
