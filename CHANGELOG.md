@@ -4,9 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+
+## [0.4.2] - 2017/10/22
+### Added
+- Add subscribe actions.
+
+### Changed
+- Upgrade toolbot-core-experiment to bottender which improves sendMessaage speed.
+- fix disclaimer words and buttons.
+- mark paid video source.
+
 ## [0.4.1] - 2017/10/13
 ### Added
-- Encryp `userId` to let redirect server knows user.
+- Encrypt `userId` to let redirect server knows user.
 - Add subscribe hints in some messages.
 
 ### Changed
