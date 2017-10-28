@@ -4,7 +4,7 @@ import config from '../../env/bot.config';
 
 const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
-const searchVideos = async (messageText, page) => {
+const getSearchVideos = async (messageText, page) => {
   const result = [];
   const keyword = escapeRegex(messageText);
 
@@ -71,7 +71,6 @@ const getRandomVideos = async () => {
   });
 
   return {
-    type: 'PPAV',
     result,
   };
 };
@@ -85,4 +84,4 @@ const getAnalyticVideos = async candidates => {
     .toArray();
 };
 
-export { searchVideos, getRandomVideos, getAnalyticVideos };
+export { getSearchVideos, getRandomVideos, getAnalyticVideos };

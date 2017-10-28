@@ -1,10 +1,10 @@
 import { getRandomVideoKeyboardSettings } from '../utils/getKeyboardSettings';
-import getQueryResult from '../utils/getQueryResult';
 import aesEncrypt from '../utils/aesEncrypt';
+import { getRandomVideos } from '../../models/videos';
 
 const randomVideo = async context => {
   const { user } = context;
-  let results = await getQueryResult('PPAV');
+  let { results } = await getRandomVideos();
 
   const encryptUserId = aesEncrypt(`${user.userId}`);
   /* eslint-disable no-param-reassign */

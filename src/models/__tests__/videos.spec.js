@@ -6,12 +6,12 @@ jest.mock('../database');
 
 const { getMongoDatabase, getElasticsearchDatabase } = require('../database');
 const {
-  searchVideos,
+  getSearchVideos,
   getRandomVideos,
   getAnalyticVideos,
 } = require('../videos');
 
-describe('searchVideos', () => {
+describe('getSearchVideos', () => {
   beforeEach(() => {
     getElasticsearchDatabase.mockReturnValue({
       search: jest.fn(),
@@ -56,14 +56,14 @@ describe('searchVideos', () => {
   });
 
   it('should be defined', () => {
-    expect(searchVideos).toBeDefined();
+    expect(getSearchVideos).toBeDefined();
   });
 
   it('should return an object when type is models', async () => {
     const messageText = '小美';
     const page = 1;
 
-    const { result, totalCount } = await searchVideos(messageText, page);
+    const { result, totalCount } = await getSearchVideos(messageText, page);
 
     expect(getElasticsearchDatabase).toBeCalled();
     expect(getElasticsearchDatabase().search).toBeCalled();
@@ -105,7 +105,7 @@ describe('searchVideos', () => {
     const messageText = '123';
     const page = 1;
 
-    const { result, totalCount } = await searchVideos(messageText, page);
+    const { result, totalCount } = await getSearchVideos(messageText, page);
     expect(getElasticsearchDatabase).toBeCalled();
     expect(getElasticsearchDatabase().search).toBeCalled();
     expect(result).toEqual([]);
