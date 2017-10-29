@@ -48,7 +48,37 @@ const getSearchVideos = async (messageText, page) => {
   };
 };
 
-const getRandomVideos = async () => {
+const getNewVideos = async () => {
+  const db = await getMongoDatabase();
+
+  const oneDaysBefore = subDays(new Date(), 1);
+
+  const result = await db
+    .collection('videos')
+    .aggregate([
+      { $match: { updated_at: { $gte: oneDaysBefore } } },
+      { $sort: { total_view_count: -1 } },
+      { $limit: 100 },
+      { $sample: { size: 3 } },
+    ])
+    .toArray();
+
+  result.forEach(eachResult => {
+    // eslint-disable-next-line no-param-reassign
+    eachResult.videos = eachResult.videos.map(video => ({
+      ...video,
+      url: `${config.url}/redirect/?url=${encodeURIComponent(
+        video.url
+      )}&_id=${eachResult._id}`,
+    }));
+  });
+
+  return {
+    result,
+  };
+};
+
+const getHotVideos = async () => {
   const db = await getMongoDatabase();
 
   const sevenDaysBefore = subDays(new Date(), 7);
@@ -94,4 +124,4 @@ const getAnalyticVideos = async candidates => {
     .toArray();
 };
 
-export { getSearchVideos, getRandomVideos, getAnalyticVideos };
+export { getSearchVideos, getHotVideos, getNewVideos, getAnalyticVideos };

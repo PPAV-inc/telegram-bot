@@ -1,4 +1,4 @@
-import randomVideo from './randomVideo';
+import hotVideos from './hotVideos';
 import locale from '../locale';
 import {
   getLanguageKeyboardSettings,
@@ -25,7 +25,7 @@ const callbackQuery = async context => {
       context.sendMessageContent.push(result);
       break;
     case 'watchMore':
-      await randomVideo(context);
+      await hotVideos(context);
       break;
     default: {
       const data = await regex.exec(action);

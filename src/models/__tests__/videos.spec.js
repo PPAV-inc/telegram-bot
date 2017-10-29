@@ -7,7 +7,7 @@ jest.mock('../database');
 const { getMongoDatabase, getElasticsearchDatabase } = require('../database');
 const {
   getSearchVideos,
-  getRandomVideos,
+  getHotVideos,
   getAnalyticVideos,
 } = require('../videos');
 
@@ -91,7 +91,7 @@ describe('getSearchVideos', () => {
   });
 });
 
-describe('getRandomVideos', () => {
+describe('getHotVideos', () => {
   beforeEach(() => {
     const db = {
       collection: jest.fn().mockReturnThis(),
@@ -104,7 +104,7 @@ describe('getRandomVideos', () => {
   });
 
   it('should be defined', () => {
-    expect(getRandomVideos).toBeDefined();
+    expect(getHotVideos).toBeDefined();
   });
 
   it('should return an object', async () => {
@@ -137,7 +137,7 @@ describe('getRandomVideos', () => {
       .aggregate()
       .toArray.mockReturnValue([video]);
 
-    const res = await getRandomVideos();
+    const res = await getHotVideos();
 
     expect(getMongoDatabase).toBeCalled();
     expect(getMongoDatabase().collection).toBeCalledWith('logs');

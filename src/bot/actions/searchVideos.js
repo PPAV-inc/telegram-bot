@@ -1,4 +1,4 @@
-import randomVideo from './randomVideo';
+import hotVideos from './hotVideos';
 import locale from '../locale';
 import aesEncrypt from '../utils/aesEncrypt';
 import {
@@ -44,7 +44,7 @@ const searchVideos = async context => {
     };
     context.sendMessageContent.push(messageContent);
 
-    await randomVideo(context);
+    await hotVideos(context);
   } else {
     for (let i = 0; i < results.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop

@@ -2,7 +2,8 @@ import acceptDisclaimer from './acceptDisclaimer';
 import start from './start';
 import updateUserLanguage from './updateUserLanguage';
 import searchVideos from './searchVideos';
-import randomVideo from './randomVideo';
+import hotVideos from './hotVideos';
+import newVideos from './newVideos';
 import tutorial from './tutorial';
 import setting from './setting';
 import about from './about';
@@ -19,7 +20,8 @@ export {
   start,
   updateUserLanguage,
   searchVideos,
-  randomVideo,
+  hotVideos,
+  newVideos,
   tutorial,
   setting,
   about,
