@@ -1,6 +1,5 @@
 import randomVideo from './randomVideo';
 import locale from '../locale';
-import getQueryResult from '../utils/getQueryResult';
 import aesEncrypt from '../utils/aesEncrypt';
 import {
   getSearchVideoKeyboardSettings,
@@ -9,6 +8,7 @@ import {
 import insertSearchKeyword from '../../models/searchKeywords';
 import insertHotSearchKeyword from '../../models/hotSearchKeywords';
 import insertNotFoundLog from '../../models/notFoundLogs';
+import { getSearchVideos } from '../../models/videos';
 
 const searchVideos = async context => {
   const match = context.event._rawEvent.message.text.match(
@@ -19,11 +19,7 @@ const searchVideos = async context => {
   const firstPage = 1;
 
   // FIXME: result naming
-  const { totalCount, result } = await getQueryResult(
-    'search',
-    keyword,
-    firstPage
-  );
+  const { totalCount, result } = await getSearchVideos(keyword, firstPage);
 
   const encryptUserId = aesEncrypt(`${user.userId}`);
   /* eslint-disable no-param-reassign */

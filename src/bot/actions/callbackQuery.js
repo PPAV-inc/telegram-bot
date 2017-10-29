@@ -1,12 +1,12 @@
 import randomVideo from './randomVideo';
 import locale from '../locale';
-import getQueryResult from '../utils/getQueryResult';
 import {
   getLanguageKeyboardSettings,
   getAutoDeleteMessagesKeyboardSettings,
   getSearchVideoKeyboardSettings,
   getWatchMoreKeyboardSettings,
 } from '../utils/getKeyboardSettings';
+import { getSearchVideos } from '../../models/videos';
 
 const regex = /keyword="(.+)"&page="(\d+)"/;
 
@@ -32,8 +32,7 @@ const callbackQuery = async context => {
       const keyword = data[1];
       const page = parseInt(data[2], 10);
 
-      const { totalCount, result: videos } = await getQueryResult(
-        'search',
+      const { totalCount, result: videos } = await getSearchVideos(
         keyword,
         page
       );

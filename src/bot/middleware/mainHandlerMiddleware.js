@@ -15,11 +15,11 @@ import {
 } from '../actions';
 
 const mainHandlerMiddleware = new TelegramHandler()
+  // PPAV
+  .onText(/(^PPAV$|^PPAV 🔥$|^[#＃]PPAV)/i, randomVideo)
   // 搜尋 番號、標題、女優
   .onText(/[#＃]\s*\+*\s*(\S+)/, searchVideos)
-  // PPAV
-  .onText(/(^PPAV$|^PPAV 🔥$)/i, randomVideo)
-  // 設置
+  // 使用說明
   .onText(/(使用說明|Tutorial) 📖$/i, tutorial)
   // 設置
   .onText(/(設置|Setting) ⚙️$/i, setting)
