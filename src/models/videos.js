@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import subDays from 'date-fns/sub_days';
 import { getMongoDatabase, getElasticsearchDatabase } from './database';
 import config from '../../env/bot.config';
 
@@ -47,17 +48,26 @@ const getSearchVideos = async (messageText, page) => {
   };
 };
 
-// FIXME
 const getRandomVideos = async () => {
   const db = await getMongoDatabase();
 
-  const result = await db
-    .collection('videos')
+  const sevenDaysBefore = subDays(new Date(), 7);
+  let hotVideos = await db
+    .collection('logs')
     .aggregate([
-      { $sort: { total_view_count: -1 } },
+      { $match: { createdAt: { $gte: sevenDaysBefore } } },
+      { $group: { _id: '$videoId', videoId: '$videoId', count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
       { $limit: 100 },
       { $sample: { size: 3 } },
     ])
+    .toArray();
+
+  hotVideos = hotVideos.map(video => ObjectId(video.videoId));
+
+  const result = await db
+    .collection('videos')
+    .find({ _id: { $in: hotVideos } })
     .toArray();
 
   result.forEach(eachResult => {
