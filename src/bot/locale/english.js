@@ -12,7 +12,8 @@ const english = {
   },
   mainMenu: {
     text: 'Feel free to click bottom right corner button to open menu 🎛',
-    randomVideo: 'PPAV 🔥',
+    randomVideo: 'PPAV hot',
+    hotVideo: 'PPAV new',
     tutorial: 'Tutorial 📖',
     about: 'About PPAV 👀',
     checkDisclaimer: 'Disclaimer 📜',
@@ -77,7 +78,7 @@ const english = {
   tutorial: {
     randomVideo_photo: 'https://imgur.com/7ouKmPL.jpg',
     randomVideo:
-      '1️⃣ Random Video\n\nType "PPAV" in input box or click "PPAV 🔥" in main menu.\nPPAV will send you three hot videos randomly.',
+      '1️⃣ Random Video\n\nType "PPAV" in input box or click "PPAV new" or "PPAV hot" in main menu.\nPPAV will send you three videos randomly.',
     searchVideos_photo_1: 'https://imgur.com/rZX96do.jpg',
     searchVideos_caption_1:
       '2️⃣-1️⃣ Search Video\n\nType "#Keyword" in input box to search video.\n\nKeyword can be\n1.「Model」, e.g. "#三上悠亞"\n2.「Tag」, e.g. "#高校生"\n3.「Code」, e.g. "#887"\n4.「Title」, e.g. "#美少女完全予約制"',

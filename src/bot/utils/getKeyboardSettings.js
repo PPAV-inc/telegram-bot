@@ -51,20 +51,20 @@ const getMainMenuKeyboardSettings = languageCode => {
   const {
     text,
     randomVideo,
+    hotVideo,
     tutorial,
     about,
-    checkDisclaimer,
     report,
-    contactUs,
+    checkDisclaimer,
     setting,
   } = locale(languageCode).mainMenu;
   const mainMenuKeyboard = keyboards.mainMenuKeyboard(
     randomVideo,
+    hotVideo,
     tutorial,
     about,
-    checkDisclaimer,
     report,
-    contactUs,
+    checkDisclaimer,
     setting
   );
   const options = replyKeyboardOptions(mainMenuKeyboard, false);

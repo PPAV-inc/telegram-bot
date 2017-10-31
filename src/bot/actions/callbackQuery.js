@@ -32,16 +32,16 @@ const callbackQuery = async context => {
       const keyword = data[1];
       const page = parseInt(data[2], 10);
 
-      const { totalCount, result: videos } = await getSearchVideos(
-        keyword,
-        page
-      );
+      const {
+        totalCount,
+        results: searchVideosResults,
+      } = await getSearchVideos(keyword, page);
 
-      for (let i = 0; i < videos.length; i += 1) {
+      for (let i = 0; i < searchVideosResults.length; i += 1) {
         // eslint-disable-next-line no-await-in-loop
         const messageContent = await getSearchVideoKeyboardSettings(
           languageCode,
-          videos[i]
+          searchVideosResults[i]
         );
         context.sendMessageContent.push(messageContent);
       }

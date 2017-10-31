@@ -11,7 +11,8 @@ const traditionalChinese = {
   },
   mainMenu: {
     text: '有任何疑問歡迎點擊右下方的按鈕開啟主選單 🎛',
-    randomVideo: 'PPAV 🔥',
+    randomVideo: 'PPAV 熱門',
+    hotVideo: 'PPAV 最新',
     tutorial: '使用說明 📖',
     about: '關於 PPAV 👀',
     checkDisclaimer: '免責聲明 📜',
@@ -74,7 +75,7 @@ const traditionalChinese = {
   tutorial: {
     randomVideo_photo: 'https://imgur.com/7ouKmPL.jpg',
     randomVideo:
-      '1️⃣ 隨機影片\n\n在輸入框內輸入 "PPAV"，或在主選單中點選 "PPAV 🔥"，PPAV 將會傳送三部熱門影片給您。',
+      '1️⃣ 隨機影片\n\n在輸入框內輸入 "PPAV"，或在主選單中點選 "PPAV 熱門" 或 "PPAV 最新"，PPAV 將會傳送三部影片給您。',
     searchVideos_photo_1: 'https://imgur.com/rZX96do.jpg',
     searchVideos_caption_1:
       '2️⃣-1️⃣ 搜尋影片\n\n在輸入框內輸入 "#關鍵字" 可以搜尋影片。\n\n關鍵字可以是\n1.「女優名字」，例如："#三上悠亞"\n2.「標籤」，例如："#高校生"\n3.「番號」，例如："#887"\n4.「片名」，例如："#美少女完全予約制"',

@@ -18,12 +18,14 @@ const searchVideos = async context => {
   const keyword = match[1];
   const firstPage = 1;
 
-  // FIXME: result naming
-  const { totalCount, result } = await getSearchVideos(keyword, firstPage);
+  const { totalCount, results: searchVideosResults } = await getSearchVideos(
+    keyword,
+    firstPage
+  );
 
   const encryptUserId = aesEncrypt(`${user.userId}`);
   /* eslint-disable no-param-reassign */
-  const results = result.map(res => {
+  const results = searchVideosResults.map(res => {
     res.videos = res.videos.map(video => {
       video.url += `&user=${encodeURIComponent(encryptUserId)}`;
       return video;

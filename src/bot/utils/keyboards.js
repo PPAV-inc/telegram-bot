@@ -11,16 +11,16 @@ const disclaimerKeyboard = (disclaimer, accept) => [
 
 const mainMenuKeyboard = (
   randomVideo,
+  hotVideo,
   tutorial,
   about,
-  checkDisclaimer,
   report,
-  contactUs,
+  checkDisclaimer,
   setting
 ) => [
-  [{ text: `${randomVideo}` }, { text: `${tutorial}` }],
-  [{ text: `${about}` }, { text: `${report}` }],
-  [{ text: `${checkDisclaimer}` }, { text: `${contactUs}` }],
+  [{ text: `${randomVideo}` }, { text: `${hotVideo}` }],
+  [{ text: `${tutorial}` }, { text: `${about}` }],
+  [{ text: `${report}` }, { text: `${checkDisclaimer}` }],
   [{ text: `${setting}` }],
 ];
 

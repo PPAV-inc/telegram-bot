@@ -6,7 +6,7 @@ import config from '../../env/bot.config';
 const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
 const getSearchVideos = async (messageText, page) => {
-  const result = [];
+  const results = [];
   const keyword = escapeRegex(messageText);
 
   const esClient = getElasticsearchDatabase();
@@ -37,13 +37,13 @@ const getSearchVideos = async (messageText, page) => {
           video.url
         )}&_id=${hit._id}`,
       }));
-      result.push(source);
+      results.push(source);
     });
   }
 
   return {
     keyword,
-    result,
+    results,
     totalCount,
   };
 };
@@ -53,7 +53,7 @@ const getNewVideos = async () => {
 
   const oneDaysBefore = subDays(new Date(), 1);
 
-  const result = await db
+  const results = await db
     .collection('videos')
     .aggregate([
       { $match: { updated_at: { $gte: oneDaysBefore } } },
@@ -63,7 +63,7 @@ const getNewVideos = async () => {
     ])
     .toArray();
 
-  result.forEach(eachResult => {
+  results.forEach(eachResult => {
     // eslint-disable-next-line no-param-reassign
     eachResult.videos = eachResult.videos.map(video => ({
       ...video,
@@ -74,7 +74,7 @@ const getNewVideos = async () => {
   });
 
   return {
-    result,
+    results,
   };
 };
 
@@ -86,7 +86,13 @@ const getHotVideos = async () => {
     .collection('logs')
     .aggregate([
       { $match: { createdAt: { $gte: sevenDaysBefore } } },
-      { $group: { _id: '$videoId', videoId: '$videoId', count: { $sum: 1 } } },
+      {
+        $group: {
+          _id: '$videoId',
+          videoId: { $first: '$videoId' },
+          count: { $sum: 1 },
+        },
+      },
       { $sort: { count: -1 } },
       { $limit: 100 },
       { $sample: { size: 3 } },
@@ -95,12 +101,12 @@ const getHotVideos = async () => {
 
   hotVideos = hotVideos.map(video => ObjectId(video.videoId));
 
-  const result = await db
+  const results = await db
     .collection('videos')
     .find({ _id: { $in: hotVideos } })
     .toArray();
 
-  result.forEach(eachResult => {
+  results.forEach(eachResult => {
     // eslint-disable-next-line no-param-reassign
     eachResult.videos = eachResult.videos.map(video => ({
       ...video,
@@ -111,7 +117,7 @@ const getHotVideos = async () => {
   });
 
   return {
-    result,
+    results,
   };
 };
 

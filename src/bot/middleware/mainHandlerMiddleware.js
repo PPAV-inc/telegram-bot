@@ -17,11 +17,9 @@ import {
 
 const mainHandlerMiddleware = new TelegramHandler()
   // PPAV
-  // FIXME: PPAV hot
-  .onText(/(^PPAV$|^PPAV 🔥$|^[#＃]PPAV)/i, hotVideos)
+  .onText(/(^PPAV$|^PPAV 熱門$|^PPAV hot$|^[#＃]PPAV)/i, hotVideos)
   // PPAV new
-  // FIXME: PPAV new
-  .onText(/(^PPAV$|^PPAV 🔥$|^[#＃]PPAV)/i, newVideos)
+  .onText(/(^PPAV 最新$|^PPAV new$)/i, newVideos)
   // 搜尋 番號、標題、女優
   .onText(/[#＃]\s*\+*\s*(\S+)/, searchVideos)
   // 使用說明

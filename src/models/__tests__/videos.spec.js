@@ -65,11 +65,11 @@ describe('getSearchVideos', () => {
     const messageText = '小美';
     const page = 1;
 
-    const { result, totalCount } = await getSearchVideos(messageText, page);
+    const { results, totalCount } = await getSearchVideos(messageText, page);
 
     expect(getElasticsearchDatabase).toBeCalled();
     expect(getElasticsearchDatabase().search).toBeCalled();
-    expect(result).toEqual([video]);
+    expect(results).toEqual([video]);
     expect(totalCount).toBe(1);
   });
 
@@ -83,10 +83,10 @@ describe('getSearchVideos', () => {
     const messageText = '123';
     const page = 1;
 
-    const { result, totalCount } = await getSearchVideos(messageText, page);
+    const { results, totalCount } = await getSearchVideos(messageText, page);
     expect(getElasticsearchDatabase).toBeCalled();
     expect(getElasticsearchDatabase().search).toBeCalled();
-    expect(result).toEqual([]);
+    expect(results).toEqual([]);
     expect(totalCount).toBe(0);
   });
 });
@@ -143,7 +143,13 @@ describe('getHotVideos', () => {
     expect(getMongoDatabase().collection).toBeCalledWith('logs');
     expect(getMongoDatabase().collection().aggregate).toBeCalledWith([
       { $match: { createdAt: { $gte: expect.any(Date) } } },
-      { $group: { _id: '$videoId', videoId: '$videoId', count: { $sum: 1 } } },
+      {
+        $group: {
+          _id: '$videoId',
+          videoId: { $first: '$videoId' },
+          count: { $sum: 1 },
+        },
+      },
       { $sort: { count: -1 } },
       { $limit: 100 },
       { $sample: { size: 3 } },
@@ -157,7 +163,7 @@ describe('getHotVideos', () => {
         .collection()
         .find().toArray
     ).toBeCalled();
-    expect(res).toEqual({ result: [videoRes] });
+    expect(res).toEqual({ results: [videoRes] });
   });
 });
 
