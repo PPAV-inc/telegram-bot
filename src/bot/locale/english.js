@@ -103,7 +103,7 @@ const english = {
       "Let's do it",
     ],
     main:
-      'Instruction:\n\n1️⃣*Random Videos* please enter： "*PPAV*"\n\n2️⃣*Search Videos* please enter： "*# Keyword*"\n\n3️⃣*Subscribe* please enter： "*gginin Hour*"',
+      'Instruction:\n\n1️⃣*Random Hot Videos* please enter： "*PPAV*" or click "PPAV hot" in main menu\n\n2️⃣*Random New Videos* please enter： "*PPAV new*" or click "PPAV new" in main menu\n\n3️⃣*Search Videos* please enter： "*# Keyword*"\n\n4️⃣*Subscribe* please enter： "*gginin Hour*"',
   },
 };
 
