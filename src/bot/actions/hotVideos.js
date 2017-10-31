@@ -21,7 +21,8 @@ const hotVideos = async context => {
     // eslint-disable-next-line no-await-in-loop
     const messageContent = await getRandomVideoKeyboardSettings(
       user.languageCode,
-      results[i]
+      results[i],
+      'hot'
     );
 
     context.sendMessageContent.push(messageContent);

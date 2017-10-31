@@ -1,4 +1,5 @@
 import hotVideos from './hotVideos';
+import newVideos from './newVideos';
 import locale from '../locale';
 import {
   getLanguageKeyboardSettings,
@@ -24,8 +25,11 @@ const callbackQuery = async context => {
       result = getAutoDeleteMessagesKeyboardSettings(languageCode);
       context.sendMessageContent.push(result);
       break;
-    case 'watchMore':
+    case 'watchMoreHot':
       await hotVideos(context);
+      break;
+    case 'watchMoreNew':
+      await newVideos(context);
       break;
     default: {
       const data = await regex.exec(action);

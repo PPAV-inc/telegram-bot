@@ -71,7 +71,7 @@ const watchMoreKeyBoard = async (text, keyword, nowPage) => {
   return keyboard;
 };
 
-const randomVideoKeyboard = (languageCode, videos) => {
+const randomVideoKeyboard = (languageCode, videos, type) => {
   const keyboard = [];
   const { watchMore, paid } = locale(languageCode).videos;
 
@@ -88,7 +88,12 @@ const randomVideoKeyboard = (languageCode, videos) => {
     ]);
   }
 
-  keyboard.push([{ text: watchMore, callback_data: 'watchMore' }]);
+  keyboard.push([
+    {
+      text: watchMore,
+      callback_data: type === 'hot' ? 'watchMoreHot' : 'watchMoreNew',
+    },
+  ]);
 
   return keyboard;
 };

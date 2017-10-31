@@ -120,10 +120,11 @@ const getWatchMoreKeyboardSettings = async (languageCode, keyword, nowPage) => {
   return { text, options };
 };
 
-const getRandomVideoKeyboardSettings = async (languageCode, result) => {
+const getRandomVideoKeyboardSettings = async (languageCode, result, type) => {
   const randomVideoKeyboard = await keyboards.randomVideoKeyboard(
     languageCode,
-    result.videos
+    result.videos,
+    type
   );
   const options = {
     ...inlineKeyboardOptions(randomVideoKeyboard),
