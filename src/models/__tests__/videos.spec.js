@@ -152,7 +152,7 @@ describe('getHotVideos', () => {
       },
       { $sort: { count: -1 } },
       { $limit: 100 },
-      { $sample: { size: 3 } },
+      { $sample: { size: 5 } },
     ]);
     expect(getMongoDatabase().collection).toBeCalledWith('videos');
     expect(getMongoDatabase().collection().find).toBeCalledWith({

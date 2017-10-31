@@ -59,7 +59,7 @@ const getNewVideos = async () => {
       { $match: { updated_at: { $gte: oneDaysBefore } } },
       { $sort: { total_view_count: -1 } },
       { $limit: 100 },
-      { $sample: { size: 3 } },
+      { $sample: { size: 5 } },
     ])
     .toArray();
 
@@ -95,7 +95,7 @@ const getHotVideos = async () => {
       },
       { $sort: { count: -1 } },
       { $limit: 100 },
-      { $sample: { size: 3 } },
+      { $sample: { size: 5 } },
     ])
     .toArray();
 

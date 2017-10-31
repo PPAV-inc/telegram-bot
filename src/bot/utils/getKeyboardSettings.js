@@ -97,7 +97,9 @@ const getSearchVideoKeyboardSettings = async (languageCode, result) => {
   const options = inlineKeyboardOptions(searchVideoKeyboard);
 
   return {
-    imageUrl: result.img_url,
+    imageUrl: result.img_url
+      ? result.img_url
+      : 'https://i.imgur.com/H8BeuET.jpg',
     options: {
       ...options,
       caption: generateVideoMessageText(languageCode, result),
@@ -131,7 +133,12 @@ const getRandomVideoKeyboardSettings = async (languageCode, result, type) => {
     caption: generateVideoMessageText(languageCode, result),
   };
 
-  return { imageUrl: result.img_url, options };
+  return {
+    imageUrl: result.img_url
+      ? result.img_url
+      : 'https://i.imgur.com/H8BeuET.jpg',
+    options,
+  };
 };
 
 const getImageAnalyticKeyboardSettings = async (languageCode, result) => {
