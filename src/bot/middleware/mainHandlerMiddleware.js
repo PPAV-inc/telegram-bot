@@ -1,7 +1,8 @@
 import { TelegramHandler } from 'bottender';
 import {
   searchVideos,
-  randomVideo,
+  hotVideos,
+  newVideos,
   tutorial,
   setting,
   about,
@@ -16,7 +17,9 @@ import {
 
 const mainHandlerMiddleware = new TelegramHandler()
   // PPAV
-  .onText(/(^PPAV$|^PPAV 🔥$|^[#＃]PPAV)/i, randomVideo)
+  .onText(/(^PPAV$|^PPAV 熱門$|^PPAV hot$|^[#＃]PPAV)/i, hotVideos)
+  // PPAV new
+  .onText(/(^PPAV 最新$|^PPAV new$)/i, newVideos)
   // 搜尋 番號、標題、女優
   .onText(/[#＃]\s*\+*\s*(\S+)/, searchVideos)
   // 使用說明

@@ -11,16 +11,16 @@ const disclaimerKeyboard = (disclaimer, accept) => [
 
 const mainMenuKeyboard = (
   randomVideo,
+  hotVideo,
   tutorial,
   about,
-  checkDisclaimer,
   report,
-  contactUs,
+  checkDisclaimer,
   setting
 ) => [
-  [{ text: `${randomVideo}` }, { text: `${tutorial}` }],
-  [{ text: `${about}` }, { text: `${report}` }],
-  [{ text: `${checkDisclaimer}` }, { text: `${contactUs}` }],
+  [{ text: `${randomVideo}` }, { text: `${hotVideo}` }],
+  [{ text: `${tutorial}` }, { text: `${about}` }],
+  [{ text: `${report}` }, { text: `${checkDisclaimer}` }],
   [{ text: `${setting}` }],
 ];
 
@@ -71,7 +71,7 @@ const watchMoreKeyBoard = async (text, keyword, nowPage) => {
   return keyboard;
 };
 
-const randomVideoKeyboard = (languageCode, videos) => {
+const randomVideoKeyboard = (languageCode, videos, type) => {
   const keyboard = [];
   const { watchMore, paid } = locale(languageCode).videos;
 
@@ -88,7 +88,12 @@ const randomVideoKeyboard = (languageCode, videos) => {
     ]);
   }
 
-  keyboard.push([{ text: watchMore, callback_data: 'watchMore' }]);
+  keyboard.push([
+    {
+      text: watchMore,
+      callback_data: type === 'hot' ? 'watchMoreHot' : 'watchMoreNew',
+    },
+  ]);
 
   return keyboard;
 };

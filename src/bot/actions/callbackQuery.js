@@ -1,4 +1,5 @@
-import randomVideo from './randomVideo';
+import hotVideos from './hotVideos';
+import newVideos from './newVideos';
 import locale from '../locale';
 import {
   getLanguageKeyboardSettings,
@@ -24,24 +25,27 @@ const callbackQuery = async context => {
       result = getAutoDeleteMessagesKeyboardSettings(languageCode);
       context.sendMessageContent.push(result);
       break;
-    case 'watchMore':
-      await randomVideo(context);
+    case 'watchMoreHot':
+      await hotVideos(context);
+      break;
+    case 'watchMoreNew':
+      await newVideos(context);
       break;
     default: {
       const data = await regex.exec(action);
       const keyword = data[1];
       const page = parseInt(data[2], 10);
 
-      const { totalCount, result: videos } = await getSearchVideos(
-        keyword,
-        page
-      );
+      const {
+        totalCount,
+        results: searchVideosResults,
+      } = await getSearchVideos(keyword, page);
 
-      for (let i = 0; i < videos.length; i += 1) {
+      for (let i = 0; i < searchVideosResults.length; i += 1) {
         // eslint-disable-next-line no-await-in-loop
         const messageContent = await getSearchVideoKeyboardSettings(
           languageCode,
-          videos[i]
+          searchVideosResults[i]
         );
         context.sendMessageContent.push(messageContent);
       }

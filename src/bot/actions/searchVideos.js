@@ -1,4 +1,4 @@
-import randomVideo from './randomVideo';
+import hotVideos from './hotVideos';
 import locale from '../locale';
 import aesEncrypt from '../utils/aesEncrypt';
 import {
@@ -18,12 +18,14 @@ const searchVideos = async context => {
   const keyword = match[1];
   const firstPage = 1;
 
-  // FIXME: result naming
-  const { totalCount, result } = await getSearchVideos(keyword, firstPage);
+  const { totalCount, results: searchVideosResults } = await getSearchVideos(
+    keyword,
+    firstPage
+  );
 
   const encryptUserId = aesEncrypt(`${user.userId}`);
   /* eslint-disable no-param-reassign */
-  const results = result.map(res => {
+  const results = searchVideosResults.map(res => {
     res.videos = res.videos.map(video => {
       video.url += `&user=${encodeURIComponent(encryptUserId)}`;
       return video;
@@ -44,7 +46,7 @@ const searchVideos = async context => {
     };
     context.sendMessageContent.push(messageContent);
 
-    await randomVideo(context);
+    await hotVideos(context);
   } else {
     for (let i = 0; i < results.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop

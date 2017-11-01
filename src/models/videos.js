@@ -1,11 +1,12 @@
 import { ObjectId } from 'mongodb';
+import subDays from 'date-fns/sub_days';
 import { getMongoDatabase, getElasticsearchDatabase } from './database';
 import config from '../../env/bot.config';
 
 const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
 const getSearchVideos = async (messageText, page) => {
-  const result = [];
+  const results = [];
   const keyword = escapeRegex(messageText);
 
   const esClient = getElasticsearchDatabase();
@@ -36,31 +37,33 @@ const getSearchVideos = async (messageText, page) => {
           video.url
         )}&_id=${hit._id}`,
       }));
-      result.push(source);
+      results.push(source);
     });
   }
 
   return {
     keyword,
-    result,
+    results,
     totalCount,
   };
 };
 
-// FIXME
-const getRandomVideos = async () => {
+const getNewVideos = async () => {
   const db = await getMongoDatabase();
 
-  const result = await db
+  const oneDaysBefore = subDays(new Date(), 1);
+
+  const results = await db
     .collection('videos')
     .aggregate([
+      { $match: { updated_at: { $gte: oneDaysBefore } } },
       { $sort: { total_view_count: -1 } },
       { $limit: 100 },
-      { $sample: { size: 3 } },
+      { $sample: { size: 5 } },
     ])
     .toArray();
 
-  result.forEach(eachResult => {
+  results.forEach(eachResult => {
     // eslint-disable-next-line no-param-reassign
     eachResult.videos = eachResult.videos.map(video => ({
       ...video,
@@ -71,7 +74,50 @@ const getRandomVideos = async () => {
   });
 
   return {
-    result,
+    results,
+  };
+};
+
+const getHotVideos = async () => {
+  const db = await getMongoDatabase();
+
+  const sevenDaysBefore = subDays(new Date(), 7);
+  let hotVideos = await db
+    .collection('logs')
+    .aggregate([
+      { $match: { createdAt: { $gte: sevenDaysBefore } } },
+      {
+        $group: {
+          _id: '$videoId',
+          videoId: { $first: '$videoId' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
+      { $limit: 100 },
+      { $sample: { size: 5 } },
+    ])
+    .toArray();
+
+  hotVideos = hotVideos.map(video => ObjectId(video.videoId));
+
+  const results = await db
+    .collection('videos')
+    .find({ _id: { $in: hotVideos } })
+    .toArray();
+
+  results.forEach(eachResult => {
+    // eslint-disable-next-line no-param-reassign
+    eachResult.videos = eachResult.videos.map(video => ({
+      ...video,
+      url: `${config.url}/redirect/?url=${encodeURIComponent(
+        video.url
+      )}&_id=${eachResult._id}`,
+    }));
+  });
+
+  return {
+    results,
   };
 };
 
@@ -84,4 +130,4 @@ const getAnalyticVideos = async candidates => {
     .toArray();
 };
 
-export { getSearchVideos, getRandomVideos, getAnalyticVideos };
+export { getSearchVideos, getHotVideos, getNewVideos, getAnalyticVideos };

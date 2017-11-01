@@ -1,10 +1,10 @@
 import { getRandomVideoKeyboardSettings } from '../utils/getKeyboardSettings';
 import aesEncrypt from '../utils/aesEncrypt';
-import { getRandomVideos } from '../../models/videos';
+import { getNewVideos } from '../../models/videos';
 
-const randomVideo = async context => {
+const newVideos = async context => {
   const { user } = context;
-  let { results } = await getRandomVideos();
+  let { results } = await getNewVideos();
 
   const encryptUserId = aesEncrypt(`${user.userId}`);
   /* eslint-disable no-param-reassign */
@@ -21,11 +21,12 @@ const randomVideo = async context => {
     // eslint-disable-next-line no-await-in-loop
     const messageContent = await getRandomVideoKeyboardSettings(
       user.languageCode,
-      results[i]
+      results[i],
+      'new'
     );
 
     context.sendMessageContent.push(messageContent);
   }
 };
 
-export default randomVideo;
+export default newVideos;

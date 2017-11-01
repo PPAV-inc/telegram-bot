@@ -7,9 +7,32 @@ jest.mock('../database');
 const { getMongoDatabase, getElasticsearchDatabase } = require('../database');
 const {
   getSearchVideos,
-  getRandomVideos,
+  getHotVideos,
   getAnalyticVideos,
 } = require('../videos');
+
+const video = {
+  _id: ObjectId('598200798612d0d9c9cfaf7c'),
+  title:
+    '出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 南まゆ出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 雲乃亜美出会って4秒で即ハメされてイキまくり！ 長瀬麻美出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 長澤えりな出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 伊東紅出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 有沢杏出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 彩乃なな出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ！ 宇沙城らん出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 澁谷果歩出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ 皆野あい出会って即合体スペシャル4',
+  models: ['南まゆ', '雲乃亜美', '長瀬麻美'],
+  img_url:
+    'http://pics.dmm.co.jp/digital/video/td005dvaj130h/td005dvaj130hpl.jpg',
+  code: 'DVAJ-130',
+  tags: ['中出', '制服', '長腿', '精選、綜合', '巨乳', '4小時以上作品', '紀錄片', '立即口交'],
+  duration: 150,
+  total_view_count: 666,
+  videos: [
+    {
+      source: 'youav',
+      url: 'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4',
+      view_count: 666,
+    },
+  ],
+  score: 10,
+  length: 240,
+  publishedAt: new Date('2016-04-13T00:00:00.000Z'),
+};
 
 describe('getSearchVideos', () => {
   beforeEach(() => {
@@ -27,28 +50,7 @@ describe('getSearchVideos', () => {
             _type: 'videos',
             _id: '598200798612d0d9c9cfaf7c',
             _score: 111.308304,
-            _source: {
-              title:
-                '出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 南まゆ出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 雲乃亜美出会って4秒で即ハメされてイキまくり！ 長瀬麻美出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 長澤えりな出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 伊東紅出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 有沢杏出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 彩乃なな出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ！ 宇沙城らん出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 澁谷果歩出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ 皆野あい出会って即合体スペシャル4',
-              models: ['南まゆ', '雲乃亜美', '長瀬麻美'],
-              img_url:
-                'http://pics.dmm.co.jp/digital/video/td005dvaj130h/td005dvaj130hpl.jpg',
-              code: 'DVAJ-130',
-              tags: ['中出', '制服', '長腿', '精選、綜合', '巨乳', '4小時以上作品', '紀錄片', '立即口交'],
-              duration: 150,
-              total_view_count: 666,
-              videos: [
-                {
-                  source: 'youav',
-                  url:
-                    'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4',
-                  view_count: 666,
-                },
-              ],
-              score: 10,
-              length: 240,
-              publishedAt: new Date('2016-04-13T00:00:00.000Z'),
-            },
+            _source: video,
           },
         ],
       },
@@ -63,35 +65,11 @@ describe('getSearchVideos', () => {
     const messageText = '小美';
     const page = 1;
 
-    const { result, totalCount } = await getSearchVideos(messageText, page);
+    const { results, totalCount } = await getSearchVideos(messageText, page);
 
     expect(getElasticsearchDatabase).toBeCalled();
     expect(getElasticsearchDatabase().search).toBeCalled();
-    expect(result).toEqual([
-      {
-        title:
-          '出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 南まゆ出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 雲乃亜美出会って4秒で即ハメされてイキまくり！ 長瀬麻美出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 長澤えりな出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 伊東紅出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 有沢杏出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 彩乃なな出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ！ 宇沙城らん出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 澁谷果歩出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ 皆野あい出会って即合体スペシャル4',
-        models: ['南まゆ', '雲乃亜美', '長瀬麻美'],
-        img_url:
-          'http://pics.dmm.co.jp/digital/video/td005dvaj130h/td005dvaj130hpl.jpg',
-        code: 'DVAJ-130',
-        tags: ['中出', '制服', '長腿', '精選、綜合', '巨乳', '4小時以上作品', '紀錄片', '立即口交'],
-        duration: 150,
-        total_view_count: 666,
-        videos: [
-          {
-            source: 'youav',
-            url: `${config.url}/redirect/?url=${encodeURIComponent(
-              'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4'
-            )}&_id=598200798612d0d9c9cfaf7c`,
-            view_count: 666,
-          },
-        ],
-        score: 10,
-        length: 240,
-        publishedAt: new Date('2016-04-13T00:00:00.000Z'),
-      },
-    ]);
+    expect(results).toEqual([video]);
     expect(totalCount).toBe(1);
   });
 
@@ -105,83 +83,87 @@ describe('getSearchVideos', () => {
     const messageText = '123';
     const page = 1;
 
-    const { result, totalCount } = await getSearchVideos(messageText, page);
+    const { results, totalCount } = await getSearchVideos(messageText, page);
     expect(getElasticsearchDatabase).toBeCalled();
     expect(getElasticsearchDatabase().search).toBeCalled();
-    expect(result).toEqual([]);
+    expect(results).toEqual([]);
     expect(totalCount).toBe(0);
   });
 });
 
-describe('getRandomVideos', () => {
+describe('getHotVideos', () => {
   beforeEach(() => {
-    getMongoDatabase.mockReturnValue({
+    const db = {
       collection: jest.fn().mockReturnThis(),
-    });
-    getMongoDatabase().collection.mockReturnValue({
-      find: jest.fn(),
-      aggregate: jest.fn(),
-    });
-    getMongoDatabase()
-      .collection()
-      .aggregate.mockReturnValue({
-        toArray: jest.fn(),
-      });
-    getMongoDatabase()
-      .collection()
-      .find.mockReturnValue({
-        toArray: jest.fn(),
-      });
-    getMongoDatabase()
-      .collection()
-      .aggregate()
-      .toArray.mockReturnValue([
-        {
-          _id: ObjectId('598200798612d0d9c9cfaf7c'),
-          title:
-            '出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 南まゆ出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 雲乃亜美出会って4秒で即ハメされてイキまくり！ 長瀬麻美出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 長澤えりな出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 伊東紅出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 有沢杏出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 彩乃なな出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ！ 宇沙城らん出会って4秒で即ハメされて最後は顔射！しかもお掃除フェラまでさせられて 澁谷果歩出会って4秒で即ハメされてイキまくり！そして最後は顔射フィニッシュ 皆野あい出会って即合体スペシャル4',
-          models: ['南まゆ', '雲乃亜美', '長瀬麻美'],
-          img_url:
-            'http://pics.dmm.co.jp/digital/video/td005dvaj130h/td005dvaj130hpl.jpg',
-          code: 'DVAJ-130',
-          tags: ['中出', '制服', '長腿', '精選、綜合', '巨乳', '4小時以上作品', '紀錄片', '立即口交'],
-          duration: 150,
-          total_view_count: 666,
-          videos: [
-            {
-              source: 'youav',
-              url: `${config.url}/redirect/?url=${encodeURIComponent(
-                'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4'
-              )}&_id=598200798612d0d9c9cfaf7c`,
-              view_count: 666,
-            },
-          ],
-          score: 10,
-          length: 240,
-          publishedAt: new Date('2016-04-13T00:00:00.000Z'),
-        },
-      ]);
+      find: jest.fn().mockReturnThis(),
+      aggregate: jest.fn().mockReturnThis(),
+      toArray: jest.fn(),
+    };
+
+    getMongoDatabase.mockReturnValue(db);
   });
 
   it('should be defined', () => {
-    expect(getRandomVideos).toBeDefined();
+    expect(getHotVideos).toBeDefined();
   });
 
   it('should return an object', async () => {
-    await getRandomVideos();
+    const logs = {
+      _id: ObjectId('59e0dce0b4af652780a56cd4'),
+      userId: 123456789,
+      videoId: video._id,
+      url: video.videos[0].url,
+      createdAt: new Date('2017-10-29T15:33:52.976Z'),
+    };
+    const videoRes = {
+      ...video,
+      videos: [
+        {
+          source: 'youav',
+          url: `${config.url}/redirect/?url=${encodeURIComponent(
+            video.videos[0].url
+          )}&_id=${video._id}`,
+          view_count: 666,
+        },
+      ],
+    };
+
+    getMongoDatabase()
+      .collection()
+      .aggregate()
+      .toArray.mockReturnValue([logs]);
+    getMongoDatabase()
+      .collection()
+      .aggregate()
+      .toArray.mockReturnValue([video]);
+
+    const res = await getHotVideos();
 
     expect(getMongoDatabase).toBeCalled();
-    expect(getMongoDatabase().collection).toBeCalledWith('videos');
+    expect(getMongoDatabase().collection).toBeCalledWith('logs');
     expect(getMongoDatabase().collection().aggregate).toBeCalledWith([
-      { $sort: { total_view_count: -1 } },
+      { $match: { createdAt: { $gte: expect.any(Date) } } },
+      {
+        $group: {
+          _id: '$videoId',
+          videoId: { $first: '$videoId' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
       { $limit: 100 },
-      { $sample: { size: 3 } },
+      { $sample: { size: 5 } },
     ]);
+    expect(getMongoDatabase().collection).toBeCalledWith('videos');
+    expect(getMongoDatabase().collection().find).toBeCalledWith({
+      _id: { $in: [video._id] },
+    });
     expect(
       getMongoDatabase()
         .collection()
-        .aggregate().toArray
+        .find().toArray
     ).toBeCalled();
+    expect(res).toEqual({ results: [videoRes] });
   });
 });
 

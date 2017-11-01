@@ -51,20 +51,20 @@ const getMainMenuKeyboardSettings = languageCode => {
   const {
     text,
     randomVideo,
+    hotVideo,
     tutorial,
     about,
-    checkDisclaimer,
     report,
-    contactUs,
+    checkDisclaimer,
     setting,
   } = locale(languageCode).mainMenu;
   const mainMenuKeyboard = keyboards.mainMenuKeyboard(
     randomVideo,
+    hotVideo,
     tutorial,
     about,
-    checkDisclaimer,
     report,
-    contactUs,
+    checkDisclaimer,
     setting
   );
   const options = replyKeyboardOptions(mainMenuKeyboard, false);
@@ -97,7 +97,9 @@ const getSearchVideoKeyboardSettings = async (languageCode, result) => {
   const options = inlineKeyboardOptions(searchVideoKeyboard);
 
   return {
-    imageUrl: result.img_url,
+    imageUrl: result.img_url
+      ? result.img_url
+      : 'https://i.imgur.com/H8BeuET.jpg',
     options: {
       ...options,
       caption: generateVideoMessageText(languageCode, result),
@@ -120,17 +122,23 @@ const getWatchMoreKeyboardSettings = async (languageCode, keyword, nowPage) => {
   return { text, options };
 };
 
-const getRandomVideoKeyboardSettings = async (languageCode, result) => {
+const getRandomVideoKeyboardSettings = async (languageCode, result, type) => {
   const randomVideoKeyboard = await keyboards.randomVideoKeyboard(
     languageCode,
-    result.videos
+    result.videos,
+    type
   );
   const options = {
     ...inlineKeyboardOptions(randomVideoKeyboard),
     caption: generateVideoMessageText(languageCode, result),
   };
 
-  return { imageUrl: result.img_url, options };
+  return {
+    imageUrl: result.img_url
+      ? result.img_url
+      : 'https://i.imgur.com/H8BeuET.jpg',
+    options,
+  };
 };
 
 const getImageAnalyticKeyboardSettings = async (languageCode, result) => {
