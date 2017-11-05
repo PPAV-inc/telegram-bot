@@ -57,7 +57,7 @@ const getNewVideos = async () => {
     .collection('videos')
     .aggregate([
       { $match: { updated_at: { $gte: oneDaysBefore } } },
-      { $sort: { total_view_count: -1 } },
+      { $sort: { publishedAt: -1, total_view_count: -1 } },
       { $limit: 100 },
       { $sample: { size: 5 } },
     ])
