@@ -1,7 +1,6 @@
 import { getRandomVideoKeyboardSettings } from '../utils/getKeyboardSettings';
 import aesEncrypt from '../utils/aesEncrypt';
 import { getNewVideos } from '../../models/videos';
-import ourshd from './ourshd';
 
 const newVideos = async context => {
   const { user } = context;
@@ -18,7 +17,6 @@ const newVideos = async context => {
   });
   /* eslint-enable no-param-reassign */
 
-  await ourshd(context);
   for (let i = 0; i < results.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
     const messageContent = await getRandomVideoKeyboardSettings(
