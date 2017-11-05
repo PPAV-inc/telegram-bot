@@ -13,6 +13,7 @@ import {
   callbackQuery,
   // imageAnalytic,
   subscribe,
+  ourshd,
 } from '../actions';
 
 const mainHandlerMiddleware = new TelegramHandler()
@@ -20,6 +21,8 @@ const mainHandlerMiddleware = new TelegramHandler()
   .onText(/(^PPAV$|^PPAV 熱門$|^PPAV hot$|^[#＃]PPAV)/i, hotVideos)
   // PPAV new
   .onText(/(^PPAV 最新$|^PPAV new$)/i, newVideos)
+  // 奧視
+  .onText(/[#＃](奧視|ours)$/, ourshd)
   // 搜尋 番號、標題、女優
   .onText(/[#＃]\s*\+*\s*(\S+)/, searchVideos)
   // 使用說明

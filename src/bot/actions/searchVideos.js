@@ -1,4 +1,5 @@
 import hotVideos from './hotVideos';
+import ourshd from './ourshd';
 import locale from '../locale';
 import aesEncrypt from '../utils/aesEncrypt';
 import {
@@ -46,6 +47,7 @@ const searchVideos = async context => {
     };
     context.sendMessageContent.push(messageContent);
 
+    await ourshd(context);
     await hotVideos(context);
   } else {
     for (let i = 0; i < results.length; i += 1) {

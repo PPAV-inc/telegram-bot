@@ -14,6 +14,7 @@ import unhandled from './unhandled';
 import callbackQuery from './callbackQuery';
 import imageAnalytic from './imageAnalytic';
 import subscribe from './subscribe';
+import ourshd from './ourshd';
 
 export {
   acceptDisclaimer,
@@ -32,4 +33,5 @@ export {
   callbackQuery,
   imageAnalytic,
   subscribe,
+  ourshd,
 };
