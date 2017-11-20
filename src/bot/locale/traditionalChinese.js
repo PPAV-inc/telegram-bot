@@ -11,6 +11,7 @@ const traditionalChinese = {
   },
   mainMenu: {
     text: '有任何疑問歡迎點擊右下方的按鈕開啟主選單 🎛',
+    ourshd: '奧視',
     randomVideo: 'PPAV 熱門',
     hotVideo: 'PPAV 最新',
     tutorial: '使用說明 📖',
@@ -95,7 +96,7 @@ const traditionalChinese = {
   unhandled: {
     minor: ['想找片子嗎？', '衛生紙準備好了嗎？', '你媽知道你在這裡看片嗎？'],
     main:
-      '操作說明：\n\n1️⃣*隨機熱門影片* 請輸入： "*PPAV*" 或點擊下方主選單中的 "PPAV 熱門"\n\n2️⃣*隨機最新影片* 請輸入： "*PPAV new*" 或點擊下方主選單中的 "PPAV 最新"\n\n3️⃣*搜尋影片* 請輸入： "*# 關鍵字*"\n\n4️⃣*訂閱推播* 請輸入： "*gginin 推播時段*"',
+      '11/6 ~ 12/6 PPAV x 奧視 特別企劃 ⁉️\n請輸入：*奧視*\n即可進入 PPAV 免費專區 ⁉️\n\n操作說明：\n\n1️⃣*隨機熱門影片* 請輸入： "*PPAV*" 或點擊下方主選單中的 "PPAV 熱門"\n\n2️⃣*隨機最新影片* 請輸入： "*PPAV new*" 或點擊下方主選單中的 "PPAV 最新"\n\n3️⃣*搜尋影片* 請輸入： "*# 關鍵字*"\n\n4️⃣*訂閱推播* 請輸入： "*gginin 推播時段*"',
   },
 };
 
