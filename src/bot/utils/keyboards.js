@@ -10,6 +10,7 @@ const disclaimerKeyboard = (disclaimer, accept) => [
 ];
 
 const mainMenuKeyboard = (
+  ourshd,
   randomVideo,
   hotVideo,
   tutorial,
@@ -18,10 +19,11 @@ const mainMenuKeyboard = (
   checkDisclaimer,
   setting
 ) => [
-  [{ text: `${randomVideo}` }, { text: `${hotVideo}` }],
-  [{ text: `${tutorial}` }, { text: `${about}` }],
-  [{ text: `${report}` }, { text: `${checkDisclaimer}` }],
-  [{ text: `${setting}` }],
+  [{ text: ourshd }],
+  [{ text: randomVideo }, { text: hotVideo }],
+  [{ text: tutorial }, { text: about }],
+  [{ text: report }, { text: checkDisclaimer }],
+  [{ text: setting }],
 ];
 
 const contactUsKeyboard = (text, url) => [[{ text, url }]];

@@ -50,6 +50,7 @@ const getDisclaimerKeyboardSettings = languageCode => {
 const getMainMenuKeyboardSettings = languageCode => {
   const {
     text,
+    ourshd,
     randomVideo,
     hotVideo,
     tutorial,
@@ -59,6 +60,7 @@ const getMainMenuKeyboardSettings = languageCode => {
     setting,
   } = locale(languageCode).mainMenu;
   const mainMenuKeyboard = keyboards.mainMenuKeyboard(
+    ourshd,
     randomVideo,
     hotVideo,
     tutorial,
