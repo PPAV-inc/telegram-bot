@@ -1,10 +1,21 @@
 import uniqueRandomArray from 'unique-random-array';
 import locale from '../locale';
-import { getMainMenuKeyboardSettings } from '../utils/getKeyboardSettings';
+import {
+  getMainMenuKeyboardSettings,
+  getSearchKeywordsKeyboardSettings,
+} from '../utils/getKeyboardSettings';
+import { getSearchKeywords } from '../../models/searchKeywords';
 
 const unhandled = async context => {
   const { user } = context;
+
+  const keywords = await getSearchKeywords();
+
   const messageContent = getMainMenuKeyboardSettings(user.languageCode);
+  const searchKeywordsContent = getSearchKeywordsKeyboardSettings(
+    user.languageCode,
+    keywords
+  );
 
   context.sendMessageContent.push(
     {
@@ -15,7 +26,8 @@ const unhandled = async context => {
         parse_mode: 'Markdown',
       },
     },
-    messageContent
+    messageContent,
+    searchKeywordsContent
   );
 };
 

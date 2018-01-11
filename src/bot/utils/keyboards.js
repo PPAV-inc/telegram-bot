@@ -65,10 +65,26 @@ const searchVideoKeyboard = (languageCode, videos) => {
   return keyboard;
 };
 
-const watchMoreKeyBoard = async (text, keyword, nowPage) => {
+const watchMoreKeyBoard = (text, keyword, nowPage) => {
   const keyboard = [
     [{ text, callback_data: `keyword="${keyword}"&page="${nowPage + 5}"` }],
   ];
+
+  return keyboard;
+};
+
+const searchKeywordsKeyBoard = keywords => {
+  const keyboard = [];
+
+  for (let i = 0; i < keywords.length; i += 1) {
+    const keyword = keywords[i];
+    keyboard.push([
+      {
+        text: `${keyword}`,
+        callback_data: `keyword="${keyword}"&page="0"`,
+      },
+    ]);
+  }
 
   return keyboard;
 };
@@ -124,6 +140,7 @@ export {
   autoDeleteMessagesKeyboard,
   searchVideoKeyboard,
   watchMoreKeyBoard,
+  searchKeywordsKeyBoard,
   randomVideoKeyboard,
   imageAnalyticKeyboard,
 };

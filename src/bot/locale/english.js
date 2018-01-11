@@ -104,8 +104,9 @@ const english = {
       "Let's do it",
     ],
     main:
-      '11/6 ~ 12/6 PPAV x Ourshd Special Plan ⁉️\nPlease enter：*ourshd*\nLet\'s join PPAV free zone ⁉️\n\nInstruction:\n\n1️⃣*Random Hot Videos* please enter： "*PPAV*" or click "PPAV hot" in main menu\n\n2️⃣*Random New Videos* please enter： "*PPAV new*" or click "PPAV new" in main menu\n\n3️⃣*Search Videos* please enter： "*# Keyword*"\n\n4️⃣*Subscribe* please enter： "*gginin Hour*"',
+      'PPAV x Ourshd Special Plan ⁉️\nPlease enter：*ourshd*\nLet\'s join PPAV free zone ⁉️\n\nInstruction:\n\n1️⃣*Random Hot Videos* please enter： "*PPAV*" or click "PPAV hot" in main menu\n\n2️⃣*Random New Videos* please enter： "*PPAV new*" or click "PPAV new" in main menu\n\n3️⃣*Search Videos* please enter： "*# Keyword*"\n\n4️⃣*Subscribe* please enter： "*gginin Hour*"',
   },
+  try: "Don't know what to search? Try",
 };
 
 export default english;

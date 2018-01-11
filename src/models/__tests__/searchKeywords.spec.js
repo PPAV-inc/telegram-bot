@@ -2,9 +2,9 @@ jest.mock('mongodb');
 jest.mock('../database');
 
 const { getMongoDatabase } = require('../database');
-const insertSearchKeywords = require('../searchKeywords').default;
+const { insertSearchKeyword } = require('../searchKeywords');
 
-describe('insertSearchKeywords', () => {
+describe('insertSearchKeyword', () => {
   let defaultDate;
   beforeEach(() => {
     defaultDate = Date;
@@ -32,14 +32,14 @@ describe('insertSearchKeywords', () => {
   });
 
   it('should be defined', () => {
-    expect(insertSearchKeywords).toBeDefined();
+    expect(insertSearchKeyword).toBeDefined();
   });
 
   it('should call update', async () => {
     const keyword = '123';
     const now = new Date();
 
-    await insertSearchKeywords(keyword);
+    await insertSearchKeyword(keyword);
 
     expect(getMongoDatabase).toBeCalled();
     expect(getMongoDatabase().collection).toBeCalledWith('search_keywords');
