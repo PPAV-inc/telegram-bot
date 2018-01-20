@@ -1,3 +1,4 @@
+import subDays from 'date-fns/sub_days';
 import { getMongoDatabase } from './database';
 
 const insertSearchKeyword = async keyword => {
@@ -13,4 +14,21 @@ const insertSearchKeyword = async keyword => {
     );
 };
 
-export default insertSearchKeyword;
+const getSearchKeywords = async () => {
+  const db = await getMongoDatabase();
+  const oneMonthBefore = subDays(new Date(), 30);
+
+  const keywords = await db
+    .collection('search_keywords')
+    .aggregate([
+      { $match: { updated_at: { $gte: oneMonthBefore } } },
+      { $sort: { count: -1 } },
+      { $limit: 50 },
+      { $sample: { size: 5 } },
+    ])
+    .toArray();
+
+  return keywords.map(arr => arr.keyword);
+};
+
+module.exports = { insertSearchKeyword, getSearchKeywords };

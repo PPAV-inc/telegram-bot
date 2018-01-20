@@ -109,17 +109,26 @@ const getSearchVideoKeyboardSettings = async (languageCode, result) => {
   };
 };
 
-const getWatchMoreKeyboardSettings = async (languageCode, keyword, nowPage) => {
+const getWatchMoreKeyboardSettings = (languageCode, keyword, nowPage) => {
   const text = `${locale(languageCode).videos
     .searchingKeyword}#${keyword}\n${uniqueRandomArray(
     locale(languageCode).videos.wantWatchMore
   )()}`;
-  const watchMoreKeyBoard = await keyboards.watchMoreKeyBoard(
+  const watchMoreKeyBoard = keyboards.watchMoreKeyBoard(
     locale(languageCode).videos.watchMore,
     keyword,
     nowPage
   );
   const options = inlineKeyboardOptions(watchMoreKeyBoard);
+
+  return { text, options };
+};
+
+const getSearchKeywordsKeyboardSettings = (languageCode, keywords) => {
+  const text = locale(languageCode).try;
+
+  const searchKeywordsKeyBoard = keyboards.searchKeywordsKeyBoard(keywords);
+  const options = inlineKeyboardOptions(searchKeywordsKeyBoard);
 
   return { text, options };
 };
@@ -168,6 +177,7 @@ export {
   getAutoDeleteMessagesKeyboardSettings,
   getSearchVideoKeyboardSettings,
   getWatchMoreKeyboardSettings,
+  getSearchKeywordsKeyboardSettings,
   getRandomVideoKeyboardSettings,
   getImageAnalyticKeyboardSettings,
 };

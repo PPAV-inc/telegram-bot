@@ -6,7 +6,7 @@ import {
   getSearchVideoKeyboardSettings,
   getWatchMoreKeyboardSettings,
 } from '../utils/getKeyboardSettings';
-import insertSearchKeyword from '../../models/searchKeywords';
+import { insertSearchKeyword } from '../../models/searchKeywords';
 import insertHotSearchKeyword from '../../models/hotSearchKeywords';
 import insertNotFoundLog from '../../models/notFoundLogs';
 import { getSearchVideos } from '../../models/videos';
