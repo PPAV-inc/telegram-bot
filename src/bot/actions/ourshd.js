@@ -1,6 +1,6 @@
 const ourshd = async context => {
   context.sendMessageContent.push({
-    imageUrl: 'https://imgur.com/ygsx5S3',
+    imageUrl: 'https://i.imgur.com/ygsx5S3.jpg',
     options: {
       reply_markup: {
         inline_keyboard: [
