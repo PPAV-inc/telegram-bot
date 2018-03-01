@@ -1,6 +1,7 @@
 require('babel-register');
 
-const { ObjectId } = require('mongodb');
+const subDays = require('date-fns/sub_days');
+
 const { getMongoDatabase } = require('../src/models/database');
 
 async function main() {
@@ -12,7 +13,7 @@ async function main() {
     .toArray();
   subscribedUsers = subscribedUsers.map(user => user.userId);
 
-  const res = await db
+  const recUsers = await db
     .collection('logs')
     .aggregate([
       { $match: { userId: { $in: subscribedUsers } } },
@@ -48,18 +49,40 @@ async function main() {
       },
       {
         $project: {
-          _id: new ObjectId(),
           userId: '$_id',
           models: 1,
+          updatedAt: new Date(),
         },
       },
     ])
     .toArray();
 
   await db.collection('rec_users').remove({});
-  await db.collection('rec_users').insertMany(res);
+  await db.collection('rec_users').insertMany(recUsers);
 
-  db.close();
+  const oneDaysBefore = subDays(new Date(), 1);
+
+  const recVideos = await db
+    .collection('videos')
+    .aggregate([
+      {
+        $match: {
+          updated_at: { $gte: oneDaysBefore },
+          $or: [
+            {
+              'videos.1': { $exists: true },
+            },
+            { 'videos.source': { $ne: 'iavtv' } },
+          ],
+        },
+      },
+    ])
+    .toArray();
+
+  await db.collection('rec_videos').remove({});
+  await db.collection('rec_videos').insertMany(recVideos);
+
+  await db.close();
 }
 
 main();
