@@ -1,6 +1,6 @@
 {
   "name": "telegram-bot",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": false,
   "description": "PPAV Telegram Bot",
   "main": "app.js",
