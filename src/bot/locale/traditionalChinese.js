@@ -7,7 +7,8 @@ const traditionalChinese = {
       '*🔞未滿18歲禁止使用 PPAV🔞*\n此聊天機器人提供成人情趣休閒，年滿 *18* 歲以上或當地國家法定年齡人士，且願意接受此聊天機器人的內容及各項條款方可觀賞。',
     disclaimer: '點擊查看免責聲明',
     accept: '我已滿 18 歲 ✅',
-    alreadyAccept: '*讚喔！您已接受 PPAV 免責聲明 ✅*\n\n🔥🔥 歡迎踏上 PPAV 的奇幻體驗 🔥🔥',
+    alreadyAccept:
+      '*讚喔！您已接受 PPAV 免責聲明 ✅*\n\n🔥🔥 歡迎踏上 PPAV 的奇幻體驗 🔥🔥',
   },
   mainMenu: {
     text: '有任何疑問歡迎點擊右下方的按鈕開啟主選單 🎛',
@@ -55,7 +56,8 @@ const traditionalChinese = {
     minute: '分鐘',
     score: '評分',
     publishedAt: '發行日期',
-    notFound: '很抱歉，PPAV 無法搜尋到任何結果 😿\n為您推薦熱門影片，也許您會喜歡！ 🚀',
+    notFound:
+      '很抱歉，PPAV 無法搜尋到任何結果 😿\n為您推薦熱門影片，也許您會喜歡！ 🚀',
     wantWatchMore: [
       '找不到喜歡的片子嗎？',
       '還射不出來嗎？',
@@ -63,15 +65,18 @@ const traditionalChinese = {
       '我還要我還要我還要我還要我還要',
       '褲子都脫了你給我看這些？',
     ],
-    noWatchMore: '很抱歉，沒有更多搜尋結果了 😿\n我們會努力為您開拓更多片源！🚖',
+    noWatchMore:
+      '很抱歉，沒有更多搜尋結果了 😿\n我們會努力為您開拓更多片源！🚖',
     searchingKeyword: '搜尋關鍵字：',
     paid: '#付費  ',
   },
   imageAnalytic: {
     prePostText: '請稍待片刻\nPPAV 正努力為您搜尋中... 🔎',
     searchingGifUrl: 'https://media.giphy.com/media/SDkwQeppxqUMw/giphy.gif',
-    notFound: '很抱歉您傳送的圖片可能*未包含一張完整清晰的臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
-    foundMoreThanOne: '很抱歉您傳送的圖片可能*包含多張臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
+    notFound:
+      '很抱歉您傳送的圖片可能*未包含一張完整清晰的臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
+    foundMoreThanOne:
+      '很抱歉您傳送的圖片可能*包含多張臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
   },
   tutorial: {
     randomVideo_photo: 'https://imgur.com/7ouKmPL.jpg',

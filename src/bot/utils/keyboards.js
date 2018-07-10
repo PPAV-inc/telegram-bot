@@ -51,9 +51,9 @@ const searchVideoKeyboard = (languageCode, videos) => {
 
   for (let i = 0; i < videos.length; i += 1) {
     const { source, view_count: viewCount } = videos[i];
-    const text = `${paidWebsites.indexOf(source) > -1
-      ? paid
-      : ''}🔞 ${source}   👁 ${viewCount || 0}`;
+    const text = `${
+      paidWebsites.indexOf(source) > -1 ? paid : ''
+    }🔞 ${source}   👁 ${viewCount || 0}`;
     keyboard.push([
       {
         text,
@@ -95,9 +95,9 @@ const randomVideoKeyboard = (languageCode, videos, type) => {
 
   for (let i = 0; i < videos.length; i += 1) {
     const { source, view_count: viewCount } = videos[i];
-    const text = `${paidWebsites.indexOf(source) > -1
-      ? paid
-      : ''}🔞 ${source}   👁 ${viewCount || 0}`;
+    const text = `${
+      paidWebsites.indexOf(source) > -1 ? paid : ''
+    }🔞 ${source}   👁 ${viewCount || 0}`;
     keyboard.push([
       {
         text,

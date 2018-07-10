@@ -58,9 +58,7 @@ describe('bot router', () => {
   beforeEach(() => {
     /* eslint-disable global-require */
     botRouter = require('../bot');
-    requestHandler = require('../bot').requestHandler;
-    dashbot = require('../bot').dashbot;
-    botimize = require('../bot').botimize;
+    ({ requestHandler, dashbot, botimize } = require('../bot'));
     /* eslint-enable */
 
     app = makeApp();
@@ -99,8 +97,7 @@ describe('bot router', () => {
 
     /* eslint-disable global-require */
     botRouter = require('../bot');
-    dashbot = require('../bot').dashbot;
-    botimize = require('../bot').botimize;
+    ({ dashbot, botimize } = require('../bot'));
     /* eslint-enable */
 
     app = makeApp();
@@ -121,8 +118,7 @@ describe('bot router', () => {
 
     /* eslint-disable global-require */
     botRouter = require('../bot');
-    dashbot = require('../bot').dashbot;
-    botimize = require('../bot').botimize;
+    ({ dashbot, botimize } = require('../bot'));
     /* eslint-enable */
 
     app = makeApp();

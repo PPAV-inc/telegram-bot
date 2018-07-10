@@ -40,9 +40,9 @@ const searchVideos = async context => {
     insertNotFoundLog(keyword);
 
     messageContent = {
-      text: `${locale(user.languageCode).videos
-        .searchingKeyword}#${keyword}\n${locale(user.languageCode).videos
-        .notFound}`,
+      text: `${locale(user.languageCode).videos.searchingKeyword}#${keyword}\n${
+        locale(user.languageCode).videos.notFound
+      }`,
       options: { parse_mode: 'Markdown' },
     };
     context.sendMessageContent.push(messageContent);
@@ -68,9 +68,9 @@ const searchVideos = async context => {
       context.sendMessageContent.push(watchMore);
     } else {
       messageContent = {
-        text: `${locale(user.languageCode).videos
-          .searchingKeyword}#${keyword}\n${locale(user.languageCode).videos
-          .noWatchMore}`,
+        text: `${
+          locale(user.languageCode).videos.searchingKeyword
+        }#${keyword}\n${locale(user.languageCode).videos.noWatchMore}`,
         options: { parse_mode: 'Markdown' },
       };
       context.sendMessageContent.push(messageContent);

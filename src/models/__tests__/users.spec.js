@@ -56,16 +56,22 @@ describe('createUser', () => {
       text: '111',
     };
 
-    const { id, first_name, last_name, language_code, username } = message.from;
+    const {
+      id,
+      first_name: firstName,
+      last_name: lastName,
+      language_code: languageCode,
+      username,
+    } = message.from;
 
     const user = {
       userId: id,
-      firstName: first_name,
-      lastName: last_name,
+      firstName,
+      lastName,
       username,
       acceptDisclaimer: false,
       autoDeleteMessages: false,
-      languageCode: language_code,
+      languageCode,
       subscribe: false,
       subscribeHour: 22,
       created_at: new Date(),

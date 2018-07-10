@@ -11,7 +11,9 @@ const getSearchVideos = async (messageText, page) => {
 
   const esClient = getElasticsearchDatabase();
 
-  const { hits: { total: totalCount, hits } } = await esClient.search({
+  const {
+    hits: { total: totalCount, hits },
+  } = await esClient.search({
     index: 'videos',
     type: 'videos',
     body: {
@@ -67,9 +69,9 @@ const getNewVideos = async () => {
     // eslint-disable-next-line no-param-reassign
     eachResult.videos = eachResult.videos.map(video => ({
       ...video,
-      url: `${config.url}/redirect/?url=${encodeURIComponent(
-        video.url
-      )}&_id=${eachResult._id}`,
+      url: `${config.url}/redirect/?url=${encodeURIComponent(video.url)}&_id=${
+        eachResult._id
+      }`,
     }));
   });
 
@@ -118,9 +120,9 @@ const getHotVideos = async () => {
     // eslint-disable-next-line no-param-reassign
     eachResult.videos = eachResult.videos.map(video => ({
       ...video,
-      url: `${config.url}/redirect/?url=${encodeURIComponent(
-        video.url
-      )}&_id=${eachResult._id}`,
+      url: `${config.url}/redirect/?url=${encodeURIComponent(video.url)}&_id=${
+        eachResult._id
+      }`,
     }));
   });
 

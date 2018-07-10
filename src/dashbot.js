@@ -14,12 +14,17 @@ const parseMessage = async data => {
     const text = data.message.text === undefined ? '' : data.message.text;
     const {
       update_id: updateId,
-      message: { from: { id: userId }, chat: { id: conversationId } },
+      message: {
+        from: { id: userId },
+        chat: { id: conversationId },
+      },
     } = data;
 
     if (data.message.photo !== undefined && data.message.photo.length !== 0) {
       const {
-        data: { result: { file_path: filePath } },
+        data: {
+          result: { file_path: filePath },
+        },
       } = await axios.post(`https://api.telegram.org/bot${botToken}/getFile`, {
         file_id: data.message.photo.pop().file_id,
       });
@@ -29,13 +34,16 @@ const parseMessage = async data => {
     }
 
     return { updateId, text, images, userId, conversationId };
-  } else if (data.callback_query !== undefined) {
+  }
+  if (data.callback_query !== undefined) {
     const {
       update_id: updateId,
       callback_query: {
         data: text,
         from: { id: userId },
-        message: { chat: { id: conversationId } },
+        message: {
+          chat: { id: conversationId },
+        },
       },
     } = data;
     return { updateId, text, userId, conversationId };

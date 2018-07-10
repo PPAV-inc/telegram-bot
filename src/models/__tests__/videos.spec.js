@@ -19,13 +19,23 @@ const video = {
   img_url:
     'http://pics.dmm.co.jp/digital/video/td005dvaj130h/td005dvaj130hpl.jpg',
   code: 'DVAJ-130',
-  tags: ['中出', '制服', '長腿', '精選、綜合', '巨乳', '4小時以上作品', '紀錄片', '立即口交'],
+  tags: [
+    '中出',
+    '制服',
+    '長腿',
+    '精選、綜合',
+    '巨乳',
+    '4小時以上作品',
+    '紀錄片',
+    '立即口交',
+  ],
   duration: 150,
   total_view_count: 666,
   videos: [
     {
       source: 'youav',
-      url: 'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4',
+      url:
+        'https://www.youav.com/video/7032/dvaj-130-出会って即合体スペシャル4',
       view_count: 666,
     },
   ],

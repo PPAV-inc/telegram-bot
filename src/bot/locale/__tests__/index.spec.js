@@ -1,4 +1,4 @@
-import locale from '../../locale';
+import locale from '..';
 import traditionalChinese from '../traditionalChinese';
 import english from '../english';
 

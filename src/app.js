@@ -5,7 +5,7 @@ import zlib from 'zlib';
 
 import indexRouter from './routes/index';
 import botRouter from './routes/bot';
-import bot from './bot/';
+import bot from './bot';
 
 const config = require(`../env/${process.env.NODE_ENV || 'development'}`);
 const { botToken } = require('../env/bot.config');
