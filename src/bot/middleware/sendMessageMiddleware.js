@@ -5,14 +5,9 @@ import * as users from '../../models/users';
 let dashbot = {
   sendLogOutgoing: () => {},
 };
-let botimize = {
-  sendOutgoingLog: () => {},
-};
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line global-require
   dashbot = require('../../dashbot');
-  // eslint-disable-next-line global-require
-  botimize = require('../../botimize').default;
 }
 
 const sendMessageMiddleware = (outerContext, next) =>
@@ -42,19 +37,9 @@ const sendMessageMiddleware = (outerContext, next) =>
             ...options,
             imageUrl,
           });
-          botimize.sendOutgoingLog({
-            chat_id: userId,
-            photo: imageUrl,
-            ...options,
-          });
         } else {
           await context.sendMessage(text, options);
           dashbot.sendLogOutgoing(context.event._rawEvent, text, options);
-          botimize.sendOutgoingLog({
-            chat_id: userId,
-            text,
-            ...options,
-          });
         }
       }
       /* eslint-enable */

@@ -14,11 +14,6 @@ jest.mock('../../bot/', () => ({
 jest.mock('../../dashbot', () => ({
   sendLogIncoming: jest.fn(),
 }));
-jest.mock('../../botimize', () => ({
-  default: {
-    logIncoming: jest.fn(),
-  },
-}));
 
 function makeApp() {
   const app = new Koa();
@@ -53,12 +48,11 @@ describe('bot router', () => {
   let botRouter;
   let requestHandler;
   let dashbot;
-  let botimize;
 
   beforeEach(() => {
     /* eslint-disable global-require */
     botRouter = require('../bot');
-    ({ requestHandler, dashbot, botimize } = require('../bot'));
+    ({ requestHandler, dashbot } = require('../bot'));
     /* eslint-enable */
 
     app = makeApp();
@@ -91,13 +85,13 @@ describe('bot router', () => {
     expect(response.status).toBe(404);
   });
 
-  it('should call botimize and dashbot', async () => {
+  it('should call dashbot', async () => {
     jest.resetModules();
     process.env.NODE_ENV = 'production';
 
     /* eslint-disable global-require */
     botRouter = require('../bot');
-    ({ dashbot, botimize } = require('../bot'));
+    ({ dashbot } = require('../bot'));
     /* eslint-enable */
 
     app = makeApp();
@@ -109,7 +103,6 @@ describe('bot router', () => {
       .send(reqBody);
 
     expect(dashbot.sendLogIncoming).toBeCalledWith(reqBody);
-    expect(botimize.logIncoming).toBeCalledWith(reqBody);
   });
 
   it('should catch Error', async () => {
@@ -118,14 +111,14 @@ describe('bot router', () => {
 
     /* eslint-disable global-require */
     botRouter = require('../bot');
-    ({ dashbot, botimize } = require('../bot'));
+    ({ dashbot } = require('../bot'));
     /* eslint-enable */
 
     app = makeApp();
     app.use(botRouter.routes());
     app.use(botRouter.allowedMethods());
 
-    console.log = jest.fn();
+    console.error = jest.fn();
     dashbot.sendLogIncoming.mockImplementationOnce(() => {
       throw new Error('dashbot error');
     });
@@ -135,7 +128,6 @@ describe('bot router', () => {
       .send(reqBody);
 
     expect(dashbot.sendLogIncoming).toBeCalledWith(reqBody);
-    expect(botimize.logIncoming).not.toBeCalled();
-    expect(console.log).toBeCalledWith(new Error('dashbot error'));
+    expect(console.error).toBeCalledWith(new Error('dashbot error'));
   });
 });
