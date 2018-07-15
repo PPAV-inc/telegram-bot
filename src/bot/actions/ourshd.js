@@ -1,3 +1,5 @@
+import { url } from '../../../env/bot.config';
+
 const ourshd = async context => {
   context.sendMessageContent.push({
     imageUrl: 'https://i.imgur.com/ygsx5S3.jpg',
@@ -7,7 +9,7 @@ const ourshd = async context => {
           [
             {
               text: '🆓 PPAV X 奧視免費專區',
-              url: `https://www.ppav.xyz/redirect/?url=${encodeURIComponent(
+              url: `${url}/redirect/?url=${encodeURIComponent(
                 'http://ourshdtv.com/ad/click?code=1551ef9cbae61a7d089c49979b4fac97'
               )}`,
             },
