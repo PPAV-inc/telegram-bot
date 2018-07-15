@@ -2,7 +2,7 @@ import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import path from 'path';
 
-import bot from '../bot/';
+import bot from '../bot';
 
 let dashbot = {
   sendLogIncoming: () => {},

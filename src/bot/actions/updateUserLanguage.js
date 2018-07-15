@@ -3,7 +3,10 @@ import { updateUser } from '../../models/users';
 import userAuthenticatedMiddleware from '../middleware/userAuthenticatedMiddleware';
 
 const updateUserLanguage = async (context, next) => {
-  const { from: { id: userId }, text } = context.event._rawEvent.message;
+  const {
+    from: { id: userId },
+    text,
+  } = context.event._rawEvent.message;
   const languageCode = text === '繁體中文' ? 'zh-TW' : 'en';
 
   await updateUser(userId, { languageCode });

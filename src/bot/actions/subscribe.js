@@ -2,9 +2,11 @@ import locale from '../locale';
 import * as users from '../../models/users';
 
 const subscribe = async context => {
-  const message = context.event._rawEvent.message;
+  const { message } = context.event._rawEvent;
   const match = /(gginin|nogg)\s*(\d*)/i.exec(message.text);
-  const { from: { id: userId } } = message;
+  const {
+    from: { id: userId },
+  } = message;
   const { languageCode, subscribe: subscribeStatus } = context.user;
   const wantSubscribe = match[1].toLowerCase() === 'gginin';
   const subscribeHour = match[2] !== '' ? +match[2] : -1;

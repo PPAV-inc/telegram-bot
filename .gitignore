@@ -25,3 +25,6 @@ coverage
 
 # lib
 lib
+
+# *.swp
+*.swp

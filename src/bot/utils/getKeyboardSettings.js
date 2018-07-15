@@ -110,8 +110,9 @@ const getSearchVideoKeyboardSettings = async (languageCode, result) => {
 };
 
 const getWatchMoreKeyboardSettings = (languageCode, keyword, nowPage) => {
-  const text = `${locale(languageCode).videos
-    .searchingKeyword}#${keyword}\n${uniqueRandomArray(
+  const text = `${
+    locale(languageCode).videos.searchingKeyword
+  }#${keyword}\n${uniqueRandomArray(
     locale(languageCode).videos.wantWatchMore
   )()}`;
   const watchMoreKeyBoard = keyboards.watchMoreKeyBoard(

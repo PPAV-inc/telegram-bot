@@ -9,8 +9,10 @@ import * as users from '../../models/users';
 import { getSearchKeywords } from '../../models/searchKeywords';
 
 const acceptDisclaimer = async context => {
-  const message = context.event._rawEvent.message;
-  const { from: { id: userId } } = message;
+  const { message } = context.event._rawEvent;
+  const {
+    from: { id: userId },
+  } = message;
   const { languageCode } = context.user;
 
   await users.updateUser(userId, { acceptDisclaimer: true });
@@ -27,9 +29,9 @@ const acceptDisclaimer = async context => {
       options: { parse_mode: 'Markdown' },
     },
     {
-      text: `${uniqueRandomArray(
-        locale(languageCode).unhandled.minor
-      )()}\n${locale(languageCode).unhandled.main}`,
+      text: `${uniqueRandomArray(locale(languageCode).unhandled.minor)()}\n${
+        locale(languageCode).unhandled.main
+      }`,
       options: {
         parse_mode: 'Markdown',
       },

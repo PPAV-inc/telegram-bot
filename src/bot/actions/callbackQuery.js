@@ -59,9 +59,9 @@ const callbackQuery = async context => {
         context.sendMessageContent.push(watchMore);
       } else {
         const messageContent = {
-          text: `${locale(languageCode).videos
-            .searchingKeyword}#${keyword}\n${locale(languageCode).videos
-            .noWatchMore}`,
+          text: `${locale(languageCode).videos.searchingKeyword}#${keyword}\n${
+            locale(languageCode).videos.noWatchMore
+          }`,
           options: { parse_mode: 'Markdown' },
         };
         context.sendMessageContent.push(messageContent);

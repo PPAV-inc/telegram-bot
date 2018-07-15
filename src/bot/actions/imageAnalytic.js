@@ -22,8 +22,9 @@ const imageAnalytic = async context => {
   const { result: fileInfo } = await context.client.getFile(
     context.event._rawEvent.message.photo.pop().file_id
   );
-  const image = `https://api.telegram.org/file/bot${context.client
-    ._token}/${fileInfo.file_path}`;
+  const image = `https://api.telegram.org/file/bot${context.client._token}/${
+    fileInfo.file_path
+  }`;
 
   try {
     const { data: analyticResult } = await axios.post(

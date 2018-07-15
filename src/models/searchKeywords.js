@@ -31,4 +31,4 @@ const getSearchKeywords = async () => {
   return keywords.map(arr => arr.keyword);
 };
 
-module.exports = { insertSearchKeyword, getSearchKeywords };
+export { insertSearchKeyword, getSearchKeywords };

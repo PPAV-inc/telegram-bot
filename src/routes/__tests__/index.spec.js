@@ -2,7 +2,7 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import request from 'supertest';
 
-import indexRouter from '../';
+import indexRouter from '..';
 
 function makeApp() {
   const app = new Koa();
