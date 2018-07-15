@@ -7,14 +7,9 @@ import bot from '../bot';
 let dashbot = {
   sendLogIncoming: () => {},
 };
-let botimize = {
-  logIncoming: () => {},
-};
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line global-require
   dashbot = require('../dashbot');
-  // eslint-disable-next-line global-require
-  botimize = require('../botimize').default;
 }
 
 const { botToken } = require(path.resolve(__dirname, '../../env/bot.config'));
@@ -27,9 +22,8 @@ const requestHandler = bot.createRequestHandler();
 botRouter.post(`/bot${botToken}`, async ({ request, response }) => {
   try {
     dashbot.sendLogIncoming(request.body);
-    botimize.logIncoming(request.body);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
   await requestHandler(request.body);
   response.status = 200;
@@ -38,4 +32,3 @@ botRouter.post(`/bot${botToken}`, async ({ request, response }) => {
 module.exports = botRouter;
 module.exports.requestHandler = requestHandler;
 module.exports.dashbot = dashbot;
-module.exports.botimize = botimize;
