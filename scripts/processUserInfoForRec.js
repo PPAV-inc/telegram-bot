@@ -4,61 +4,70 @@ const subDays = require('date-fns/sub_days');
 
 const { getMongoDatabase } = require('../src/models/database');
 
+let db;
+
 async function main() {
-  const db = await getMongoDatabase();
+  db = await getMongoDatabase();
 
   let subscribedUsers = await db
     .collection('users')
     .find({ subscribe: true })
     .toArray();
-  subscribedUsers = subscribedUsers.map(user => user.userId);
+
+  // FIXME: userId in logs should be int not string
+  subscribedUsers = subscribedUsers.map(user => user.userId.toString());
 
   const recUsers = await db
     .collection('logs')
-    .aggregate([
-      { $match: { userId: { $in: subscribedUsers } } },
-      {
-        $lookup: {
-          from: 'videos',
-          localField: 'videoId',
-          foreignField: '_id',
-          as: 'info',
-        },
-      },
-      { $unwind: '$info' },
-      { $unwind: '$info.models' },
-      {
-        $group: {
-          _id: {
-            userId: '$userId',
-            model: '$info.models',
+    .aggregate(
+      [
+        { $match: { userId: { $in: subscribedUsers } } },
+        {
+          $lookup: {
+            from: 'videos',
+            localField: 'videoId',
+            foreignField: '_id',
+            as: 'info',
           },
-          count: { $sum: 1 },
         },
-      },
-      {
-        $group: {
-          _id: '$_id.userId',
-          models: {
-            $push: {
-              model: '$_id.model',
-              count: '$count',
+        { $unwind: '$info' },
+        { $unwind: '$info.models' },
+        {
+          $group: {
+            _id: {
+              userId: '$userId',
+              model: '$info.models',
+            },
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $group: {
+            _id: '$_id.userId',
+            models: {
+              $push: {
+                model: '$_id.model',
+                count: '$count',
+              },
             },
           },
         },
-      },
-      {
-        $project: {
-          userId: '$_id',
-          models: 1,
-          updatedAt: new Date(),
+        {
+          $project: {
+            userId: '$_id',
+            models: 1,
+            updatedAt: new Date(),
+          },
         },
-      },
-    ])
+      ],
+      { allowDiskUse: true }
+    )
     .toArray();
 
-  await db.collection('rec_users').remove({});
-  await db.collection('rec_users').insertMany(recUsers);
+  if (recUsers.length > 0) {
+    await db.collection('rec_users').remove({});
+    await db.collection('rec_users').insertMany(recUsers);
+  }
 
   const oneDaysBefore = subDays(new Date(), 1);
 
@@ -79,10 +88,12 @@ async function main() {
     ])
     .toArray();
 
-  await db.collection('rec_videos').remove({});
-  await db.collection('rec_videos').insertMany(recVideos);
-
-  await db.close();
+  if (recVideos.length > 0) {
+    await db.collection('rec_videos').remove({});
+    await db.collection('rec_videos').insertMany(recVideos);
+  }
 }
 
-main();
+main()
+  .catch(console.error)
+  .then(() => db.close());
