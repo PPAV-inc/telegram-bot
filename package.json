@@ -30,7 +30,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-register": "^6.26.0",
-    "bottender": "^0.14.34",
+    "bottender": "^0.15.9",
     "dashbot": "9.2.0",
     "date-fns": "^1.29.0",
     "dateformat": "^3.0.3",
