@@ -12,7 +12,6 @@ import report from './report';
 import contactUs from './contactUs';
 import unhandled from './unhandled';
 import callbackQuery from './callbackQuery';
-import imageAnalytic from './imageAnalytic';
 import subscribe from './subscribe';
 import ourshd from './ourshd';
 
@@ -31,7 +30,6 @@ export {
   contactUs,
   unhandled,
   callbackQuery,
-  imageAnalytic,
   subscribe,
   ourshd,
 };

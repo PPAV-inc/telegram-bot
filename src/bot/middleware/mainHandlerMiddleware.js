@@ -11,7 +11,6 @@ import {
   contactUs,
   unhandled,
   callbackQuery,
-  // imageAnalytic,
   subscribe,
   ourshd,
 } from '../actions';
@@ -29,8 +28,6 @@ const mainHandlerMiddleware = new TelegramHandler()
   .onText(/(使用說明|Tutorial) 📖$/i, tutorial)
   // 設置
   .onText(/(設置|Setting) ⚙️$/i, setting)
-  // 圖片分析
-  // .onPhoto(imageAnalytic)
   // 訂閱推播
   .onText(/^(gginin|nogg)\s*(\d*)/i, subscribe)
   // 關於 PPAV

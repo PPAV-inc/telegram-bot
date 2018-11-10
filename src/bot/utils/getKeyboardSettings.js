@@ -153,22 +153,6 @@ const getRandomVideoKeyboardSettings = async (languageCode, result, type) => {
   };
 };
 
-const getImageAnalyticKeyboardSettings = async (languageCode, result) => {
-  const photos = [];
-  for (let i = 0; i < result.length; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    const imageAnalyticKeyboard = await keyboards.imageAnalyticKeyboard(
-      result[i]
-    );
-    photos.push({
-      text: generateVideoMessageText(languageCode, result[i]),
-      options: inlineKeyboardOptions(imageAnalyticKeyboard),
-    });
-  }
-
-  return photos;
-};
-
 export {
   getLanguageKeyboardSettings,
   getDisclaimerKeyboardSettings,
@@ -180,5 +164,4 @@ export {
   getWatchMoreKeyboardSettings,
   getSearchKeywordsKeyboardSettings,
   getRandomVideoKeyboardSettings,
-  getImageAnalyticKeyboardSettings,
 };

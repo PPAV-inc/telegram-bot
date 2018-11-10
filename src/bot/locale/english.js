@@ -68,14 +68,6 @@ const english = {
     searchingKeyword: 'Searching keyword: ',
     paid: '#Paid  ',
   },
-  imageAnalytic: {
-    prePostText: 'Please give PPAV a second\nSearching... 🔎',
-    searchingGifUrl: 'https://media.giphy.com/media/SDkwQeppxqUMw/giphy.gif',
-    notFound:
-      'Your photo may *not contains one clear face*\nIt causes no result found 😿\nTry another photo please 🤘',
-    foundMoreThanOne:
-      'Your photo may *contains more than one face*\nIt causes no result found 😿\nTry another photo please 🤘',
-  },
   tutorial: {
     randomVideo_photo: 'https://imgur.com/7ouKmPL.jpg',
     randomVideo:
