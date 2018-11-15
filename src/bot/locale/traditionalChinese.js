@@ -34,7 +34,7 @@ const traditionalChinese = {
   setting: {
     text: '設置 ⚙️',
     buttons: {
-      changLanguage: '變更語言 🌐',
+      changeLanguage: '變更語言 🌐',
     },
   },
   autoDeleteMessages: {

@@ -25,15 +25,18 @@ const searchVideos = async context => {
   );
 
   const encryptUserId = aesEncrypt(`${user.userId}`);
-  /* eslint-disable no-param-reassign */
+
   const results = searchVideosResults.map(res => {
-    res.videos = res.videos.map(video => {
-      video.url += `&user=${encodeURIComponent(encryptUserId)}`;
-      return video;
-    });
-    return res;
+    const videos = res.videos.map(video => ({
+      ...video,
+      url: `${video.url}&user=${encodeURIComponent(encryptUserId)}`,
+    }));
+
+    return {
+      ...res,
+      videos,
+    };
   });
-  /* eslint-enable no-param-reassign */
 
   let messageContent;
   if (totalCount === 0) {
