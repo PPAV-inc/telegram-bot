@@ -116,21 +116,6 @@ const randomVideoKeyboard = (languageCode, videos, type) => {
   return keyboard;
 };
 
-const imageAnalyticKeyboard = result => {
-  const keyboard = [];
-
-  for (let i = 0; i < result.videos.length; i += 1) {
-    keyboard.push([
-      {
-        text: `🔞 ${result.videos[i].source}   👁 ${result.videos[i]
-          .view_count || 0}`,
-        url: result.videos[i].url,
-      },
-    ]);
-  }
-  return keyboard;
-};
-
 export {
   languageKeyboard,
   disclaimerKeyboard,
@@ -142,5 +127,4 @@ export {
   watchMoreKeyBoard,
   searchKeywordsKeyBoard,
   randomVideoKeyboard,
-  imageAnalyticKeyboard,
 };

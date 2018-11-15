@@ -70,14 +70,6 @@ const traditionalChinese = {
     searchingKeyword: '搜尋關鍵字：',
     paid: '#付費  ',
   },
-  imageAnalytic: {
-    prePostText: '請稍待片刻\nPPAV 正努力為您搜尋中... 🔎',
-    searchingGifUrl: 'https://media.giphy.com/media/SDkwQeppxqUMw/giphy.gif',
-    notFound:
-      '很抱歉您傳送的圖片可能*未包含一張完整清晰的臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
-    foundMoreThanOne:
-      '很抱歉您傳送的圖片可能*包含多張臉孔*\n導致無法搜尋到任何結果 😿\n請上傳其他張圖片試看看 🤘',
-  },
   tutorial: {
     randomVideo_photo: 'https://imgur.com/7ouKmPL.jpg',
     randomVideo:
