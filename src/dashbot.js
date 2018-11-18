@@ -65,7 +65,7 @@ const sendLogIncoming = async request => {
       platformJson: request,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -105,7 +105,7 @@ const sendLogOutgoing = async (rawEvent, text, options) => {
       platformJson: rawEvent,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 

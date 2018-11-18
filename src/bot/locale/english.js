@@ -34,7 +34,7 @@ const english = {
   setting: {
     text: 'Setting ⚙️',
     buttons: {
-      changLanguage: 'Change language 🌐',
+      changeLanguage: 'Change language 🌐',
     },
   },
   autoDeleteMessages: {
