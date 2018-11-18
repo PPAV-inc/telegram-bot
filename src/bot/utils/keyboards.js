@@ -46,21 +46,21 @@ const settingKeyboard = buttons => {
 };
 
 const searchVideoKeyboard = (languageCode, videos) => {
-  const keyboard = [];
   const { paid } = locale(languageCode).videos;
 
-  for (let i = 0; i < videos.length; i += 1) {
-    const { source, view_count: viewCount } = videos[i];
+  const keyboard = videos.map(video => {
+    const { source, view_count: viewCount, url } = video;
     const text = `${
-      paidWebsites.indexOf(source) > -1 ? paid : ''
+      paidWebsites.includes(source) ? paid : ''
     }🔞 ${source}   👁 ${viewCount || 0}`;
-    keyboard.push([
+
+    return [
       {
         text,
-        url: videos[i].url,
+        url,
       },
-    ]);
-  }
+    ];
+  });
 
   return keyboard;
 };
@@ -74,37 +74,32 @@ const watchMoreKeyBoard = (text, keyword, nowPage) => {
 };
 
 const searchKeywordsKeyBoard = keywords => {
-  const keyboard = [];
-
-  for (let i = 0; i < keywords.length; i += 1) {
-    const keyword = keywords[i];
-    keyboard.push([
-      {
-        text: `${keyword}`,
-        callback_data: `keyword="${keyword}"&page="0"`,
-      },
-    ]);
-  }
+  const keyboard = keywords.map(keyword => [
+    {
+      text: `${keyword}`,
+      callback_data: `keyword="${keyword}"&page="0"`,
+    },
+  ]);
 
   return keyboard;
 };
 
 const randomVideoKeyboard = (languageCode, videos, type) => {
-  const keyboard = [];
   const { watchMore, paid } = locale(languageCode).videos;
 
-  for (let i = 0; i < videos.length; i += 1) {
-    const { source, view_count: viewCount } = videos[i];
+  const keyboard = videos.map(video => {
+    const { source, view_count: viewCount, url } = video;
     const text = `${
-      paidWebsites.indexOf(source) > -1 ? paid : ''
+      paidWebsites.includes(source) ? paid : ''
     }🔞 ${source}   👁 ${viewCount || 0}`;
-    keyboard.push([
+
+    return [
       {
         text,
-        url: videos[i].url,
+        url,
       },
-    ]);
-  }
+    ];
+  });
 
   keyboard.push([
     {

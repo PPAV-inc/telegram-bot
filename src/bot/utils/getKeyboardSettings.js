@@ -96,16 +96,16 @@ const getSearchVideoKeyboardSettings = async (languageCode, result) => {
     languageCode,
     result.videos
   );
-  const options = inlineKeyboardOptions(searchVideoKeyboard);
+  const options = {
+    ...inlineKeyboardOptions(searchVideoKeyboard),
+    caption: generateVideoMessageText(languageCode, result),
+  };
 
   return {
     imageUrl: result.img_url
       ? result.img_url
       : 'https://i.imgur.com/H8BeuET.jpg',
-    options: {
-      ...options,
-      caption: generateVideoMessageText(languageCode, result),
-    },
+    options,
   };
 };
 
@@ -140,6 +140,7 @@ const getRandomVideoKeyboardSettings = async (languageCode, result, type) => {
     result.videos,
     type
   );
+
   const options = {
     ...inlineKeyboardOptions(randomVideoKeyboard),
     caption: generateVideoMessageText(languageCode, result),
