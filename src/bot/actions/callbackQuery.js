@@ -26,7 +26,7 @@ const callbackQuery = async context => {
   } else if (action === 'watchMoreNew') {
     await newVideos(context);
   } else if (regex.test(action)) {
-    const data = await regex.exec(action);
+    const data = regex.exec(action);
     const keyword = data[1];
     const page = parseInt(data[2], 10);
 
