@@ -1,6 +1,6 @@
 import { getContactUsKeyboardSettings } from '../utils/getKeyboardSettings';
 
-const contactUs = async context => {
+const contactUs = async (context) => {
   const { user } = context;
   const messageContent = getContactUsKeyboardSettings(user.languageCode);
 

@@ -11,7 +11,7 @@ import insertHotSearchKeyword from '../../models/hotSearchKeywords';
 import insertNotFoundLog from '../../models/notFoundLogs';
 import { getSearchVideos } from '../../models/videos';
 
-const searchVideos = async context => {
+const searchVideos = async (context) => {
   const match = context.event._rawEvent.message.text.match(
     /[#＃]\s*\+*\s*(\S+)/i
   );
@@ -26,8 +26,8 @@ const searchVideos = async context => {
 
   const encryptUserId = aesEncrypt(`${user.userId}`);
 
-  const results = searchVideosResults.map(res => {
-    const videos = res.videos.map(video => ({
+  const results = searchVideosResults.map((res) => {
+    const videos = res.videos.map((video) => ({
       ...video,
       url: `${video.url}&user=${encodeURIComponent(encryptUserId)}`,
     }));

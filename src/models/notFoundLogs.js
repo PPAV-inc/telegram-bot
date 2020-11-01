@@ -1,6 +1,6 @@
 import { getMongoDatabase } from './database';
 
-const insertNotFoundLog = async keyword => {
+const insertNotFoundLog = async (keyword) => {
   const db = await getMongoDatabase();
   const now = new Date();
 

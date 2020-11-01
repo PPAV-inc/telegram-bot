@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const sendMessageMiddleware = (outerContext, next) =>
   new TelegramHandler()
-    .onEvent(async context => {
+    .onEvent(async (context) => {
       const message =
         context.event._rawEvent.message || context.event.callbackQuery.message;
       context.sendChatAction('typing');

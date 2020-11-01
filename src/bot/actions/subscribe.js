@@ -1,7 +1,7 @@
 import locale from '../locale';
 import * as users from '../../models/users';
 
-const subscribe = async context => {
+const subscribe = async (context) => {
   const { message } = context.event._rawEvent;
   const match = /(gginin|nogg)\s*(\d*)/i.exec(message.text);
   const {

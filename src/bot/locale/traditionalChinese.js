@@ -82,9 +82,10 @@ const traditionalChinese = {
       '2️⃣-2️⃣ 給我更多\n\n每次搜尋 PPAV 將一次傳送五部影片給您，如果在五筆搜尋結果中找不到喜歡的影片，點選 "給我更多" PPAV 將再傳送五筆搜尋結果給您！',
   },
   subscribe: {
-    success: hour =>
-      `*訂閱成功* 🛫\n您訂閱的時間為每天的 *${hour}* 點，我們將會在 ${hour} 至 ${hour +
-        1} 點間推播三部每日新片給您 ⏰\n取消訂閱請輸入 "nogg"`,
+    success: (hour) =>
+      `*訂閱成功* 🛫\n您訂閱的時間為每天的 *${hour}* 點，我們將會在 ${hour} 至 ${
+        hour + 1
+      } 點間推播三部每日新片給您 ⏰\n取消訂閱請輸入 "nogg"`,
     unsubscribe: '取消訂閱成功 😭\n重新訂閱推播請輸入： "*gginin 推播時段*" 🏎',
     alreadyUnsubscribe: '您目前無訂閱推播～',
     failed:

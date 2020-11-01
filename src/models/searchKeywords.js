@@ -1,7 +1,7 @@
 import subDays from 'date-fns/sub_days';
 import { getMongoDatabase } from './database';
 
-const insertSearchKeyword = async keyword => {
+const insertSearchKeyword = async (keyword) => {
   const db = await getMongoDatabase();
   const now = new Date();
 
@@ -28,7 +28,7 @@ const getSearchKeywords = async () => {
     ])
     .toArray();
 
-  return keywords.map(arr => arr.keyword);
+  return keywords.map((arr) => arr.keyword);
 };
 
 export { insertSearchKeyword, getSearchKeywords };

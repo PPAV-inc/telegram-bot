@@ -32,7 +32,7 @@ const autoDeleteMessagesKeyboard = (active, inactive) => [
   [{ text: `${active}` }, { text: `${inactive}` }],
 ];
 
-const settingKeyboard = buttons => {
+const settingKeyboard = (buttons) => {
   const keyboard = [];
 
   /* eslint-disable */
@@ -48,7 +48,7 @@ const settingKeyboard = buttons => {
 const searchVideoKeyboard = (languageCode, videos) => {
   const { paid } = locale(languageCode).videos;
 
-  const keyboard = videos.map(video => {
+  const keyboard = videos.map((video) => {
     const { source, view_count: viewCount, url } = video;
     const text = `${
       paidWebsites.includes(source) ? paid : ''
@@ -73,8 +73,8 @@ const watchMoreKeyBoard = (text, keyword, nowPage) => {
   return keyboard;
 };
 
-const searchKeywordsKeyBoard = keywords => {
-  const keyboard = keywords.map(keyword => [
+const searchKeywordsKeyBoard = (keywords) => {
+  const keyboard = keywords.map((keyword) => [
     {
       text: `${keyword}`,
       callback_data: `keyword="${keyword}"&page="0"`,
@@ -87,7 +87,7 @@ const searchKeywordsKeyBoard = keywords => {
 const randomVideoKeyboard = (languageCode, videos, type) => {
   const { watchMore, paid } = locale(languageCode).videos;
 
-  const keyboard = videos.map(video => {
+  const keyboard = videos.map((video) => {
     const { source, view_count: viewCount, url } = video;
     const text = `${
       paidWebsites.includes(source) ? paid : ''

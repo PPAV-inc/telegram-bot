@@ -12,7 +12,7 @@ const startHandlerMiddleware = (context, next) =>
     // 開始對話
     .onText(/\/start/, start)
     // 更新使用者語言
-    .onText(/(繁體中文|English)$/i, innerContext =>
+    .onText(/(繁體中文|English)$/i, (innerContext) =>
       updateUserLanguage(innerContext, next)
     )
     // 免責聲明
@@ -20,7 +20,7 @@ const startHandlerMiddleware = (context, next) =>
     // 接受/不接受 免責聲明
     .onText(/(我已滿 18 歲|I am adult) ✅$/i, acceptDisclaimer)
     // 是否接受免責聲明
-    .onEvent(innerContext => userAuthenticatedMiddleware(innerContext, next))
+    .onEvent((innerContext) => userAuthenticatedMiddleware(innerContext, next))
     .build()(context);
 
 export default startHandlerMiddleware;

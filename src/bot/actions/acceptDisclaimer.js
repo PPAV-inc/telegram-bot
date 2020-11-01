@@ -8,7 +8,7 @@ import {
 import * as users from '../../models/users';
 import { getSearchKeywords } from '../../models/searchKeywords';
 
-const acceptDisclaimer = async context => {
+const acceptDisclaimer = async (context) => {
   const { message } = context.event._rawEvent;
   const {
     from: { id: userId },
