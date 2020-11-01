@@ -25,9 +25,7 @@ const generateVideoMessageText = (languageCode, result) => {
   const title = result.title.replace(/[*_]/g, '').substr(0, 100);
 
   return `
-    ${videoWord.code}: ${result.code}\n${
-    videoWord.title
-  }: ${title}\n${models}${tags}${score}${length}${publishedAt}
+    ${videoWord.code}: ${result.code}\n${videoWord.title}: ${title}\n${models}${tags}${score}${length}${publishedAt}
   `;
 };
 
