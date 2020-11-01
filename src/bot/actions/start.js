@@ -1,6 +1,6 @@
 import { getLanguageKeyboardSettings } from '../utils/getKeyboardSettings';
 
-const start = async context => {
+const start = async (context) => {
   const messageContent = getLanguageKeyboardSettings();
 
   context.sendMessageContent.push(

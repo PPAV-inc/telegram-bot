@@ -1,6 +1,6 @@
 import { url } from '../../../env/bot.config';
 
-const ourshd = async context => {
+const ourshd = async (context) => {
   context.sendMessageContent.push({
     imageUrl: 'https://i.imgur.com/ygsx5S3.jpg',
     options: {

@@ -1,6 +1,6 @@
 import { getMongoDatabase } from './database';
 
-const createUser = async message => {
+const createUser = async (message) => {
   const {
     id,
     first_name: firstName,
@@ -26,7 +26,7 @@ const createUser = async message => {
   return user;
 };
 
-const getUser = async userId => {
+const getUser = async (userId) => {
   const db = await getMongoDatabase();
   const user = await db.collection('users').findOne({ userId });
   return user;

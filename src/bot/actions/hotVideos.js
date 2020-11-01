@@ -2,14 +2,14 @@ import { getRandomVideoKeyboardSettings } from '../utils/getKeyboardSettings';
 import aesEncrypt from '../utils/aesEncrypt';
 import { getHotVideos } from '../../models/videos';
 
-const hotVideos = async context => {
+const hotVideos = async (context) => {
   const { user } = context;
   let { results } = await getHotVideos();
 
   const encryptUserId = aesEncrypt(`${user.userId}`);
   /* eslint-disable no-param-reassign */
-  results = results.map(result => {
-    result.videos = result.videos.map(video => {
+  results = results.map((result) => {
+    result.videos = result.videos.map((video) => {
       video.url += `&user=${encodeURIComponent(encryptUserId)}`;
       return video;
     });

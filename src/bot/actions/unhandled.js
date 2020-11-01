@@ -6,7 +6,7 @@ import {
 } from '../utils/getKeyboardSettings';
 import { getSearchKeywords } from '../../models/searchKeywords';
 
-const unhandled = async context => {
+const unhandled = async (context) => {
   const { user } = context;
 
   const keywords = await getSearchKeywords();

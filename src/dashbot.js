@@ -8,7 +8,7 @@ const { dashbotToken, botToken } = require(path.resolve(
 
 const dashbot = require('dashbot')(dashbotToken).generic;
 
-const parseMessage = async data => {
+const parseMessage = async (data) => {
   if (data.message !== undefined) {
     const images = [];
     const text = data.message.text === undefined ? '' : data.message.text;
@@ -52,7 +52,7 @@ const parseMessage = async data => {
   throw new Error('Cannot handle');
 };
 
-const sendLogIncoming = async request => {
+const sendLogIncoming = async (request) => {
   try {
     const { text, userId, conversationId, images } = await parseMessage(
       request
@@ -79,8 +79,8 @@ const sendLogOutgoing = async (rawEvent, text, options) => {
       options.reply_markup !== undefined &&
       options.reply_markup.inline_keyboard !== undefined
     ) {
-      options.reply_markup.inline_keyboard.forEach(row => {
-        row.forEach(button => {
+      options.reply_markup.inline_keyboard.forEach((row) => {
+        row.forEach((button) => {
           buttons.push({
             id: updateId,
             label: button.text,

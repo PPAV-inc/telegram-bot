@@ -1,6 +1,6 @@
 import locale from '../locale';
 
-const disclaimer = async context => {
+const disclaimer = async (context) => {
   const { user } = context;
 
   context.sendMessageContent.push({

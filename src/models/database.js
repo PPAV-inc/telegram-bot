@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 import elasticsearch from 'elasticsearch';
 import path from 'path';
 
-export const getConfig = env =>
+export const getConfig = (env) =>
   require(path.resolve(__dirname, `../../env/${env || 'development'}`)); // eslint-disable-line global-require
 
 let _mongodb;

@@ -3,7 +3,7 @@ import subDays from 'date-fns/sub_days';
 import { getMongoDatabase, getElasticsearchDatabase } from './database';
 import config from '../../env/bot.config';
 
-const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+const escapeRegex = (text) => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
 const getSearchVideos = async (messageText, page) => {
   const results = [];
@@ -31,9 +31,9 @@ const getSearchVideos = async (messageText, page) => {
   });
 
   if (totalCount !== 0) {
-    hits.forEach(hit => {
+    hits.forEach((hit) => {
       const { _source: source } = hit;
-      source.videos = source.videos.map(video => ({
+      source.videos = source.videos.map((video) => ({
         ...video,
         url: `${config.url}/redirect/?url=${encodeURIComponent(
           video.url
@@ -65,9 +65,9 @@ const getNewVideos = async () => {
     ])
     .toArray();
 
-  results.forEach(eachResult => {
+  results.forEach((eachResult) => {
     // eslint-disable-next-line no-param-reassign
-    eachResult.videos = eachResult.videos.map(video => ({
+    eachResult.videos = eachResult.videos.map((video) => ({
       ...video,
       url: `${config.url}/redirect/?url=${encodeURIComponent(video.url)}&_id=${
         eachResult._id
@@ -108,7 +108,7 @@ const getHotVideos = async () => {
       ])
       .toArray();
 
-    hotVideos = hotVideos.map(video => ObjectId(video.videoId));
+    hotVideos = hotVideos.map((video) => ObjectId(video.videoId));
 
     results = await db
       .collection('videos')
@@ -116,9 +116,9 @@ const getHotVideos = async () => {
       .toArray();
   }
 
-  results.forEach(eachResult => {
+  results.forEach((eachResult) => {
     // eslint-disable-next-line no-param-reassign
-    eachResult.videos = eachResult.videos.map(video => ({
+    eachResult.videos = eachResult.videos.map((video) => ({
       ...video,
       url: `${config.url}/redirect/?url=${encodeURIComponent(video.url)}&_id=${
         eachResult._id
@@ -131,9 +131,9 @@ const getHotVideos = async () => {
   };
 };
 
-const getAnalyticVideos = async candidates => {
+const getAnalyticVideos = async (candidates) => {
   const db = await getMongoDatabase();
-  const videosIds = candidates.map(candidate => ObjectId(candidate.video_id));
+  const videosIds = candidates.map((candidate) => ObjectId(candidate.video_id));
   return db
     .collection('videos')
     .find({ _id: { $in: videosIds } })

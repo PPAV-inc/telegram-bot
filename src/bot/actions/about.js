@@ -1,6 +1,6 @@
 import locale from '../locale';
 
-const about = async context => {
+const about = async (context) => {
   const { user } = context;
 
   context.sendMessageContent.push({

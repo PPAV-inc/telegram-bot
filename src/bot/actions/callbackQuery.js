@@ -11,7 +11,7 @@ import { getSearchVideos } from '../../models/videos';
 
 const regex = /keyword="(.+)"&page="(\d+)"/;
 
-const callbackQuery = async context => {
+const callbackQuery = async (context) => {
   const { data: action } = context.event.callbackQuery;
   const { languageCode } = context.user;
 

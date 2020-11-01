@@ -80,9 +80,10 @@ const english = {
       '2️⃣-2️⃣ Give me more\n\nPPAV will send you 5 videos at first after searching keyword. If You want see more searching results, click "Give me more" to get 5 more videos.',
   },
   subscribe: {
-    success: hour =>
-      `*Subscribe successfully* 🛫\nPPAV will send you three new videos between ${hour} and ${hour +
-        1} o'clock everyday ⏰\nEnter "nogg" to unsubscribe.`,
+    success: (hour) =>
+      `*Subscribe successfully* 🛫\nPPAV will send you three new videos between ${hour} and ${
+        hour + 1
+      } o'clock everyday ⏰\nEnter "nogg" to unsubscribe.`,
     unsubscribe:
       'Unsubscribe successfully 😭\nResubscribe please enter： "*gginin Hour*" 🏎',
     alreadyUnsubscribe: 'You already have unsubscribed !',

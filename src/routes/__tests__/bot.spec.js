@@ -78,9 +78,7 @@ describe('bot router', () => {
   });
 
   it('should return status 404 if post wrong url', async () => {
-    const response = await request(app.listen())
-      .post(`/bot`)
-      .send(reqBody);
+    const response = await request(app.listen()).post(`/bot`).send(reqBody);
 
     expect(response.status).toBe(404);
   });
@@ -98,9 +96,7 @@ describe('bot router', () => {
     app.use(botRouter.routes());
     app.use(botRouter.allowedMethods());
 
-    await request(app.listen())
-      .post(`/bot${botToken}`)
-      .send(reqBody);
+    await request(app.listen()).post(`/bot${botToken}`).send(reqBody);
 
     expect(dashbot.sendLogIncoming).toBeCalledWith(reqBody);
   });
@@ -123,9 +119,7 @@ describe('bot router', () => {
       throw new Error('dashbot error');
     });
 
-    await request(app.listen())
-      .post(`/bot${botToken}`)
-      .send(reqBody);
+    await request(app.listen()).post(`/bot${botToken}`).send(reqBody);
 
     expect(dashbot.sendLogIncoming).toBeCalledWith(reqBody);
     expect(console.error).toBeCalledWith(new Error('dashbot error'));

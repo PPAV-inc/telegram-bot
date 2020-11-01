@@ -138,10 +138,7 @@ describe('getHotVideos', () => {
       ],
     };
 
-    getMongoDatabase()
-      .collection()
-      .aggregate()
-      .toArray.mockReturnValue([logs]);
+    getMongoDatabase().collection().aggregate().toArray.mockReturnValue([logs]);
     getMongoDatabase()
       .collection()
       .aggregate()
@@ -168,11 +165,7 @@ describe('getHotVideos', () => {
     expect(getMongoDatabase().collection().find).toBeCalledWith({
       _id: { $in: [video._id] },
     });
-    expect(
-      getMongoDatabase()
-        .collection()
-        .find().toArray
-    ).toBeCalled();
+    expect(getMongoDatabase().collection().find().toArray).toBeCalled();
     expect(res).toEqual({ results: [videoRes] });
   });
 });
@@ -191,7 +184,9 @@ describe('getAnalyticVideos', () => {
         video_id: '5972e2b0b8d6db6c3d64895d',
       },
     ];
-    const videosIds = candidates.map(candidate => ObjectId(candidate.video_id));
+    const videosIds = candidates.map((candidate) =>
+      ObjectId(candidate.video_id)
+    );
 
     await getAnalyticVideos(candidates);
 
@@ -200,10 +195,6 @@ describe('getAnalyticVideos', () => {
     expect(getMongoDatabase().collection().find).toBeCalledWith({
       _id: { $in: videosIds },
     });
-    expect(
-      getMongoDatabase()
-        .collection()
-        .find().toArray
-    ).toBeCalled();
+    expect(getMongoDatabase().collection().find().toArray).toBeCalled();
   });
 });

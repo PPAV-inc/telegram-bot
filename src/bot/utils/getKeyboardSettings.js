@@ -13,7 +13,7 @@ const replyKeyboardOptions = (keyboard, onTimeKeyboard) => ({
   disable_web_page_preview: false,
 });
 
-const inlineKeyboardOptions = keyboard => ({
+const inlineKeyboardOptions = (keyboard) => ({
   reply_markup: {
     inline_keyboard: keyboard,
   },
@@ -28,7 +28,7 @@ const getLanguageKeyboardSettings = () => {
   return { text, options };
 };
 
-const getAutoDeleteMessagesKeyboardSettings = languageCode => {
+const getAutoDeleteMessagesKeyboardSettings = (languageCode) => {
   const { text, active, inactive } = locale(languageCode).autoDeleteMessages;
   const autoDeleteMessagesKeyboard = keyboards.autoDeleteMessagesKeyboard(
     active,
@@ -39,7 +39,7 @@ const getAutoDeleteMessagesKeyboardSettings = languageCode => {
   return { text, options };
 };
 
-const getDisclaimerKeyboardSettings = languageCode => {
+const getDisclaimerKeyboardSettings = (languageCode) => {
   const { text, accept, disclaimer } = locale(languageCode).acceptDisclaimer;
   const disclaimerKeyboard = keyboards.disclaimerKeyboard(disclaimer, accept);
   const options = replyKeyboardOptions(disclaimerKeyboard, true);
@@ -47,7 +47,7 @@ const getDisclaimerKeyboardSettings = languageCode => {
   return { text, options };
 };
 
-const getMainMenuKeyboardSettings = languageCode => {
+const getMainMenuKeyboardSettings = (languageCode) => {
   const {
     text,
     ourshd,
@@ -74,7 +74,7 @@ const getMainMenuKeyboardSettings = languageCode => {
   return { text, options };
 };
 
-const getContactUsKeyboardSettings = languageCode => {
+const getContactUsKeyboardSettings = (languageCode) => {
   const { text, mailText, mailUrl } = locale(languageCode).contactUs;
   const contactUsKeyboard = keyboards.contactUsKeyboard(mailText, mailUrl);
 
@@ -83,7 +83,7 @@ const getContactUsKeyboardSettings = languageCode => {
   return { text, options };
 };
 
-const getSettingKeyboardSettings = languageCode => {
+const getSettingKeyboardSettings = (languageCode) => {
   const { text, buttons } = locale(languageCode).setting;
   const settingKeyboard = keyboards.settingKeyboard(buttons);
   const options = inlineKeyboardOptions(settingKeyboard);
