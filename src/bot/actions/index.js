@@ -13,7 +13,6 @@ import contactUs from './contactUs';
 import unhandled from './unhandled';
 import callbackQuery from './callbackQuery';
 import subscribe from './subscribe';
-import ourshd from './ourshd';
 
 export {
   acceptDisclaimer,
@@ -31,5 +30,4 @@ export {
   unhandled,
   callbackQuery,
   subscribe,
-  ourshd,
 };

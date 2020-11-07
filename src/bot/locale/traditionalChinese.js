@@ -12,7 +12,6 @@ const traditionalChinese = {
   },
   mainMenu: {
     text: '有任何疑問歡迎點擊右下方的按鈕開啟主選單 🎛',
-    ourshd: '奧視',
     randomVideo: 'PPAV 熱門',
     hotVideo: 'PPAV 最新',
     tutorial: '使用說明 📖',
@@ -73,7 +72,7 @@ const traditionalChinese = {
   tutorial: {
     randomVideo_photo: 'https://imgur.com/7ouKmPL.jpg',
     randomVideo:
-      '1️⃣ 隨機影片\n\n在輸入框內輸入 "PPAV"，或在主選單中點選 "PPAV 熱門" 或 "PPAV 最新"，PPAV 將會傳送三部影片給您。',
+      '1️⃣ 隨機影片\n\n在輸入框內輸入 "PPAV"，或在主選單中點選 "PPAV 熱門" 或 "PPAV 最新"，PPAV 將會傳送五部影片給您。',
     searchVideos_photo_1: 'https://imgur.com/rZX96do.jpg',
     searchVideos_caption_1:
       '2️⃣-1️⃣ 搜尋影片\n\n在輸入框內輸入 "#關鍵字" 可以搜尋影片。\n\n關鍵字可以是\n1.「女優名字」，例如："#三上悠亞"\n2.「標籤」，例如："#高校生"\n3.「番號」，例如："#887"\n4.「片名」，例如："#美少女完全予約制"',
@@ -94,7 +93,7 @@ const traditionalChinese = {
   unhandled: {
     minor: ['想找片子嗎？', '衛生紙準備好了嗎？', '你媽知道你在這裡看片嗎？'],
     main:
-      'PPAV x 奧視 特別企劃 ⁉️\n請輸入：*奧視*\n即可進入 PPAV 免費專區 ⁉️\n\n操作說明：\n\n1️⃣*隨機熱門影片* 請輸入： "*PPAV*" 或點擊下方主選單中的 "PPAV 熱門"\n\n2️⃣*隨機最新影片* 請輸入： "*PPAV new*" 或點擊下方主選單中的 "PPAV 最新"\n\n3️⃣*搜尋影片* 請輸入： "*# 關鍵字*"\n\n4️⃣*訂閱推播* 請輸入： "*gginin 推播時段*"',
+      'PPAV 操作說明：\n\n1️⃣*隨機熱門影片* 請輸入： "*PPAV*" 或點擊下方主選單中的 "PPAV 熱門"\n\n2️⃣*隨機最新影片* 請輸入： "*PPAV new*" 或點擊下方主選單中的 "PPAV 最新"\n\n3️⃣*搜尋影片* 請輸入： "*# 關鍵字*"\n\n4️⃣*訂閱推播* 請輸入： "*gginin 推播時段*"',
   },
   try: '不知道搜尋什麼嗎？試看看搜尋',
 };
