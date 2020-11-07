@@ -28,10 +28,10 @@
     "node": ">=7"
   },
   "dependencies": {
+    "@google/chatbase": "^1.1.2",
     "axios": "^0.21.0",
     "babel-register": "^6.26.0",
     "bottender": "^0.15.9",
-    "dashbot": "9.2.0",
     "date-fns": "^1.29.0",
     "dateformat": "^3.0.3",
     "elasticsearch": "^15.1.1",

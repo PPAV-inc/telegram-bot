@@ -11,9 +11,6 @@ const { botToken } = require(path.resolve(
 jest.mock('../../bot/', () => ({
   createRequestHandler: jest.fn(() => jest.fn(() => Promise.resolve())),
 }));
-jest.mock('../../dashbot', () => ({
-  sendLogIncoming: jest.fn(),
-}));
 
 function makeApp() {
   const app = new Koa();
@@ -47,12 +44,11 @@ describe('bot router', () => {
   let app;
   let botRouter;
   let requestHandler;
-  let dashbot;
 
   beforeEach(() => {
     /* eslint-disable global-require */
     botRouter = require('../bot');
-    ({ requestHandler, dashbot } = require('../bot'));
+    ({ requestHandler } = require('../bot'));
     /* eslint-enable */
 
     app = makeApp();
@@ -81,47 +77,5 @@ describe('bot router', () => {
     const response = await request(app.listen()).post(`/bot`).send(reqBody);
 
     expect(response.status).toBe(404);
-  });
-
-  it('should call dashbot', async () => {
-    jest.resetModules();
-    process.env.NODE_ENV = 'production';
-
-    /* eslint-disable global-require */
-    botRouter = require('../bot');
-    ({ dashbot } = require('../bot'));
-    /* eslint-enable */
-
-    app = makeApp();
-    app.use(botRouter.routes());
-    app.use(botRouter.allowedMethods());
-
-    await request(app.listen()).post(`/bot${botToken}`).send(reqBody);
-
-    expect(dashbot.sendLogIncoming).toBeCalledWith(reqBody);
-  });
-
-  it('should catch Error', async () => {
-    jest.resetModules();
-    process.env.NODE_ENV = 'production';
-
-    /* eslint-disable global-require */
-    botRouter = require('../bot');
-    ({ dashbot } = require('../bot'));
-    /* eslint-enable */
-
-    app = makeApp();
-    app.use(botRouter.routes());
-    app.use(botRouter.allowedMethods());
-
-    console.error = jest.fn();
-    dashbot.sendLogIncoming.mockImplementationOnce(() => {
-      throw new Error('dashbot error');
-    });
-
-    await request(app.listen()).post(`/bot${botToken}`).send(reqBody);
-
-    expect(dashbot.sendLogIncoming).toBeCalledWith(reqBody);
-    expect(console.error).toBeCalledWith(new Error('dashbot error'));
   });
 });

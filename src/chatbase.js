@@ -1,12 +1,11 @@
 import path from 'path';
 import axios from 'axios';
+import chatbase from '@google/chatbase';
 
-const { dashbotToken, botToken } = require(path.resolve(
+const { chatbaseToken, botToken } = require(path.resolve(
   __dirname,
   '../env/bot.config.js'
 ));
-
-const dashbot = require('dashbot')(dashbotToken).generic;
 
 const parseMessage = async (data) => {
   if (data.message !== undefined) {
@@ -35,6 +34,7 @@ const parseMessage = async (data) => {
 
     return { updateId, text, images, userId, conversationId };
   }
+
   if (data.callback_query !== undefined) {
     const {
       update_id: updateId,
@@ -46,6 +46,7 @@ const parseMessage = async (data) => {
         },
       },
     } = data;
+
     return { updateId, text, userId, conversationId };
   }
 
@@ -54,59 +55,36 @@ const parseMessage = async (data) => {
 
 const sendLogIncoming = async (request) => {
   try {
-    const { text, userId, conversationId, images } = await parseMessage(
-      request
-    );
-    dashbot.logIncoming({
-      text,
-      userId,
-      conversationId,
-      images,
-      platformJson: request,
-    });
+    const { text, userId } = await parseMessage(request);
+
+    await chatbase
+      .newMessage(chatbaseToken, String(userId))
+      .setAsTypeUser()
+      .setPlatform('telegram')
+      .setMessage(text)
+      .setTimestamp(Date.now().toString())
+      .setVersion('0.1')
+      .send();
   } catch (err) {
     console.error(err);
   }
 };
 
-const sendLogOutgoing = async (rawEvent, text, options) => {
+const sendLogOutgoing = async (rawEvent, message) => {
   try {
-    const buttons = [];
-    const images = [];
-    const { updateId, userId, conversationId } = await parseMessage(rawEvent);
+    const { userId } = await parseMessage(rawEvent);
 
-    if (
-      options.reply_markup !== undefined &&
-      options.reply_markup.inline_keyboard !== undefined
-    ) {
-      options.reply_markup.inline_keyboard.forEach((row) => {
-        row.forEach((button) => {
-          buttons.push({
-            id: updateId,
-            label: button.text,
-            value: button.url !== undefined ? button.url : button.callback_data,
-          });
-        });
-      });
-    }
-
-    if (options.imageUrl !== undefined) {
-      images.push({
-        url: options.imageUrl,
-      });
-    }
-
-    dashbot.logOutgoing({
-      text,
-      userId,
-      conversationId,
-      images,
-      buttons,
-      platformJson: rawEvent,
-    });
+    await chatbase
+      .newMessage(chatbaseToken, String(userId))
+      .setAsTypeAgent()
+      .setPlatform('telegram')
+      .setMessage(message)
+      .setTimestamp(Date.now().toString())
+      .setVersion('0.1')
+      .send();
   } catch (err) {
     console.error(err);
   }
 };
 
-export { sendLogIncoming, sendLogOutgoing, dashbot, botToken };
+export { sendLogIncoming, sendLogOutgoing, chatbase, botToken };
