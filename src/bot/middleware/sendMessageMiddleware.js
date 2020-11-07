@@ -2,12 +2,12 @@ import { TelegramHandler } from 'bottender';
 
 import * as users from '../../models/users';
 
-let dashbot = {
+let chatbase = {
   sendLogOutgoing: () => {},
 };
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line global-require
-  dashbot = require('../../dashbot');
+  chatbase = require('../../chatbase');
 }
 
 const sendMessageMiddleware = (outerContext, next) =>
@@ -30,16 +30,13 @@ const sendMessageMiddleware = (outerContext, next) =>
 
       /* eslint-disable */
       for (let i = 0; i < context.sendMessageContent.length; i += 1) {
-        const { imageUrl, text, options } = context.sendMessageContent[i];
+        const { imageUrl, text, options, unhandled = false } = context.sendMessageContent[i];
         if (imageUrl) {
           await context.sendPhoto(imageUrl, options);
-          dashbot.sendLogOutgoing(context.event._rawEvent, options.caption, {
-            ...options,
-            imageUrl,
-          });
+          chatbase.sendLogOutgoing(context.event._rawEvent, imageUrl, { unhandled });
         } else {
           await context.sendMessage(text, options);
-          dashbot.sendLogOutgoing(context.event._rawEvent, text, options);
+          chatbase.sendLogOutgoing(context.event._rawEvent, text, { unhandled });
         }
       }
       /* eslint-enable */

@@ -25,9 +25,10 @@ const unhandled = async (context) => {
       options: {
         parse_mode: 'Markdown',
       },
+      unhandled: true,
     },
-    messageContent,
-    searchKeywordsContent
+    { ...messageContent, unhandled: true },
+    { ...searchKeywordsContent, unhandled: true }
   );
 };
 

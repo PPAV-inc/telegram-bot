@@ -4,12 +4,12 @@ import path from 'path';
 
 import bot from '../bot';
 
-let dashbot = {
+let chatbase = {
   sendLogIncoming: () => {},
 };
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line global-require
-  dashbot = require('../dashbot');
+  chatbase = require('../chatbase');
 }
 
 const { botToken } = require(path.resolve(__dirname, '../../env/bot.config'));
@@ -21,7 +21,7 @@ const requestHandler = bot.createRequestHandler();
 
 botRouter.post(`/bot${botToken}`, async ({ request, response }) => {
   try {
-    dashbot.sendLogIncoming(request.body);
+    chatbase.sendLogIncoming(request.body);
   } catch (err) {
     console.error(err);
   }
@@ -31,4 +31,3 @@ botRouter.post(`/bot${botToken}`, async ({ request, response }) => {
 
 module.exports = botRouter;
 module.exports.requestHandler = requestHandler;
-module.exports.dashbot = dashbot;
