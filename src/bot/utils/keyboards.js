@@ -1,6 +1,6 @@
 import locale from '../locale';
 
-const paidWebsites = ['iavtv'];
+const paidWebsites = [];
 
 const languageKeyboard = [[{ text: '繁體中文' }, { text: 'English' }]];
 
