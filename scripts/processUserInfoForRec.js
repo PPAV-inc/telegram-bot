@@ -15,7 +15,7 @@ async function main() {
     .toArray();
 
   // FIXME: userId in logs should be int not string
-  subscribedUsers = subscribedUsers.map(user => user.userId.toString());
+  subscribedUsers = subscribedUsers.map((user) => user.userId.toString());
 
   const recUsers = await db
     .collection('logs')
@@ -77,12 +77,7 @@ async function main() {
       {
         $match: {
           updated_at: { $gte: oneDaysBefore },
-          $or: [
-            {
-              'videos.1': { $exists: true },
-            },
-            { 'videos.source': { $ne: 'iavtv' } },
-          ],
+          'videos.0': { $exists: true },
         },
       },
     ])
