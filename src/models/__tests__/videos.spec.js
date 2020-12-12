@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
-import config from '../../../env/bot.config';
+
+const { URL } = process.env;
 
 jest.mock('mongodb');
 jest.mock('../database');
@@ -130,7 +131,7 @@ describe('getHotVideos', () => {
       videos: [
         {
           source: 'youav',
-          url: `${config.url}/redirect/?url=${encodeURIComponent(
+          url: `${URL}/redirect/?url=${encodeURIComponent(
             video.videos[0].url
           )}&_id=${video._id}`,
           view_count: 666,

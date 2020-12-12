@@ -1,11 +1,8 @@
-import path from 'path';
 import axios from 'axios';
 import chatbase from '@google/chatbase';
 
-const { chatbaseToken, botToken } = require(path.resolve(
-  __dirname,
-  '../env/bot.config.js'
-));
+const botToken = process.env.BOT_TOKEN;
+const chatbaseToken = process.env.CHATBASE_TOKEN;
 
 const parseMessage = async (data) => {
   if (data.message !== undefined) {

@@ -45,7 +45,7 @@ jobs:
       - run:
           name: Copy config files
           command: |
-            cp -r ./env/bot.config.sample.js ./env/bot.config.js
+            cp -r .env.sample .env
             cp -r ./env/test.sample.js ./env/test.js
             cp -r ./env/development.sample.js ./env/development.js
       - save_cache:

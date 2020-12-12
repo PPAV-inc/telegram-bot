@@ -1,8 +1,6 @@
 import crypto from 'crypto';
 
-import config from '../../../env/bot.config';
-
-const key = config.aesKey;
+const key = process.env.AES_KEY;
 
 export default function aesEncrypt(data) {
   const cipher = crypto.createCipher('aes192', key);

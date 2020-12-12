@@ -1,12 +1,8 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import request from 'supertest';
-import path from 'path';
 
-const { botToken } = require(path.resolve(
-  __dirname,
-  '../../../env/bot.config'
-));
+const botToken = process.env.BOT_TOKEN;
 
 jest.mock('../../bot/', () => ({
   createRequestHandler: jest.fn(() => jest.fn(() => Promise.resolve())),

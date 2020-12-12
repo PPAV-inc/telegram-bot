@@ -1,6 +1,5 @@
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
-import path from 'path';
 
 import bot from '../bot';
 
@@ -12,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
   chatbase = require('../chatbase');
 }
 
-const { botToken } = require(path.resolve(__dirname, '../../env/bot.config'));
+const botToken = process.env.BOT_TOKEN;
 
 const botRouter = new Router();
 botRouter.use(bodyParser());
