@@ -5,6 +5,7 @@ WORKDIR /home/app
 COPY ./.babelrc ./.babelrc
 COPY ./bin ./bin
 COPY ./src ./src
+COPY ./.env ./.env
 COPY ./env ./env
 COPY ./package.json ./package.json
 COPY ./yarn.lock ./yarn.lock

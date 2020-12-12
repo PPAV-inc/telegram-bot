@@ -1,7 +1,8 @@
 import { ObjectId } from 'mongodb';
 import subDays from 'date-fns/sub_days';
 import { getMongoDatabase, getElasticsearchDatabase } from './database';
-import config from '../../env/bot.config';
+
+const url = process.env.URL;
 
 const escapeRegex = (text) => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
@@ -35,9 +36,9 @@ const getSearchVideos = async (messageText, page) => {
       const { _source: source } = hit;
       source.videos = source.videos.map((video) => ({
         ...video,
-        url: `${config.url}/redirect/?url=${encodeURIComponent(
-          video.url
-        )}&_id=${hit._id}`,
+        url: `${url}/redirect/?url=${encodeURIComponent(video.url)}&_id=${
+          hit._id
+        }`,
       }));
       results.push(source);
     });
@@ -69,7 +70,7 @@ const getNewVideos = async () => {
     // eslint-disable-next-line no-param-reassign
     eachResult.videos = eachResult.videos.map((video) => ({
       ...video,
-      url: `${config.url}/redirect/?url=${encodeURIComponent(video.url)}&_id=${
+      url: `${url}/redirect/?url=${encodeURIComponent(video.url)}&_id=${
         eachResult._id
       }`,
     }));
@@ -120,7 +121,7 @@ const getHotVideos = async () => {
     // eslint-disable-next-line no-param-reassign
     eachResult.videos = eachResult.videos.map((video) => ({
       ...video,
-      url: `${config.url}/redirect/?url=${encodeURIComponent(video.url)}&_id=${
+      url: `${url}/redirect/?url=${encodeURIComponent(video.url)}&_id=${
         eachResult._id
       }`,
     }));

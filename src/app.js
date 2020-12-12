@@ -8,7 +8,8 @@ import botRouter from './routes/bot';
 import bot from './bot';
 
 const config = require(`../env/${process.env.NODE_ENV || 'development'}`);
-const { botToken } = require('../env/bot.config');
+
+const botToken = process.env.BOT_TOKEN;
 
 const app = createServer(bot, {
   accessToken: botToken,
