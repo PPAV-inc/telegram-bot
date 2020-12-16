@@ -52,10 +52,6 @@ describe('bot router', () => {
     app.use(botRouter.allowedMethods());
   });
 
-  afterEach(() => {
-    process.env.NODE_ENV = 'test';
-  });
-
   it('should be defined', () => {
     expect(botRouter).toBeDefined();
   });

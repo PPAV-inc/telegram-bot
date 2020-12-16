@@ -1,8 +1,4 @@
-import {
-  getMongoDatabase,
-  getElasticsearchDatabase,
-  getConfig,
-} from '../database';
+import { getMongoDatabase, getElasticsearchDatabase } from '../database';
 
 jest.mock('mongodb');
 jest.mock('elasticsearch');
@@ -15,11 +11,6 @@ elasticsearch.Client = jest.fn();
 describe('getMongoDatabase', () => {
   it('should be defined', () => {
     expect(getMongoDatabase).toBeDefined();
-  });
-
-  it('should require /env/development.js if process.env.NODE_ENV is null', async () => {
-    const config = getConfig(null);
-    expect(config.env).toBe('development');
   });
 
   it('should return _mongodb if called more than one time', async () => {
@@ -38,9 +29,9 @@ describe('getMongoDatabase', () => {
     expect(MongoClient.connect).toHaveBeenCalledTimes(1);
   });
 
-  it("should call MongoClient.connect with getConfig('test').mongodbPath", async () => {
+  it('should call MongoClient.connect with test MONGO_URL env', async () => {
     await getMongoDatabase();
-    expect(MongoClient.connect).toBeCalledWith(getConfig('test').mongodbPath);
+    expect(MongoClient.connect).toBeCalledWith('TEST_MONGO_URL');
   });
 });
 
@@ -56,10 +47,10 @@ describe('getElasticsearchDatabase', () => {
     expect(elasticsearch.Client).toHaveBeenCalledTimes(1);
   });
 
-  it("should call elasticsearch.Client with getConfig('test').elasticsearchUrl", async () => {
+  it('should call elasticsearch.Client with test elasticsearch env', async () => {
     await getElasticsearchDatabase();
     expect(elasticsearch.Client).toBeCalledWith({
-      host: getConfig('test').elasticsearchUrl,
+      host: 'TEST_ELASTICSEARCH_URL',
       log: 'error',
     });
   });

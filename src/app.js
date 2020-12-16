@@ -7,8 +7,6 @@ import indexRouter from './routes/index';
 import botRouter from './routes/bot';
 import bot from './bot';
 
-const config = require(`../env/${process.env.NODE_ENV || 'development'}`);
-
 const botToken = process.env.BOT_TOKEN;
 
 const app = createServer(bot, {
@@ -27,7 +25,7 @@ app.use(
   })
 );
 
-if (config.logger) {
+if (process.env.LOGGER) {
   app.use(logger());
 }
 
