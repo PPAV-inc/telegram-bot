@@ -16,11 +16,7 @@ describe('getMongoDatabase', () => {
   it('should return _mongodb if called more than one time', async () => {
     MongoClient.connect.mockClear();
     MongoClient.connect.mockReturnValue({
-      domain: null,
-      s: {
-        databaseName: 'PPAV',
-        logger: { Logger: { className: 'Db' } },
-      },
+      db: () => true,
     });
 
     await getMongoDatabase();
@@ -31,7 +27,9 @@ describe('getMongoDatabase', () => {
 
   it('should call MongoClient.connect with test MONGO_URL env', async () => {
     await getMongoDatabase();
-    expect(MongoClient.connect).toBeCalledWith('TEST_MONGO_URL');
+    expect(MongoClient.connect).toBeCalledWith('TEST_MONGO_URL', {
+      useUnifiedTopology: true,
+    });
   });
 });
 

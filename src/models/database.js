@@ -9,8 +9,10 @@ const getMongoDatabase = async () => {
     return _mongodb;
   }
 
-  const db = await MongoClient.connect(process.env.MONGO_URL);
-  _mongodb = db;
+  const client = await MongoClient.connect(process.env.MONGO_URL, {
+    useUnifiedTopology: true,
+  });
+  _mongodb = client.db();
 
   return _mongodb;
 };
