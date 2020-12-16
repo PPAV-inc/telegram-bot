@@ -46,8 +46,6 @@ jobs:
           name: Copy config files
           command: |
             cp -r .env.sample .env
-            cp -r ./env/test.sample.js ./env/test.js
-            cp -r ./env/development.sample.js ./env/development.js
       - save_cache:
           key: ppav-cache-{{checksum "yarn.lock"}}
           paths:

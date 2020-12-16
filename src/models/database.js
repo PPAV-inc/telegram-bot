@@ -1,9 +1,5 @@
 import { MongoClient } from 'mongodb';
 import elasticsearch from 'elasticsearch';
-import path from 'path';
-
-export const getConfig = (env) =>
-  require(path.resolve(__dirname, `../../env/${env || 'development'}`)); // eslint-disable-line global-require
 
 let _mongodb;
 let _elasticsearchdb;
@@ -13,9 +9,7 @@ const getMongoDatabase = async () => {
     return _mongodb;
   }
 
-  const db = await MongoClient.connect(
-    getConfig(process.env.NODE_ENV).mongodbPath
-  );
+  const db = await MongoClient.connect(process.env.MONGO_URL);
   _mongodb = db;
 
   return _mongodb;
@@ -27,7 +21,7 @@ const getElasticsearchDatabase = () => {
   }
 
   const db = new elasticsearch.Client({
-    host: getConfig(process.env.NODE_ENV).elasticsearchUrl,
+    host: process.env.ELASTICSEARCH_URL,
     log: 'error',
   });
   _elasticsearchdb = db;
