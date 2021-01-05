@@ -30,7 +30,7 @@
   "dependencies": {
     "@babel/register": "^7.0.0",
     "@google/chatbase": "^1.1.2",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "bottender": "^0.15.9",
     "date-fns": "^1.29.0",
     "dateformat": "^4.3.1",
