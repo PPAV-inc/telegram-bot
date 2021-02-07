@@ -1,5 +1,3 @@
-require('@babel/register');
-
 require('dotenv').config();
 
 const app = require('../lib/app').default;
