@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import subDays from 'date-fns/sub_days';
+import subDays from 'date-fns/subDays';
 import { getMongoDatabase, getElasticsearchDatabase } from './database';
 
 const url = process.env.URL;

@@ -1,4 +1,4 @@
-import subDays from 'date-fns/sub_days';
+import subDays from 'date-fns/subDays';
 import { getMongoDatabase } from './database';
 
 const insertSearchKeyword = async (keyword) => {
